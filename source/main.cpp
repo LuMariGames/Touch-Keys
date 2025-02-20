@@ -4,50 +4,47 @@
 #include <stdlib.h>
 #include <string.h>
 
-// SDƒJ[ƒh‚©‚çƒeƒNƒXƒ`ƒƒ‚ğ“Ç‚İ‚Ş
-const char* texturePath = "sdmc:/3ds/myapp/image.t3x";
+// SDã‚«ãƒ¼ãƒ‰ã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’èª­ã¿è¾¼ã‚€
+const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 
 C2D_SpriteSheet spriteSheet;
 
 int main() {
-    // ‰Šú‰»
+    // åˆæœŸåŒ–
     gfxInitDefault();
     C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
     C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
     C2D_Prepare();
 
-    // •`‰æƒoƒbƒtƒ@
+    // æç”»ãƒãƒƒãƒ•ã‚¡
     C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
     C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-    spriteSheet = C2D_SpriteSheetLoad(texturePath);
+    //spriteSheet = C2D_SpriteSheetLoad(texturePath);
 
     while (aptMainLoop()) {
         hidScanInput();
         u32 kDown = hidKeysDown();
-        if (kDown & KEY_START) break;  // STARTƒ{ƒ^ƒ“‚ÅI—¹
+        if (kDown & KEY_START) break;  // STARTãƒœã‚¿ãƒ³ã§çµ‚äº†
 
-        // •`‰æŠJn
+        // æç”»é–‹å§‹
         C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
-        // ã‰æ–Ê‚É•`‰æ
+        // ä¸Šç”»é¢ã«æç”»
         C2D_TargetClear(top, C2D_Color32(0, 0, 0, 1));
         C2D_SceneBegin(top);
-        // ƒXƒe[ƒW
-        C2D_DrawImageAt(C2D_SpriteSheetGetImage(spriteSheet, 0),
-            (float)(0),
-            (float)(0),
-            0.5f, NULL, 1.0f, 1.0f);
 
-        // ‰º‰æ–Ê‚É•`‰æi•K—v‚É‰‚¶‚Ä•`‰æj
-        C2D_TargetClear(bot, C2D_Color32(255, 255, 255, 255));
+	
+
+        // ä¸‹ç”»é¢ã«æç”»ï¼ˆå¿…è¦ã«å¿œã˜ã¦æç”»ï¼‰
+        C2D_TargetClear(bot, C2D_Color32(0, 0, 0, 1));
         C2D_SceneBegin(bot);
 
-        // •`‰æI—¹
+        // æç”»çµ‚äº†
         C3D_FrameEnd(0);
     }
 
-    // ƒŠƒ\[ƒX‚Ì‰ğ•ú
+    // ãƒªã‚½ãƒ¼ã‚¹ã®è§£æ”¾
     C2D_Fini();
     C2D_SpriteSheetFree(spriteSheet);
     gfxExit();
