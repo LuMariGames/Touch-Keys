@@ -31,6 +31,7 @@ int main() {
 	load_sound();
 
 	while (aptMainLoop()) {
+
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown();
@@ -80,7 +81,7 @@ int main() {
 			if (key & KEY_B)		update_cursor(KEY_B);
 
 			if (get_isGameStart() == true) {
-				scene_state = 2;
+				scene = 2;
 				cnt = -1;
 			}
 			isPause = false;
