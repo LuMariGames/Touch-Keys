@@ -1,3 +1,9 @@
+#include "header.h"
+#include "main.h"
+#include "select.h"
+#include "tja.h"
+#include "audio.h"
+#include "notes.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 
