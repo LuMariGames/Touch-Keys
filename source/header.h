@@ -12,7 +12,7 @@
 #include <ctype.h>
 
 #define VERSION "0.1.0"
-#define DEFAULT_DIR "sdmc:/TKS/"
+#define DEFAULT_DIR "sdmc:/tkjfiles/"
 
 #define DEFAULT_JUDGE_RANGE_PERFECT	0.033
 #define DEFAULT_JUDGE_RANGE_NICE	0.067
@@ -25,3 +25,11 @@
 
 #define LIST_MAX 4096
 #define DEFAULT_BUFFER_SIZE 2048
+
+enum COURSE_KND {
+
+	COURSE_EASY = 0,
+	COURSE_NORMAL,
+	COURSE_HARD,
+	COURSE_CRAZY,
+};
