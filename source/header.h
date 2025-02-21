@@ -12,15 +12,16 @@
 #include <ctype.h>
 
 #define VERSION "0.1.0"
-#define DEFAULT_DIR "sdmc:/tjafiles/"
+#define DEFAULT_DIR "sdmc:/TKS/"
 
 #define DEFAULT_JUDGE_RANGE_PERFECT	0.033
 #define DEFAULT_JUDGE_RANGE_NICE	0.067
-#define DEFAULT_JUDGE_RANGE_BAD		0.10
+#define DEFAULT_JUDGE_RANGE_BAD		0.100
 
 #define TOP_WIDTH  400
 #define TOP_HEIGHT 240
 #define BOTTOM_WIDTH  320
 #define BOTTOM_HEIGHT 240
 
+#define LIST_MAX 4096
 #define DEFAULT_BUFFER_SIZE 2048
