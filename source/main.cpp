@@ -71,7 +71,7 @@ int main() {
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
 			C3D_FrameDrawOn(bot);
 			C2D_SceneTarget(bot);
-			if (kDown & KEY_START) isExit = true;
+			if (key & KEY_START) isExit = true;
 
 			for (int i = 0; i < NOTES_MAX; ++i) {
 
