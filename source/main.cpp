@@ -99,6 +99,7 @@ int main() {
 	C3D_Fini();
 	gfxExit();
 	romfsExit();
+	exit_music();
 	return 0;
 }
 
