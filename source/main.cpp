@@ -73,14 +73,16 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (key & KEY_START) isExit = true;
 
-			for (int i = 0; i < NOTES_MAX; ++i) {
+			Notes[i].y = JUDGE_Y - (10 - NowTime) * NotesSpeed;
+			C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+
+			/*for (int i = 0; i < NOTES_MAX; ++i) {
 
 				if (Notes[i].flag) {
 
-					Notes[i].y = JUDGE_Y - (10 - NowTime) * NotesSpeed;
-					C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+					
 				}
-			}
+			}*/
 
 			C2D_DrawRectSolid(0,JUDGE_Y,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			break;
