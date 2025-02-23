@@ -37,45 +37,37 @@ SOURCES		:=	source
 DATA		:=	data
 INCLUDES	:=	include
 GRAPHICS	:=	gfx
+#GFXBUILD	:=	$(BUILD)
 ROMFS		:=	romfs
-GFXBUILD	:=	$(ROMFS)/gfx
-#---------------------------------------------------------------------------------
-APP_VER				:= 16 #1024.16.1?
-APP_TITLE			:= Touch Keys
-APP_DESCRIPTION			:= New Keys Music Game.
-APP_AUTHOR			:= MarioGames
-PRODUCT_CODE			:= CTR-HB-TKEY
-UNIQUE_ID			:= 0x0544B
-
-BANNER_AUDIO			:= resource/banner.wav
-BANNER_IMAGE			:= resource/banner.png
-ICON        			:= resource/icon.png
-RSF_PATH			:= resource/app.rsf
-
-#---------------------------------------------------------------------------------
+GFXBUILD	:=	$(ROMFS)
+APP_TITLE	:=	Touch Keys
+APP_DESCRIPTION	:=	New Keys Music Game.
+APP_AUTHOR 	:=	MarioGames
+ICON        	:=	resource/icon.png
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 
-CFLAGS	:=	-Wall -O2 -mword-relocations -finline-functions -faggressive-loop-optimizations \
-			-fomit-frame-pointer -ffunction-sections \
+CFLAGS	:=	-g -Wall -O2 -mword-relocations \
+			-ffunction-sections \
 			$(ARCH)
 
-CFLAGS	+=	$(INCLUDE) -D_3DS__
+CFLAGS	+=	$(INCLUDE) -D__3DS__ `$(PREFIX)pkg-config opusfile --cflags`
 
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lcitro2d -lcitro3d -lctru -lm -lvorbisidec -logg -ljansson
+LIBS	:= -lcitro2d -lcitro3d -lctru -lm -lvorbisidec -logg
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS := $(CTRULIB) $(PORTLIBS)
+LIBDIRS	:= $(PORTLIBS) $(CTRULIB)
+
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -172,46 +164,8 @@ endif
 .PHONY: all clean
 
 #---------------------------------------------------------------------------------
-MAKEROM      ?= resource/makerom
-MAKEROM_ARGS := -elf "$(OUTPUT).elf" -rsf "$(RSF_PATH)" -banner "$(BUILD)/banner.bnr" -icon "$(BUILD)/icon.icn" -DAPP_TITLE="$(APP_TITLE)" -DAPP_PRODUCT_CODE="$(PRODUCT_CODE)" -DAPP_UNIQUE_ID="$(UNIQUE_ID)"
-
-ifneq ($(strip $(LOGO)),)
-	MAKEROM_ARGS	+=	 -logo "$(LOGO)"
-endif
-ifneq ($(strip $(ROMFS)),)
-	MAKEROM_ARGS	+=	 -DAPP_ROMFS="$(ROMFS)"
-endif
-
-BANNERTOOL   ?= resource/bannertool
-
-ifeq ($(suffix $(BANNER_IMAGE)),.cgfx)
-	BANNER_IMAGE_ARG := -ci
-else
-	BANNER_IMAGE_ARG := -i
-endif
-
-ifeq ($(suffix $(BANNER_AUDIO)),.cwav)
-	BANNER_AUDIO_ARG := -ca
-else
-	BANNER_AUDIO_ARG := -a
-endif
-#
-
-#---------------------------------------------------------------------------------
-
 all: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
-	@echo Building 3dsx...
-	@$(MAKE) -j -s --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
-	@echo
-	@echo Building cia...
-	@$(BANNERTOOL) makebanner $(BANNER_IMAGE_ARG) $(BANNER_IMAGE) $(BANNER_AUDIO_ARG) $(BANNER_AUDIO) -o $(BUILD)/banner.bnr
-	@$(BANNERTOOL) makesmdh -s "$(APP_TITLE)" -l "$(APP_DESCRIPTION)" -p $(APP_AUTHOR) -i $(APP_ICON) -o $(BUILD)/icon.icn
-	@$(MAKEROM) -f cia -o $(OUTPUT).cia -target t -exefslogo $(MAKEROM_ARGS) -ver $(APP_VER)
-
-#---------------------------------------------------------------------------------
-3dsx: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
-	@echo Building 3dsx...
-	@$(MAKE) -j -s --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
 $(BUILD):
 	@mkdir -p $@
@@ -226,11 +180,10 @@ $(DEPSDIR):
 	@mkdir -p $@
 endif
 
-
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(TARGET).cia $(GFXBUILD)
+	@rm -fr $(BUILD) $(TARGET).3dsx $(OUTPUT).smdh $(TARGET).elf $(GFXBUILD)
 
 #---------------------------------------------------------------------------------
 $(GFXBUILD)/%.t3x	$(BUILD)/%.h	:	%.t3s
