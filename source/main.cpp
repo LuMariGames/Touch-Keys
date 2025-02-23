@@ -84,6 +84,11 @@ int main() {
 				}
 			}*/
 
+			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
+				touchid = 0;
+				play_sound(0);
+			}
+			else if (tp.px == 0 && tp.py == 0 && touch != -1) touchid = -1;
 			C2D_DrawRectSolid(0,JUDGE_Y,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			break;
 		}
