@@ -48,7 +48,7 @@ int main() {
 		unsigned int key = hidKeysDown();
 		if (isExit == true) break;
 
-		int touchid = -1;
+		int touchid = -1, i = 0;
 
 		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
