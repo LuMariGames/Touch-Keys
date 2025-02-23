@@ -79,14 +79,31 @@ int main() {
 
 			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
 
+				if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
+					Notes[i].flag = false;
+					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
+					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,1,0);
+				}
+				else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
+					Notes[i].flag = false;
+					snprintf(get_buffer(), BUFFER_SIZE, "GOOD");
+					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,0,0);
+				}
+				else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
+					Notes[i].flag = false;
+					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
+					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 0,0,1);
+				}
+
 				if (Notes[i].flag) {
 
-					if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) Notes[i].flag = false;
-					if (Notes[i].flag) {
-						Notes[i].y = 200 - (Notes[i].judge_time - NowTime) * NotesSpeed;
-						C2D_DrawRectSolid(80 * Notes[i].num,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
-					}
+					Notes[i].y = 200 - (Notes[i].judge_time - NowTime) * NotesSpeed;
+					if (Notes[i].y > BOTTOM_HEIGHT) Notes[i].flag = false;
+					C2D_DrawRectSolid(80 * Notes[i].num,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
+				else {
+
+					
 			}
 
 			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
