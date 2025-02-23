@@ -13,6 +13,7 @@ const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
 int scene = 0,cnt = 0,NotesSpeed = 100;
 float BPM = 120,OffTime = 0,NowTime = 0;
+bool isExit = false;
 
 static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
@@ -49,10 +50,10 @@ int main() {
 
 		int touchid = -1;
 
-		// 描画開始
+		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
-		// 上画面に描画
+		//上画面に描画
 		C2D_TargetClear(top, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
 		C3D_FrameDrawOn(top);
 		C2D_SceneTarget(top);
@@ -66,10 +67,11 @@ int main() {
 			++cnt;
 			NowTime = osGetTime() - OffTime;
 
-			// 下画面に描画（必要に応じて描画）
+			//下画面に描画（必要に応じて描画）
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
 			C3D_FrameDrawOn(bot);
 			C2D_SceneTarget(bot);
+			if (kDown & KEY_START) isExit = true;
 
 			for (int i = 0; i < NOTES_MAX; ++i)
 
@@ -84,11 +86,11 @@ int main() {
 			break;
 		}
 
-		// 描画終了
+		//描画終了
 		C3D_FrameEnd(0);
 	}
 
-	// リソースの解放
+	//リソースの解放
 	C2D_TextBufDelete(g_dynamicBuf);
 
 	C2D_Fini();
@@ -100,8 +102,4 @@ int main() {
 
 char *get_buffer() {
 	return buffer;
-}
-
-void notesdraw() {
-	
 }
