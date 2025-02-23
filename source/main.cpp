@@ -80,6 +80,13 @@ int main() {
 			}
 			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
 
+			//レーン描画
+			C2D_DrawRectSolid(40,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(119.75,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(199.5,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(279.25,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(359,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+
 			//ノーツ描画
 			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
 
