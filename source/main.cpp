@@ -41,8 +41,10 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
-	int i = 0;
-	Notes[i].flag = true;
+	Notes[0].flag = true;
+	Notes[1].flag = true;
+	Notes[2].flag = true;
+	Notes[3].flag = true;
 
 	while (aptMainLoop()) {
 
@@ -74,22 +76,20 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (key & KEY_START) isExit = true;
 
-			if (fabs(2 - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == 0) Notes[i].flag = false;
-			if (Notes[i].flag) {
-				Notes[i].y = 200 - (2 - NowTime) * NotesSpeed;
-				C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
-			}
-
-			/*for (int i = 0; i < NOTES_MAX; ++i) {
+			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
 
 				if (Notes[i].flag) {
 
-					
+					if (fabs(2 - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == 0) Notes[i].flag = false;
+					if (Notes[i].flag) {
+						Notes[i].y = 200 - (1 + (0.3 * i) - NowTime) * NotesSpeed;
+						C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+					}
 				}
-			}*/
+			}
 
 			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
-				touchid = 0;
+				touchid = (int)(tp.px / 4);
 				play_sound(0);
 			}
 			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
