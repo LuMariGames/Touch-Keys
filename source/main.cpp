@@ -11,7 +11,8 @@
 // SDカードからテクスチャを読み込む
 const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
-int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 100,touchid = -1,judgeid = -1;
+char tja_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
+int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0;
 double BPM = 120,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
@@ -186,3 +187,28 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_TextOptimize(&dynText);
 	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
 }
+
+/*void tkjload() {
+
+	char* temp = NULL;
+	bool isEnd = false;
+
+	chdir("sdmc:/tkjfiles/");
+	if ((fp = fopen(test.tkj, "r")) != NULL) {
+
+		tkj_cnt = 0;
+		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tja_cnt < MEASURE_MAX) && isEnd == false) {
+			tkj_cnt++;
+			temp = (char *)malloc((strlen() + 1));
+
+			if (strstr(buf, "BPM:") == buf) {
+				if (buf[4] != '\n' && buf[4] != '\r') {
+					strlcpy(temp, buf + 4, strlen(buf) - 5);
+					BPM = atof(temp);
+				}
+				continue;
+			}
+		}
+		fclose(fp);
+	}
+}*/
