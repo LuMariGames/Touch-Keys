@@ -15,7 +15,7 @@ int scene = 0,cnt = 0,NotesSpeed = 100,touchid = -1;
 double BPM = 120,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
-static C2D_SpriteSheet spriteSheet;
+//static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
 
@@ -41,10 +41,10 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
-	Notes[0].flag = true;
-	Notes[1].flag = true;
-	Notes[2].flag = true;
-	Notes[3].flag = true;
+	for (int i = 0; i < 4; ++i) 
+	Notes[i].flag = true;
+	Notes[i].num = i % 4;
+	Notes[i].judge_time = 1 + (0.3 * i);
 
 	while (aptMainLoop()) {
 
@@ -80,10 +80,10 @@ int main() {
 
 				if (Notes[i].flag) {
 
-					if (fabs(1 + (0.3 * i) - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == 0) Notes[i].flag = false;
+					if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) Notes[i].flag = false;
 					if (Notes[i].flag) {
-						Notes[i].y = 200 - (1 + (0.3 * i) - NowTime) * NotesSpeed;
-						C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+						Notes[i].y = 200 - (Notes[i].judge_time - NowTime) * NotesSpeed;
+						C2D_DrawRectSolid(80 * Notes[i].num,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 					}
 				}
 			}
