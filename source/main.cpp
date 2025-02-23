@@ -11,8 +11,9 @@
 // SDカードからテクスチャを読み込む
 const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
-char tja_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
-int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,Startcnt = 0;
+char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
+int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
+NotesCount = 0,Startcnt = 0,MeasureCount = 0;
 double BPM = 120,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
@@ -44,11 +45,14 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
+	MeasureCount = Startcnt;
 	while (tkj_notes[MeasureCount][NotesCount] != ',') ++NotesCount;
-	for (int i = 0; i < 32; ++i) {
-		Notes[i].flag = true;
-		Notes[i].num = i % 4;
-		Notes[i].judge_time = 1 + (240 / BPM / 4) * i;
+	for (int i = 0; i < NotesCount; ++i) {
+		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
+			Notes[i].flag = true;
+			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]);
+			Notes[i].judge_time = 1 + (240 / BPM / NotesCount) * i;
+		}
 	}
 
 	while (aptMainLoop()) {
@@ -201,17 +205,9 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 		tkj_cnt = 0;
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tja_cnt < MEASURE_MAX) && isEnd == false) {
 			tkj_cnt++;
-			temp = (char *)malloc((strlen() + 1));
 
 			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
-   
-			if (strstr(tkj_notes[tkj_cnt], "BPM:") == tkj_notes[tkj_cnt]) {
-				if (buf[4] != '\n' && buf[4] != '\r') {
-					strlcpy(temp, buf + 4, strlen(buf) - 5);
-					BPM = atof(temp);
-				}
-				continue;
-			}
+			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
 		}
 		fclose(fp);
 	}
