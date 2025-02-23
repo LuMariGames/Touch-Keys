@@ -115,15 +115,15 @@ int main() {
 			if (timecnt < judgetmpcnt) {
 				if (judgeid == 0) {
 					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
-					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,1,0);
+					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 1,1,0);
 				}
 				else if (judgeid == 1) {
 					snprintf(get_buffer(), BUFFER_SIZE, "GOOD");
-					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,0,0);
+					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 1,0,0);
 				}
 				else if (judgeid == 2) {
 					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
-					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 0,0,1);
+					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 0,0,1);
 				}
 			}
 			else judgeid = -1;
