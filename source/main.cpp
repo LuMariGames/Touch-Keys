@@ -73,7 +73,7 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (kDown & KEY_START) isExit = true;
 
-			for (int i = 0; i < NOTES_MAX; ++i)
+			for (int i = 0; i < NOTES_MAX; ++i) {
 
 				if (Notes[i].flag) {
 
