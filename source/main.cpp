@@ -159,7 +159,6 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_TextParse(&dynText, g_dynamicBuf, text);
 	C2D_TextOptimize(&dynText);
 	float size = 0.5;
-	C2D_TextGetDimensions(&dynText, size, size, width, height);
-
-	C2D_DrawText(&dynText, C2D_WithColor, x, y, 0.5f, size, size, C2D_Color32f(r, g, b, 1.0f));
+	
+	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, size, size, C2D_Color32f(r, g, b, 1.0f));
 }
