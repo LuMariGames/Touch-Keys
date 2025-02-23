@@ -46,7 +46,7 @@ int main() {
 	for (int i = 0; i < 8; ++i) {
 		Notes[i].flag = true;
 		Notes[i].num = i % 4;
-		Notes[i].judge_time = 1 + (0.25 * i);
+		Notes[i].judge_time = 1 + (0.5 * i);
 	}
 
 	while (aptMainLoop()) {
