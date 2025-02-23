@@ -43,15 +43,13 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
-	tkjload();
-
 	for (int i = 0; i < 4; ++i) {
 		Notes[i].flag = true;
 		Notes[i].num = i % 4;
-		Notes[i].judge_time = 1 + (0.3 * i);
+		Notes[i].judge_time = 1 + (0.5 * i);
 	}
 
-	while (aptMainLoop()) {
+	while (apMainLoop()) {
 
 		hidScanInput();
 		hidTouchRead(&tp);
@@ -180,9 +178,4 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_TextParse(&dynText, g_dynamicBuf, text);
 	C2D_TextOptimize(&dynText);
 	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
-}
-
-void tkjload() {
-
-	
 }
