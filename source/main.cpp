@@ -73,8 +73,11 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (key & KEY_START) isExit = true;
 
-			Notes[i].y = 200 - (2 - NowTime) * NotesSpeed;
-			C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+			if (fabs(2 - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == 0) Notes[i].flag = false;
+			if (Notes[i].flag) {
+				Notes[i].y = 200 - (2 - NowTime) * NotesSpeed;
+				C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+			}
 
 			/*for (int i = 0; i < NOTES_MAX; ++i) {
 
@@ -110,4 +113,16 @@ int main() {
 
 char *get_buffer() {
 	return buffer;
+}
+
+void draw_text(float x, float y, const char *text, float r, float g, float b) {
+
+	//使用例
+	//snprintf(get_buffer(), BUFFER_SIZE, "%d", 10);
+	// draw_debug(300, 0, get_buffer());
+
+	C2D_TextBufClear(g_dynamicBuf);
+	C2D_TextParse(&dynText, g_dynamicBuf, text);
+	C2D_TextOptimize(&dynText);
+	C2D_DrawText(&dynText, C2D_WithColor, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
 }
