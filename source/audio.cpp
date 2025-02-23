@@ -6,8 +6,8 @@
 #include "audio.h"
 #include "main.h"
 
-#define AUDIO_BUFFER_SIZE 4096
-#define STACKSIZE (4 * 1024)
+#define AUDIO_BUFFER_SIZE 2048
+#define STACKSIZE (2 * 1024)
 #define SOUND_NUMBER 2
 
 typedef struct {
@@ -123,6 +123,8 @@ void exit_music() {
 
 	ndspChnWaveBufClear(sound[0].audiochannel);
 	linearFree(sound[0].data);
+	ndspChnWaveBufClear(sound[1].audiochannel);
+	linearFree(sound[1].data);
 
 	ndspExit();
 }
