@@ -103,9 +103,6 @@ int main() {
 					if (Notes[i].y > BOTTOM_HEIGHT) Notes[i].flag = false;
 					C2D_DrawRectSolid(80 * Notes[i].num,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
-				else {
-
-					
 			}
 
 			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
