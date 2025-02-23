@@ -49,7 +49,7 @@ int main() {
 		Notes[i].judge_time = 1 + (0.25 * i);
 	}
 
-	while (apMainLoop()) {
+	while (aptMainLoop()) {
 
 		hidScanInput();
 		hidTouchRead(&tp);
