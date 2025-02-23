@@ -18,8 +18,10 @@ bool isExit = false;
 //static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
-
 NOTES_T Notes[NOTES_MAX];
+
+char *get_buffer();
+void draw_text(float x, float y, const char *text, float r, float g, float b);
 
 int main() {
 	// 初期化
