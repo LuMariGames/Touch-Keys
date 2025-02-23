@@ -1,9 +1,9 @@
 #pragma once
 
 typedef struct {
-	int num, notes_max, knd, roll_id, text_id;
+	int num = -1, notes_max, knd, roll_id, text_id;
 	double judge_time = INT_MAX, bpm, scroll, x_ini;
-	bool flag, isThrough;
+	bool flag = false, isThrough;
 	float y;
 
 } NOTES_T;
