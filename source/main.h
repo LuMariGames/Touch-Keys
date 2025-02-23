@@ -7,3 +7,5 @@ typedef struct {
 	float y;
 
 } NOTES_T;
+
+#define BUFFER_SIZE 144
