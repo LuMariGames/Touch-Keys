@@ -73,7 +73,7 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (key & KEY_START) isExit = true;
 
-			Notes[i].y = JUDGE_Y - (NowTime - 2) * NotesSpeed;
+			Notes[i].y = (NowTime - 2) * NotesSpeed;
 			C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 
 			/*for (int i = 0; i < NOTES_MAX; ++i) {
