@@ -41,14 +41,15 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
+	int i = 0
+	Notes[i].flag = true;
+
 	while (aptMainLoop()) {
 
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown();
 		if (isExit == true) break;
-
-		int i = 0;
 
 		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
