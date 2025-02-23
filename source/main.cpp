@@ -80,7 +80,7 @@ int main() {
 
 				if (Notes[i].flag) {
 
-					if (fabs(2 - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == 0) Notes[i].flag = false;
+					if (fabs(1 + (0.3 * i) - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == 0) Notes[i].flag = false;
 					if (Notes[i].flag) {
 						Notes[i].y = 200 - (1 + (0.3 * i) - NowTime) * NotesSpeed;
 						C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
