@@ -1,3 +1,7 @@
+#include "audio.h"
+#include "header.h"
+#include "main.h"
+
 #include <citro2d.h>
 #include <3ds.h>
 #include <stdio.h>
