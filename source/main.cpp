@@ -107,7 +107,7 @@ int main() {
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
 					}
-					Notes[i].y = 200 - (Notes[i].judge_time - NowTime) * NotesSpeed;
+					Notes[i].y = JUDGE_Y - (Notes[i].judge_time - NowTime) * NotesSpeed;
 					if (Notes[i].y < 5.0f) C2D_DrawRectSolid(40 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
