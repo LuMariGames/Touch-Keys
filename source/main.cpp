@@ -44,10 +44,10 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
-	for (int i = 0; i < 8; ++i) {
+	for (int i = 0; i < 32; ++i) {
 		Notes[i].flag = true;
 		Notes[i].num = i % 4;
-		Notes[i].judge_time = 1 + (0.5 * i);
+		Notes[i].judge_time = 1 + (240 / BPM / 4) * i;
 	}
 
 	while (aptMainLoop()) {
@@ -89,7 +89,9 @@ int main() {
 			C2D_DrawRectSolid(359,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//ノーツ描画
-			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
+			for (int i = 0; i < NOTES_MAX; ++i) {
+
+				Notes[i].y = JUDGE_Y - (Notes[i].judge_time - NowTime) * NotesSpeed;
 
 				if (Notes[i].flag) {
 
@@ -108,8 +110,7 @@ int main() {
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
 					}
-					Notes[i].y = JUDGE_Y - (Notes[i].judge_time - NowTime) * NotesSpeed;
-					if (Notes[i].y < 5.0f) C2D_DrawRectSolid(40 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(40 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
 			//下画面に描画（必要に応じて描画）
@@ -126,7 +127,7 @@ int main() {
 			C2D_DrawRectSolid(319,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//ノーツ描画
-			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
+			for (int i = 0; i < NOTES_MAX; ++i) {
 
 				if (Notes[i].flag && Notes[i].y > -5.0f) {
 
