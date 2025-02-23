@@ -41,7 +41,7 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
-	int i = 0
+	int i = 0;
 	Notes[i].flag = true;
 
 	while (aptMainLoop()) {
