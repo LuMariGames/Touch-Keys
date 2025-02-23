@@ -2,7 +2,7 @@
 
 typedef struct {
 	int num, notes_max, knd, roll_id, text_id;
-	double judge_time, bpm, scroll, x_ini;
+	double judge_time = INT_MAX, bpm, scroll, x_ini;
 	bool flag, isThrough;
 	float y;
 
