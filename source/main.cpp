@@ -11,7 +11,7 @@
 // SDカードからテクスチャを読み込む
 const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
-int scene = 0,cnt = 0,NotesSpeed = 100,touchid = -1;
+int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 100,touchid = -1,judgeid = -1;
 double BPM = 120,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
@@ -69,8 +69,8 @@ int main() {
 		case 0:	//テスト用画面
 
 			//差を使って時間を測る
-			if (cnt == 0) OffTime = osGetTime() * 0.001;
-			++cnt;
+			if (timecnt == 0) OffTime = osGetTime() * 0.001;
+			++timecnt;
 			NowTime = osGetTime() * 0.001 - OffTime;
 
 			//下画面に描画（必要に応じて描画）
@@ -83,18 +83,18 @@ int main() {
 
 				if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
 					Notes[i].flag = false;
-					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
-					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,1,0);
+					judgetmpcnt = timecnt + 30;
+					judgeid = 0;
 				}
 				else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
 					Notes[i].flag = false;
-					snprintf(get_buffer(), BUFFER_SIZE, "GOOD");
-					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,0,0);
+					judgetmpcnt = timecnt + 30;
+					judgeid = 1;
 				}
 				else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
 					Notes[i].flag = false;
-					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
-					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 0,0,1);
+					judgetmpcnt = timecnt + 30;
+					judgeid = 2;
 				}
 
 				if (Notes[i].flag) {
@@ -111,6 +111,22 @@ int main() {
 			}
 			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
 			C2D_DrawRectSolid(0,JUDGE_Y,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+
+			if (timecnt < judgetmpcnt) {
+				if (judgeid == 0) {
+					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
+					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,1,0);
+				}
+				else if (judgeid == 1) {
+					snprintf(get_buffer(), BUFFER_SIZE, "GOOD");
+					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 1,0,0);
+				}
+				else if (judgeid == 2) {
+					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
+					draw_text(BOTTOM_WIDTH, 170, get_buffer(), 0,0,1);
+				}
+			}
+			else judgeid = -1;
 			break;
 		}
 
