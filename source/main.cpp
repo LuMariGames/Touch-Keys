@@ -12,7 +12,7 @@
 const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
 int scene = 0,cnt = 0,NotesSpeed = 100;
-float BPM = 120,OffTime = 0,NowTime = 0;
+double BPM = 120,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
 static C2D_SpriteSheet spriteSheet;
