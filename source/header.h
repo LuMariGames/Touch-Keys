@@ -23,8 +23,8 @@
 #define BOTTOM_WIDTH 320
 #define BOTTOM_HEIGHT 240
 #define NOTES_MEASURE_MAX 128
-#define MEASURE_MAX 2048
-#define NOTES_MAX 512
+#define MEASURE_MAX 512
+#define NOTES_MAX 2048
 #define JUDGE_Y 200
 
 #define LIST_MAX 4096
