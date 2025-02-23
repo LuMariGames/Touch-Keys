@@ -43,6 +43,8 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
+	tkjload();
+
 	for (int i = 0; i < 4; ++i) {
 		Notes[i].flag = true;
 		Notes[i].num = i % 4;
@@ -73,25 +75,12 @@ int main() {
 			++timecnt;
 			NowTime = osGetTime() * 0.001 - OffTime;
 
-			//下画面に描画（必要に応じて描画）
-			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
-			C3D_FrameDrawOn(bot);
-			C2D_SceneTarget(bot);
-			if (key & KEY_START) isExit = true;
-
 			//タッチ関係
 			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
 				touchid = (int)tp.px / 80;
 				play_sound(0);
 			}
 			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
-
-			//レーン描画
-			C2D_DrawRectSolid(0,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			C2D_DrawRectSolid(79.75,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			C2D_DrawRectSolid(159.5,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			C2D_DrawRectSolid(239.25,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			C2D_DrawRectSolid(319,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//ノーツ描画
 			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
@@ -114,6 +103,27 @@ int main() {
 						judgeid = 2;
 					}
 					Notes[i].y = 200 - (Notes[i].judge_time - NowTime) * NotesSpeed;
+					if (Notes[i].y < 5.0f) C2D_DrawRectSolid(40 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+				}
+			}
+			//下画面に描画（必要に応じて描画）
+			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
+			C3D_FrameDrawOn(bot);
+			C2D_SceneTarget(bot);
+			if (key & KEY_START) isExit = true;
+
+			//レーン描画
+			C2D_DrawRectSolid(0,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(79.75,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(159.5,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(239.25,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(319,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+
+			//ノーツ描画
+			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
+
+				if (Notes[i].flag && Notes[i].y > -5.0f) {
+
 					if (Notes[i].y > BOTTOM_HEIGHT) Notes[i].flag = false;
 					C2D_DrawRectSolid(79.75 * Notes[i].num,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
@@ -133,7 +143,7 @@ int main() {
 					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 1,0,0);
 				}
 				else if (judgeid == 2) {
-					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
+					snprintf(get_buffer(), BUFFER_SIZE, "ISS");
 					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 0,0,1);
 				}
 			}
@@ -170,4 +180,9 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_TextParse(&dynText, g_dynamicBuf, text);
 	C2D_TextOptimize(&dynText);
 	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
+}
+
+void tkjload() {
+
+	
 }
