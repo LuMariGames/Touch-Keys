@@ -148,7 +148,7 @@ int main() {
 					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 1,0,0);
 				}
 				else if (judgeid == 2) {
-					snprintf(get_buffer(), BUFFER_SIZE, "ISS");
+					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
 					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 0,0,1);
 				}
 			}
