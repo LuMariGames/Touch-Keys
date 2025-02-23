@@ -8,4 +8,6 @@ typedef struct {
 
 } NOTES_T;
 
+char *get_buffer();
+void draw_text(float x, float y, const char *text, float r, float g, float b);
 #define BUFFER_SIZE 144
