@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "audio.h"
-#include "main.h"
+#include "header.h"
 
 #define AUDIO_BUFFER_SIZE 2048
 #define STACKSIZE (2 * 1024)
