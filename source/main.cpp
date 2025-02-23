@@ -63,9 +63,9 @@ int main() {
 		case 0:	//テスト用画面
 
 			//差を使って時間を測る
-			if (cnt == 0) OffTime = osGetTime();
+			if (cnt == 0) OffTime = osGetTime() * 0.001;
 			++cnt;
-			NowTime = osGetTime() - OffTime;
+			NowTime = osGetTime() * 0.001 - OffTime;
 
 			//下画面に描画（必要に応じて描画）
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
@@ -73,7 +73,7 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (key & KEY_START) isExit = true;
 
-			Notes[i].y = (NowTime - 2) * NotesSpeed;
+			Notes[i].y = 200 - (2 - NowTime) * NotesSpeed;
 			C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 
 			/*for (int i = 0; i < NOTES_MAX; ++i) {
