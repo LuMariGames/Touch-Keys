@@ -79,39 +79,43 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (key & KEY_START) isExit = true;
 
-			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
+			//タッチ関係
+			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
+				touchid = (int)tp.px / 80;
+				play_sound(0);
+			}
+			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
 
-				if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
-					Notes[i].flag = false;
-					judgetmpcnt = timecnt + 30;
-					judgeid = 0;
-				}
-				else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
-					Notes[i].flag = false;
-					judgetmpcnt = timecnt + 30;
-					judgeid = 1;
-				}
-				else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
-					Notes[i].flag = false;
-					judgetmpcnt = timecnt + 30;
-					judgeid = 2;
-				}
+			//ノーツ描画
+			for (int i = 0; i < NOTES_MEASURE_MAX; ++i) {
 
 				if (Notes[i].flag) {
 
+					if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
+						Notes[i].flag = false;
+						judgetmpcnt = timecnt + 30;
+						judgeid = 0;
+					}
+					else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
+						Notes[i].flag = false;
+						judgetmpcnt = timecnt + 30;
+						judgeid = 1;
+					}
+					else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
+						Notes[i].flag = false;
+						judgetmpcnt = timecnt + 30;
+						judgeid = 2;
+					}
 					Notes[i].y = 200 - (Notes[i].judge_time - NowTime) * NotesSpeed;
 					if (Notes[i].y > BOTTOM_HEIGHT) Notes[i].flag = false;
 					C2D_DrawRectSolid(80 * Notes[i].num,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
 
-			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
-				touchid = (int)tp.px / 80;
-				play_sound(0);
-			}
-			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
+			//判定線
 			C2D_DrawRectSolid(0,JUDGE_Y,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
+			//判定文字
 			if (timecnt < judgetmpcnt) {
 				if (judgeid == 0) {
 					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
@@ -158,7 +162,5 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_TextBufClear(g_dynamicBuf);
 	C2D_TextParse(&dynText, g_dynamicBuf, text);
 	C2D_TextOptimize(&dynText);
-	float size = 0.5;
-	
-	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, size, size, C2D_Color32f(r, g, b, 1.0f));
+	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
 }
