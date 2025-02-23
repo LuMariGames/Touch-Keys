@@ -89,7 +89,7 @@ int main() {
 			}
 
 			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
-				touchid = (int)(tp.px / 80);
+				touchid = (int)tp.px / 80;
 				play_sound(0);
 			}
 			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
