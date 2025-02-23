@@ -11,7 +11,7 @@
 // SDカードからテクスチャを読み込む
 const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
-int scene = 0,cnt = 0,NotesSpeed = 100;
+int scene = 0,cnt = 0,NotesSpeed = 100,touchid = -1;
 double BPM = 120,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
@@ -48,7 +48,7 @@ int main() {
 		unsigned int key = hidKeysDown();
 		if (isExit == true) break;
 
-		int touchid = -1, i = 0;
+		int i = 0;
 
 		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -73,7 +73,7 @@ int main() {
 			C2D_SceneTarget(bot);
 			if (key & KEY_START) isExit = true;
 
-			Notes[i].y = 200 - (NowTime - 2) * NotesSpeed;
+			Notes[i].y = 200 - (2 - NowTime) * NotesSpeed;
 			C2D_DrawRectSolid(0,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 
 			/*for (int i = 0; i < NOTES_MAX; ++i) {
