@@ -53,7 +53,7 @@ int main() {
 		if (tkj_notes[MeasureCount][i] != '0') {
 			Notes[i].flag = true;
 			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-			Notes[i].judge_time = 1.0 + 0.25 * i;
+			Notes[i].judge_time = 1.0 + 240.0 / BPM * i / NotesCount;
 		}
 	}
 
