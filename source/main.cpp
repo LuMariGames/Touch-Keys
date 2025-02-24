@@ -181,7 +181,7 @@ int main() {
 			}
 			else judgeid = -1;
 
-			if (timecnt == 60) {
+			if (timecnt == 0) {
 				isPlayMain = true;
 				play_main_music(&isPlayMain);
 			}
@@ -238,6 +238,7 @@ void tkjload() {
 					BPM = atof(temp);
 				}
 				free(temp);
+				++tkj_cnt;
 				continue;
 			}
 			if (strstr(tkj_notes[tkj_cnt], "OFFSET:") == tkj_notes[tkj_cnt]) {
@@ -247,6 +248,7 @@ void tkjload() {
 					OFFSET = atof(temp);
 				}
 				free(temp);
+				++tkj_cnt;
 				continue;
 			}
 			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
