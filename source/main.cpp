@@ -190,7 +190,7 @@ int main() {
 		C3D_FrameEnd(0);
 	}
 
-	stopPlayback();
+	stop_main_music();
 
 	//リソースの解放
 	C2D_TextBufDelete(g_dynamicBuf);
