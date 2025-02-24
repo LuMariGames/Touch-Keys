@@ -188,6 +188,8 @@ int main() {
 			}
 			else judgeid = -1;
 
+			snprintf(get_buffer(), BUFFER_SIZE, "%d", MinNotesCnt);
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);
 			if (timecnt == 60) {
 				isPlayMain = true;
 				play_main_music(&isPlayMain);
