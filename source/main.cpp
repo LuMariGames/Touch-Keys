@@ -59,6 +59,7 @@ int main() {
 				Notes[i + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 				Notes[i + MinNotesCnt].judge_time = (1.25 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 			}
+			else --MaxNotesCnt;
 		}
 		MinNotesCnt += MaxNotesCnt;
 		++MeasureCount;
