@@ -2,8 +2,8 @@
 #include <climits>
 
 typedef struct {
-	int num = -1, notes_max, knd, roll_id, text_id;
-	double judge_time = INT_MAX, bpm, scroll, x_ini;
+	int num, notes_max, knd, roll_id, text_id;
+	double judge_time, bpm, scroll, x_ini;
 	bool flag = false, isThrough;
 	float y;
 
