@@ -231,28 +231,28 @@ void tkjload() {
 		tkj_cnt = 0;
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX)) {
 
-			temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
-
 			if (strstr(tkj_notes[tkj_cnt], "BPM:") == tkj_notes[tkj_cnt]) {
+				temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
 				if (tkj_notes[tkj_cnt][4] != '\n' && tkj_notes[tkj_cnt][4] != '\r') {
 					strlcpy(temp, tkj_notes[tkj_cnt] + 4, strlen(tkj_notes[tkj_cnt]) - 5);
 					BPM = atof(temp);
 				}
+				free(temp);
 				continue;
 			}
 			if (strstr(tkj_notes[tkj_cnt], "OFFSET:") == tkj_notes[tkj_cnt]) {
+				temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
 				if (tkj_notes[tkj_cnt][7] != '\n' && tkj_notes[tkj_cnt][7] != '\r') {
 					strlcpy(temp, tkj_notes[tkj_cnt] + 7, strlen(tkj_notes[tkj_cnt]) - 8);
 					OFFSET = atof(temp);
 				}
+				free(temp);
 				continue;
 			}
 			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) break;
 			++tkj_cnt;
-			free(temp);
 		}
-		free(temp);
 		fclose(fp);
 	}
 }
