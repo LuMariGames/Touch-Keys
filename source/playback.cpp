@@ -208,7 +208,7 @@ inline int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo, 
 	s32 prio;
 	static Thread thread = NULL;
 
-	if (ep_file != NULL && getFileType(ep_file) == FILE_TYPE_ERROR) return -1;
+	if (ep_file != NULL) return -1;
 	
 	if (thread != NULL) {
 		stopPlayback();
@@ -218,8 +218,7 @@ inline int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo, 
 		thread = NULL;
 	}
 
-	if (ep_file == NULL || playbackInfo == NULL)
-		return 0;
+	if (ep_file == NULL || playbackInfo == NULL) return 0;
 
 	playbackInfo->file = strdup(ep_file);
 	playbackInfo->isPlay = p_isPlayMain;
@@ -230,7 +229,7 @@ inline int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo, 
 	return 0;
 }
 
-void play_main_music(bool *p_isPlayMain,LIST_T Song) {
+void play_main_music(bool *p_isPlayMain) {
 
 	chdir(DEFAULT_DIR);
 	changeFile("audio.ogg", &playbackInfo, p_isPlayMain);
