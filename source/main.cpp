@@ -212,7 +212,7 @@ void tkjload() {
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX) && !isEnd) {
 			tkj_cnt++;
 
-			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
+			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
 			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) isEnd = true;
 		}
 		fclose(fp);
