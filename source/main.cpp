@@ -14,7 +14,7 @@ char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
 NotesCount = 0,Startcnt = 0,MeasureCount = 0;
-double BPM = 120,OffTime = 0,NowTime = 0;
+double BPM = 120.0,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
 //static C2D_SpriteSheet spriteSheet;
@@ -53,7 +53,7 @@ int main() {
 		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
 			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-			Notes[i].judge_time = 1 + (240 / BPM / NotesCount) * i;
+			Notes[i].judge_time = 1 + (240.0 / BPM / NotesCount) * i;
 		}
 	}
 
