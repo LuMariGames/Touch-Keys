@@ -50,7 +50,7 @@ int main() {
 	MeasureCount = Startcnt;
 	while (tkj_notes[MeasureCount][NotesCount] != ',') ++NotesCount;
 	for (int i = 0; i < NotesCount; ++i) {
-		if (tkj_notes[MeasureCount][i] != '0') {
+		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
 			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 			Notes[i].judge_time = 1.0 + 240.0 / BPM * i / NotesCount;
