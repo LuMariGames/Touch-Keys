@@ -16,7 +16,7 @@ char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
 NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
-bool isExit = false,isPlayMain = false;
+bool isExit = false,isPlayMain = false,isAuto = false;
 
 //static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
@@ -112,6 +112,11 @@ int main() {
 
 				if (Notes[i].flag) {
 
+					if (isAuto && Notes[i].judge_time < NowTime) {
+						Notes[i].flag = false;
+						judgetmpcnt = timecnt + 30;
+						judgeid = 0;
+					}
 					if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
@@ -181,7 +186,7 @@ int main() {
 			}
 			else judgeid = -1;
 
-			if (timecnt == 0) {
+			if (timecnt == 60) {
 				isPlayMain = true;
 				play_main_music(&isPlayMain);
 			}
