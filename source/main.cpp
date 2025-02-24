@@ -53,7 +53,7 @@ int main() {
 		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
 			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-			Notes[i].judge_time = 1.0 + 240.0 / BPM * i / 4;
+			Notes[i].judge_time = 1.0 + 240.0 / BPM * i / NotesCount;
 		}
 	}
 
@@ -209,7 +209,7 @@ void tkjload() {
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX) && !isEnd) {
 			tkj_cnt++;
 
-			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
+			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) isEnd = true;
 		}
 		fclose(fp);
