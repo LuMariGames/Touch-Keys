@@ -45,12 +45,13 @@ int main() {
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
+	tkjload();
 	MeasureCount = Startcnt;
 	while (tkj_notes[MeasureCount][NotesCount] != ',') ++NotesCount;
 	for (int i = 0; i < NotesCount; ++i) {
-		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
+		if (atoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
-			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]);
+			Notes[i].num = atoi(tkj_notes[MeasureCount][i]);
 			Notes[i].judge_time = 1 + (240 / BPM / NotesCount) * i;
 		}
 	}
@@ -194,21 +195,21 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
 }
 
-/*void tkjload() {
+void tkjload() {
 
 	char* temp = NULL;
 	bool isEnd = false;
 
 	chdir("sdmc:/tkjfiles/");
-	if ((fp = fopen(test.tkj, "r")) != NULL) {
+	if ((fp = fopen("test.tkj", "r")) != NULL) {
 
 		tkj_cnt = 0;
-		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tja_cnt < MEASURE_MAX) && isEnd == false) {
+		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tja_cnt < MEASURE_MAX) && !isEnd) {
 			tkj_cnt++;
 
 			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
-			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
+			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) isEnd = true;
 		}
 		fclose(fp);
 	}
-}*/
+}
