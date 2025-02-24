@@ -48,7 +48,6 @@ int main() {
 
 	tkjload();
 	MeasureCount = Startcnt;
-	while (tkj_notes[MeasureCount][0] != '#') ++MeasureCount;
 	while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 	for (int i = 0; i < NotesCount; ++i) {
 		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
@@ -211,10 +210,10 @@ void tkjload() {
 
 		tkj_cnt = 0;
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX) && !isEnd) {
-			tkj_cnt++;
 
-			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
+			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			else if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) isEnd = true;
+			tkj_cnt++;
 		}
 		fclose(fp);
 	}
