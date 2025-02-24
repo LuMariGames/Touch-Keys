@@ -48,13 +48,16 @@ int main() {
 
 	tkjload();
 	MeasureCount = Startcnt;
-	while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
-	for (int i = 0; i < NotesCount; ++i) {
-		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
-			Notes[i].flag = true;
-			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-			Notes[i].judge_time = 1.0 + 240.0 / BPM * (double)i / (double)NotesCount;
+	while (MeasureCount < tkj_cnt) {
+		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
+		for (int i = 0; i < NotesCount; ++i) {
+			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
+				Notes[i].flag = true;
+				Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
+				Notes[i].judge_time = 1.0 + 240.0 / BPM * (double)i / (double)NotesCount;
+			}
 		}
+		++MeasureCount;
 	}
 
 	while (aptMainLoop()) {
@@ -163,7 +166,7 @@ int main() {
 			}
 			else judgeid = -1;
 
-			snprintf(get_buffer(), BUFFER_SIZE, "%.3f", Notes[3].judge_time);
+			snprintf(get_buffer(), BUFFER_SIZE, "%.3f", Notes[7].judge_time);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
 			break;
 		}
@@ -213,10 +216,11 @@ void tkjload() {
 
 			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			else if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) isEnd = true;
-			tkj_cnt++;
+			++tkj_cnt;
 		}
 		fclose(fp);
 	}
+	--tkj_cnt;
 }
 
 int ctoi(char c) {
