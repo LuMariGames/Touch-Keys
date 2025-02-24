@@ -23,7 +23,7 @@ C2D_Text dynText;
 NOTES_T Notes[NOTES_MAX];
 
 char *get_buffer();
-void draw_text(float x, float y, const char *text, float r, float g, float b);
+void draw_text(float x, float y, const char *text, float r, float g, float b), tkjload();
 
 int main() {
 	// 初期化
@@ -51,7 +51,7 @@ int main() {
 	for (int i = 0; i < NotesCount; ++i) {
 		if (atoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
-			Notes[i].num = atoi(tkj_notes[MeasureCount][i]);
+			Notes[i].num = atoi(tkj_notes[MeasureCount][i]) - 1;
 			Notes[i].judge_time = 1 + (240 / BPM / NotesCount) * i;
 		}
 	}
@@ -204,7 +204,7 @@ void tkjload() {
 	if ((fp = fopen("test.tkj", "r")) != NULL) {
 
 		tkj_cnt = 0;
-		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tja_cnt < MEASURE_MAX) && !isEnd) {
+		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX) && !isEnd) {
 			tkj_cnt++;
 
 			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt;
