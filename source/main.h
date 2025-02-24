@@ -3,7 +3,7 @@
 
 typedef struct {
 	int num, notes_max, knd, roll_id, text_id;
-	double judge_time, bpm, scroll, x_ini;
+	double judge_time = 0, bpm, scroll, x_ini;
 	bool flag = false, isThrough;
 	float y;
 
