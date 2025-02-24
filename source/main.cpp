@@ -117,6 +117,7 @@ int main() {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
+						Score += 100;
 						play_sound(0);
 					}
 					if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
