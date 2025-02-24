@@ -1,4 +1,5 @@
 #pragma once
+#include <climits>
 
 typedef struct {
 	int num = -1, notes_max, knd, roll_id, text_id;
