@@ -131,9 +131,9 @@ int main() {
 			}
 
 			//スコア表示
-			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			snprintf(get_buffer(), BUFFER_SIZE, "%.8d", Score);
-			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
+			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,16,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			snprintf(get_buffer(), BUFFER_SIZE, "%d", Score);
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
 			//下画面に描画（必要に応じて描画）
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
