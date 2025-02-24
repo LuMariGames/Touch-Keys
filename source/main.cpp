@@ -163,7 +163,7 @@ int main() {
 			}
 			else judgeid = -1;
 
-			snprintf(get_buffer(), BUFFER_SIZE, "%.3f", Notes[3].judge_time);
+			snprintf(get_buffer(), BUFFER_SIZE, "%.3f", NotesCount);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
 			break;
 		}
