@@ -163,7 +163,7 @@ int main() {
 			}
 			else judgeid = -1;
 
-			snprintf(get_buffer(), BUFFER_SIZE, "%.3f", NotesCount);
+			snprintf(get_buffer(), BUFFER_SIZE, "%d", NotesCount);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
 			break;
 		}
