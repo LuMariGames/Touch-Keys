@@ -48,7 +48,7 @@ int main() {
 
 	tkjload();
 	MeasureCount = Startcnt;
-	while (tkj_notes[MeasureCount][NotesCount] != ',') NotesCount += 1;
+	while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 	for (int i = 0; i < NotesCount; ++i) {
 		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
