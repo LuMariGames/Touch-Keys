@@ -51,7 +51,7 @@ int main() {
 	while (MeasureCount < tkj_cnt) {
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		MaxNotesCnt += NotesCount;
-		for (int i = 0; i < MaxNotesCnt; ++i) {
+		for (int i = 0; i < NotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[i + MinNotesCnt].flag = true;
 				Notes[i + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
