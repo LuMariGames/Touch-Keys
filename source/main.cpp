@@ -131,7 +131,7 @@ int main() {
 			}
 
 			//スコア表示
-			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,40,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d", Score);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
 			
