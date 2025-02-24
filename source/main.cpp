@@ -215,7 +215,6 @@ void tkjload() {
 
 	FILE *fp;
 	char* temp = NULL;
-	bool isEnd = false;
 
 	chdir("sdmc:/tkjfiles/");
 	if ((fp = fopen("test.tkj", "r")) != NULL) {
