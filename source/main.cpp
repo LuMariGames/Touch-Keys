@@ -52,7 +52,7 @@ int main() {
 	for (int i = 0; i < NotesCount; ++i) {
 		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
-			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
+			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1 % 4;
 			Notes[i].judge_time = 1.0 + 0.25 * i;
 		}
 	}
