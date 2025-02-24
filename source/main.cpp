@@ -312,6 +312,7 @@ void Reset() {
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
 		MaxNotesCnt = 0;
+		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
 				Notes[i + MinNotesCnt].flag = true;
