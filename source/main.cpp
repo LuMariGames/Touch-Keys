@@ -49,6 +49,7 @@ int main() {
 	tkjload();
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
+		NotesCount = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		MaxNotesCnt += NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
