@@ -207,8 +207,6 @@ inline int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo, 
 
 	s32 prio;
 	static Thread thread = NULL;
-
-	if (ep_file != NULL) return -1;
 	
 	if (thread != NULL) {
 		stopPlayback();
