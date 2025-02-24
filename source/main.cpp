@@ -51,6 +51,7 @@ int main() {
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
+		MaxNotesCnt = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) > 0 && ctoi(tkj_notes[MeasureCount][i]) < 5) {
@@ -309,6 +310,7 @@ void Reset() {
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
+		MaxNotesCnt = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) > 0 && ctoi(tkj_notes[MeasureCount][i]) < 5) {
