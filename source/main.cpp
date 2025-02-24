@@ -192,9 +192,8 @@ int main() {
 		C3D_FrameEnd(0);
 	}
 
-	stop_main_music();
-
 	//リソースの解放
+	stop_main_music();
 	C2D_TextBufDelete(g_dynamicBuf);
 
 	C2D_Fini();
@@ -295,4 +294,5 @@ void Reset() {
 	NowTime = 0;
 	isExit = false;
 	isPlayMain = false;
+	stop_main_music();
 }
