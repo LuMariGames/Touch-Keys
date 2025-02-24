@@ -247,7 +247,6 @@ void tkjload() {
 		free(temp);
 		fclose(fp);
 	}
-	--tkj_cnt;
 }
 
 int ctoi(char c) {
