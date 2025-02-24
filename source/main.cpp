@@ -71,6 +71,9 @@ int main() {
 		unsigned int key = hidKeysDown();
 		if (isExit == true) break;
 
+		if (key & KEY_START) isExit = true;
+		if (key & KEY_SELECT) Reset();
+		
 		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
@@ -140,7 +143,6 @@ int main() {
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
 			C3D_FrameDrawOn(bot);
 			C2D_SceneTarget(bot);
-			if (key & KEY_START) isExit = true;
 
 			//レーン描画
 			C2D_DrawRectSolid(0,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
@@ -271,4 +273,26 @@ int ctoi(char c) {
 	case '9': return 9; 
 	default: return 0;
 	}
+}
+
+void Reset() {
+	scene = 0;
+	timecnt = 0;
+	judgetmpcnt = 0;
+	NotesSpeed = 200;
+	touchid = -1;
+	judgeid = -1;
+	tkj_cnt = 0;
+	NotesCount = 0;
+	MinNotesCnt = 0;
+	MaxNotesCnt = 0;
+	Startcnt = 0;
+	MeasureCount = 0;
+	Score = 0;
+	BPM = 120.0;
+	OFFSET = 0;
+	OffTime = 0;
+	NowTime = 0;
+	isExit = false;
+	isPlayMain = false;
 }
