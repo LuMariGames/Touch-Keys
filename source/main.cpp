@@ -1,6 +1,7 @@
 #include "audio.h"
 #include "header.h"
 #include "main.h"
+#include "playback.h"
 
 #include <citro2d.h>
 #include <3ds.h>
@@ -15,7 +16,7 @@ char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
 NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
-bool isExit = false;
+bool isExit = false,isPlayMain = false;
 
 //static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
@@ -178,7 +179,10 @@ int main() {
 			}
 			else judgeid = -1;
 
-			if (timecnt == 60) play_main_music(&isPlayMain, SelectedSong);
+			if (timecnt == 60) {
+				isPlayMain = true;
+				play_main_music(&isPlayMain);
+			}
 			break;
 		}
 
