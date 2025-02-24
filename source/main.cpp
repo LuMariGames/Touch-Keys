@@ -57,7 +57,7 @@ int main() {
 			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[i + MinNotesCnt].flag = true;
 				Notes[i + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[i + MinNotesCnt].judge_time = (1 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				Notes[i + MinNotesCnt].judge_time = (1.2 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 			}
 		}
 		MinNotesCnt += MaxNotesCnt;
@@ -318,4 +318,5 @@ void Reset() {
 		MinNotesCnt += MaxNotesCnt;
 		++MeasureCount;
 	}
+	isAuto = !isAuto;
 }
