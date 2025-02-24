@@ -14,7 +14,7 @@ char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
 NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0;
-double BPM = 120.0,OffTime = 0,NowTime = 0;
+double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
 //static C2D_SpriteSheet spriteSheet;
@@ -56,7 +56,7 @@ int main() {
 			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[i + MinNotesCnt].flag = true;
 				Notes[i + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[i + MinNotesCnt].judge_time = 1 + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				Notes[i + MinNotesCnt].judge_time = (1 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 			}
 		}
 		MinNotesCnt += MaxNotesCnt;
@@ -118,13 +118,13 @@ int main() {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
-						Score += 500;
+						Score += 400;
 					}
 					else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
-						Score += 100;
+						Score += 240;
 					}
 					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(40 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
@@ -221,12 +221,30 @@ void tkjload() {
 	if ((fp = fopen("test.tkj", "r")) != NULL) {
 
 		tkj_cnt = 0;
-		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX) && !isEnd) {
+		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX)) {
 
+			temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+
+			if (strstr(tkj_notes[tkj_cnt], "BPM:") == tkj_notes[tkj_cnt]) {
+				if (tkj_notes[tkj_cnt][4] != '\n' && tkj_notes[tkj_cnt][4] != '\r') {
+					strlcpy(temp, tkj_notes[tkj_cnt] + 4, strlen(tkj_notes[tkj_cnt]) - 5);
+					BPM = atof(temp);
+				}
+				continue;
+			}
+			if (strstr(tkj_notes[tkj_cnt], "OFFSET:") == tkj_notes[tkj_cnt]) {
+				if (tkj_notes[tkj_cnt][7] != '\n' && tkj_notes[tkj_cnt][7] != '\r') {
+					strlcpy(temp, tkj_notes[tkj_cnt] + 7, strlen(tkj_notes[tkj_cnt]) - 8);
+					OFFSET = atof(temp);
+				}
+				continue;
+			}
 			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
-			else if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) isEnd = true;
+			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) break;
 			++tkj_cnt;
+			free(temp);
 		}
+		free(temp);
 		fclose(fp);
 	}
 	--tkj_cnt;
