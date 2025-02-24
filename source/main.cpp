@@ -22,6 +22,7 @@ C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
 NOTES_T Notes[NOTES_MAX];
 
+int ctoi(char c);
 char *get_buffer();
 void draw_text(float x, float y, const char *text, float r, float g, float b), tkjload();
 
@@ -49,9 +50,9 @@ int main() {
 	MeasureCount = Startcnt;
 	while (tkj_notes[MeasureCount][NotesCount] != ',') ++NotesCount;
 	for (int i = 0; i < NotesCount; ++i) {
-		if (atoi(tkj_notes[MeasureCount][i]) != 0) {
+		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 			Notes[i].flag = true;
-			Notes[i].num = atoi(tkj_notes[MeasureCount][i]) - 1;
+			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 			Notes[i].judge_time = 1 + (240 / BPM / NotesCount) * i;
 		}
 	}
@@ -197,6 +198,7 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 
 void tkjload() {
 
+	FILE *fp;
 	char* temp = NULL;
 	bool isEnd = false;
 
@@ -211,5 +213,23 @@ void tkjload() {
 			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) isEnd = true;
 		}
 		fclose(fp);
+	}
+}
+
+int ctoi(char c) {
+
+	switch (c) {
+	case '0': return 0;
+	case '1': return 1;
+	case '2': return 2;
+	case '3': return 3;
+	case '4': return 4;
+	case '5': return 5;
+	case '6': return 6;
+	case '7': return 7;
+	case '8': return 8;
+	case '9': return 9;
+	case 'A': return 10;
+	default: return 0;
 	}
 }
