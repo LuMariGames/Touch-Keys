@@ -13,7 +13,7 @@ const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
-NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0;
+NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0;
 double BPM = 120.0,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
@@ -111,20 +111,29 @@ int main() {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
+						Score += 1000;
 					}
 					else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
+						Score += 500;
 					}
 					else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
+						Score += 100;
 					}
 					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(40 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
+
+			//スコア表示
+			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,40,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d", Score);
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
+			
 			//下画面に描画（必要に応じて描画）
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
 			C3D_FrameDrawOn(bot);
@@ -167,9 +176,6 @@ int main() {
 				}
 			}
 			else judgeid = -1;
-
-			snprintf(get_buffer(), BUFFER_SIZE, "%.3f", Notes[7].judge_time);
-			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
 			break;
 		}
 
