@@ -293,6 +293,6 @@ void Reset() {
 	OffTime = 0;
 	NowTime = 0;
 	isExit = false;
-	isPlayMain = false;
+	isPlayMain = true;
 	stop_main_music();
 }
