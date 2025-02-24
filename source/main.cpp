@@ -13,7 +13,7 @@ const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
-NotesCount = 0,Startcnt = 0,MeasureCount = 0;
+NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0;
 double BPM = 120.0,OffTime = 0,NowTime = 0;
 bool isExit = false;
 
@@ -50,13 +50,15 @@ int main() {
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
-		for (int i = 0; i < NotesCount; ++i) {
+		MaxNotesCnt += NotesCount;
+		for (int i = 0; i < MaxNotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[i].flag = true;
 				Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 				Notes[i].judge_time = 1.0 + 240.0 / BPM * (double)i / (double)NotesCount;
 			}
 		}
+		MinNotesCount += MaxNotesCount;
 		++MeasureCount;
 	}
 
