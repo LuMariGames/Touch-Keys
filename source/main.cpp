@@ -25,7 +25,7 @@ NOTES_T Notes[NOTES_MAX];
 
 int ctoi(char c);
 char *get_buffer();
-void draw_text(float x, float y, const char *text, float r, float g, float b), tkjload();
+void draw_text(float x, float y, const char *text, float r, float g, float b), tkjload(), Reset();
 
 int main() {
 	// 初期化
