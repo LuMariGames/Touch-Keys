@@ -177,6 +177,8 @@ int main() {
 				}
 			}
 			else judgeid = -1;
+
+			if (timecnt == 60) play_main_music(&isPlayMain, SelectedSong);
 			break;
 		}
 
