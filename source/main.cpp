@@ -50,9 +50,9 @@ int main() {
 	MeasureCount = Startcnt;
 	while (tkj_notes[MeasureCount][NotesCount] != ',') ++NotesCount;
 	for (int i = 0; i < NotesCount; ++i) {
-		if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
+		if (tkj_notes[MeasureCount][i] != '0') {
 			Notes[i].flag = true;
-			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1 % 4;
+			Notes[i].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 			Notes[i].judge_time = 1.0 + 0.25 * i;
 		}
 	}
@@ -162,6 +162,9 @@ int main() {
 				}
 			}
 			else judgeid = -1;
+
+			snprintf(get_buffer(), BUFFER_SIZE, "%.1f", Notes[3].judge_time);
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
 			break;
 		}
 
