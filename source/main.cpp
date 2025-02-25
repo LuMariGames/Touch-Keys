@@ -53,7 +53,7 @@ int main() {
 		NotesCount = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
-			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
+			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[MaxNotesCnt].flag = true;
 				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
@@ -295,7 +295,8 @@ void tkjload() {
 
 int ctoi(char c) {
 
-	switch (c) { 
+	switch (c) {
+	case '0': return 0;
 	case '1': return 1;
 	case '2': return 2;
 	case '3': return 3;
@@ -335,7 +336,7 @@ void Reset() {
 		NotesCount = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
-			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
+			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[MaxNotesCnt].flag = true;
 				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
