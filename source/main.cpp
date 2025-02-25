@@ -10,7 +10,6 @@
 #include <string.h>
 
 // SDカードからテクスチャを読み込む
-const char* texturePath = "sdmc:/3ds/touch/image.t3x";
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
@@ -44,7 +43,6 @@ int main() {
 	C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
-	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
 
 	tkjload();
@@ -111,7 +109,7 @@ int main() {
 			//ノーツ判定
 			int NotesJudge[4] = { -1,-1,-1,-1 };
 			double NotesJudgeLag[4] = { 1,1,1,1 };
-			for (int i = 0; i = NOTES_MAX; ++i) {
+			for (int i = 0; i < NOTES_MAX; ++i) {
 
 				if (Notes[i].flag) {
 
@@ -130,7 +128,7 @@ int main() {
 				}
 			}
 			if (!isAuto) {
-				for (int i = 0; i = 4; ++i) {
+				for (int i = 0; i < 4; ++i) {
 					if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
