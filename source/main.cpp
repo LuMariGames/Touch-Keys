@@ -123,19 +123,19 @@ int main() {
 					}
 					else if (!isAuto) {
 						if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
-							Notes[NotesJudge[i]].flag = false;
+							Notes[i].flag = false;
 							judgetmpcnt = timecnt + 30;
 							judgeid = 0;
 							Score += 1000;
 						}
 						else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
-							Notes[NotesJudge[i]].flag = false;
+							Notes[i].flag = false;
 							judgetmpcnt = timecnt + 30;
 							judgeid = 1;
 							Score += 400;
 						}
 						else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
-							Notes[NotesJudge[i]].flag = false;
+							Notes[i].flag = false;
 							judgetmpcnt = timecnt + 30;
 							judgeid = 2;
 							Score += 240;
