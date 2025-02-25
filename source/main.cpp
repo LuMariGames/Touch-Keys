@@ -51,17 +51,15 @@ int main() {
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
-		MaxNotesCnt = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
-				Notes[MaxNotesCnt + MinNotesCnt].flag = true;
-				Notes[MaxNotesCnt + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[MaxNotesCnt + MinNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				Notes[MaxNotesCnt].flag = true;
+				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
+				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 				++MaxNotesCnt;
 			}
 		}
-		MinNotesCnt += MaxNotesCnt;
 		++MeasureCount;
 	}
 
@@ -72,9 +70,13 @@ int main() {
 		unsigned int key = hidKeysDown();
 		if (isExit == true) break;
 
-		if (key & KEY_START) isExit = true;
-		if (key & KEY_SELECT) Reset();
-		
+		//オプション関係
+		if (key & KEY_START) isExit = true;	//ソフトを閉じる
+		if (key & KEY_X) Reset();		//最初からやり直す
+		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
+		if (key & KEY_DUP && NotesSpeed < 800) NotesSpeed += 100;
+		if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 100;
+
 		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
@@ -331,18 +333,15 @@ void Reset() {
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
-		MaxNotesCnt = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
-				Notes[MaxNotesCnt + MinNotesCnt].flag = true;
-				Notes[MaxNotesCnt + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[MaxNotesCnt + MinNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				Notes[MaxNotesCnt].flag = true;
+				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
+				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 				++MaxNotesCnt;
 			}
 		}
-		MinNotesCnt += MaxNotesCnt;
 		++MeasureCount;
 	}
-	isAuto = !isAuto;
 }
