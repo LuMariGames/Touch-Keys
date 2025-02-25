@@ -13,7 +13,8 @@
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
-NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0;
+NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,
+touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false;
 
@@ -92,12 +93,15 @@ int main() {
 			++timecnt;
 			NowTime = osGetTime() * 0.001 - OffTime;
 
+			touchid = -1;
+
+			PreTouch_x = touch_x, PreTouch_y = touch_y;
+			touch_x = tp.px, touch_y = tp.py;
+
 			//タッチ関係
-			if (tp.px != 0 && tp.py != 0 && touchid == -1) {
-				touchid = (int)tp.px / 80;
-				play_sound(0);
-			}
-			else if (tp.px == 0 && tp.py == 0 && touchid != -1) touchid = -1;
+			if (touch_x != 0 && touch_y != 0) touchid = (int)tp.px / 80;
+			if (PreTouch_x != 0 && PreTouch_y != 0) touchid = -1;
+			if (touchid != -1) play_sound(0);
 
 			//レーン描画
 			C2D_DrawRectSolid(39,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
