@@ -58,8 +58,8 @@ int main() {
 		if (key & KEY_START) isExit = true;	//ソフトを閉じる
 		if (key & KEY_X) Reset();		//最初からやり直す
 		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
-		if (key & KEY_DUP && NotesSpeed < 400) NotesSpeed += 100;
-		if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 100;
+		if (key & KEY_DUP && NotesSpeed < 400) NotesSpeed += 10;
+		if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;
 
 		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
