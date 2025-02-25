@@ -58,7 +58,7 @@ int main() {
 		if (key & KEY_START) isExit = true;	//ソフトを閉じる
 		if (key & KEY_X) Reset();		//最初からやり直す
 		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
-		if (key & KEY_DUP && NotesSpeed < 800) NotesSpeed += 100;
+		if (key & KEY_DUP && NotesSpeed < 400) NotesSpeed += 100;
 		if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 100;
 
 		//描画開始
@@ -300,7 +300,7 @@ int ctoi(char c) {
 }
 
 void Reset() {
-	scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0;
+	scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0;
 	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 	isExit = false,isPlayMain = true;
 	stop_main_music();
