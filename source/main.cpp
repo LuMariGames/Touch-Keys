@@ -109,8 +109,6 @@ int main() {
 			C2D_DrawRectSolid(359,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//ノーツ判定
-			int NotesJudge[4] = { -1,-1,-1,-1 };
-			double NotesJudgeLag[4] = { 1,1,1,1 };
 			for (int i = 0; i = NOTES_MAX; ++i) {
 
 				if (Notes[i].flag) {
@@ -123,31 +121,25 @@ int main() {
 						Score += 100;
 						play_sound(0);
 					}
-					if (NotesJudgeLag[Notes[i].num] > fabs(Notes[i].judge_time - NowTime)) {
-						NotesJudge[Notes[i].num] = i;
-						NotesJudgeLag[Notes[i].num] = fabs(Notes[i].judge_time - NowTime);
-					}
-				}
-			}
-			if (!isAuto) {
-				for (int i = 0; i = 4; ++i) {
-					if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
-						Notes[NotesJudge[i]].flag = false;
-						judgetmpcnt = timecnt + 30;
-						judgeid = 0;
-						Score += 1000;
-					}
-					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
-						Notes[NotesJudge[i]].flag = false;
-						judgetmpcnt = timecnt + 30;
-						judgeid = 1;
-						Score += 400;
-					}
-					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
-						Notes[NotesJudge[i]].flag = false;
-						judgetmpcnt = timecnt + 30;
-						judgeid = 2;
-						Score += 240;
+					else if (!isAuto) {
+						if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
+							Notes[NotesJudge[i]].flag = false;
+							judgetmpcnt = timecnt + 30;
+							judgeid = 0;
+							Score += 1000;
+						}
+						else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
+							Notes[NotesJudge[i]].flag = false;
+							judgetmpcnt = timecnt + 30;
+							judgeid = 1;
+							Score += 400;
+						}
+						else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
+							Notes[NotesJudge[i]].flag = false;
+							judgetmpcnt = timecnt + 30;
+							judgeid = 2;
+							Score += 240;
+						}
 					}
 				}
 			}
