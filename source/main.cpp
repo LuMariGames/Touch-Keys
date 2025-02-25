@@ -54,10 +54,12 @@ int main() {
 		MaxNotesCnt = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
-			Notes[i + MinNotesCnt].flag = (ctoi(tkj_notes[MeasureCount][i]) != -1) ? true : false;
-			Notes[i + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-			Notes[i + MinNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
-			if (Notes[i + MinNotesCnt].flag) ++MaxNotesCnt;
+			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
+				Notes[MaxNotesCnt + MinNotesCnt].flag = true;
+				Notes[MaxNotesCnt + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
+				Notes[MaxNotesCnt + MinNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				++MaxNotesCnt;
+			}
 		}
 		MinNotesCnt += MaxNotesCnt;
 		++MeasureCount;
@@ -119,27 +121,27 @@ int main() {
 						Score += 100;
 						play_sound(0);
 					}
-					if (NotesJudgeLag[Notes[i].num] > Notes[i].judge_time - NowTime) {
+					if (NotesJudgeLag[Notes[i].num] > fabs(Notes[i].judge_time - NowTime)) {
 						NotesJudge[Notes[i].num] = i;
-						NotesJudgeLag[Notes[i].num] = Notes[i].judge_time - NowTime;
+						NotesJudgeLag[Notes[i].num] = fabs(Notes[i].judge_time - NowTime);
 					}
 				}
 			}
 			if (!isAuto) {
 				for (int i = 0; i = 4; ++i) {
-					if (fabs(NotesJudgeLag[i]) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
+					if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
 						Score += 1000;
 					}
-					else if (fabs(NotesJudgeLag[i]) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
+					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
 						Score += 400;
 					}
-					else if (fabs(NotesJudgeLag[i]) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
+					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
@@ -333,9 +335,9 @@ void Reset() {
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
 			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
-				Notes[i + MinNotesCnt].flag = true;
-				Notes[i + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[i + MinNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				Notes[MaxNotesCnt + MinNotesCnt].flag = true;
+				Notes[MaxNotesCnt + MinNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
+				Notes[MaxNotesCnt + MinNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 				++MaxNotesCnt;
 			}
 		}
