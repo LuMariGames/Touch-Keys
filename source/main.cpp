@@ -13,7 +13,7 @@
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
-NotesCount = 0,MinNotesCnt = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,
+NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,
 touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false;
@@ -113,7 +113,7 @@ int main() {
 			//ノーツ判定
 			int NotesJudge[4] = { -1,-1,-1,-1 };
 			double NotesJudgeLag[4] = { 1,1,1,1 };
-			for (int i = 0; i < NOTES_MAX; ++i) {
+			for (int i = 0; i < MaxNotesCnt; ++i) {
 
 				if (Notes[i].flag) {
 
@@ -155,7 +155,7 @@ int main() {
 			}
 
 			//ノーツ描画
-			for (int i = 0; i < NOTES_MAX; ++i) {
+			for (int i = 0; i < MaxNotesCnt; ++i) {
 
 				if (Notes[i].flag) {
 
@@ -183,7 +183,7 @@ int main() {
 			C2D_DrawRectSolid(319,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//ノーツ描画
-			for (int i = 0; i < NOTES_MAX; ++i) {
+			for (int i = 0; i < MaxNotesCnt; ++i) {
 
 				if (Notes[i].flag && Notes[i].y > -5.0f) {
 
@@ -199,22 +199,22 @@ int main() {
 			if (timecnt < judgetmpcnt) {
 				if (judgeid == 0) {
 					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
-					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 1,1,0);
+					draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
 				}
 				else if (judgeid == 1) {
 					snprintf(get_buffer(), BUFFER_SIZE, "GOOD");
-					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 1,0,0);
+					draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,0,0);
 				}
 				else if (judgeid == 2) {
 					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
-					draw_text(BOTTOM_WIDTH / 2, 170, get_buffer(), 0,0,1);
+					draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,0,1);
 				}
 			}
 			else judgeid = -1;
 
 			//デバッグ用テキスト
-			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MinNotesCnt);
-			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
+			snprintf(get_buffer(), BUFFER_SIZE, "%d", MinNotesCnt);
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);
 
 			//曲再生
 			if (timecnt == 60) {
@@ -320,7 +320,6 @@ void Reset() {
 	judgeid = -1;
 	tkj_cnt = 0;
 	NotesCount = 0;
-	MinNotesCnt = 0;
 	MaxNotesCnt = 0;
 	Startcnt = 0;
 	MeasureCount = 0;
