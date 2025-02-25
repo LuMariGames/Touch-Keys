@@ -46,22 +46,7 @@ int main() {
 
 	//spriteSheet = C2D_SpriteSheetLoad(texturePath);
 	load_sound();
-
-	tkjload();
-	MeasureCount = Startcnt;
-	while (MeasureCount < tkj_cnt) {
-		NotesCount = 0;
-		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
-		for (int i = 0; i < NotesCount; ++i) {
-			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
-				Notes[MaxNotesCnt].flag = true;
-				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
-				++MaxNotesCnt;
-			}
-		}
-		++MeasureCount;
-	}
+	Reset();
 
 	while (aptMainLoop()) {
 
@@ -203,7 +188,7 @@ int main() {
 			else judgeid = -1;
 
 			//デバッグ用テキスト
-			snprintf(get_buffer(), BUFFER_SIZE, "%d", MinNotesCnt);
+			snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);
 
 			//曲再生
@@ -324,6 +309,7 @@ void Reset() {
 	stop_main_music();
 	tkjload();
 	MeasureCount = Startcnt;
+	MaxNotesCnt = 0;
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
