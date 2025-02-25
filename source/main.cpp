@@ -104,13 +104,14 @@ int main() {
 			C2D_DrawRectSolid(279.25,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(359,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
-			//ノーツ描画
-			for (int i = 0; i < NOTES_MAX; ++i) {
-
-				Notes[i].y = JUDGE_Y - (Notes[i].judge_time - NowTime) * NotesSpeed;
+			//ノーツ判定
+			int NotesJudge[4] = { -1,-1,-1,-1 };
+			double NotesJudgeLag[4] = { 1,1,1,1 };
+			for (int i = 0; i = NOTES_MAX; ++i) {
 
 				if (Notes[i].flag) {
 
+					//オート時の判定
 					if (isAuto && Notes[i].judge_time < NowTime) {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
@@ -118,25 +119,43 @@ int main() {
 						Score += 100;
 						play_sound(0);
 					}
-					if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[i].num) {
-						Notes[i].flag = false;
+					if (NotesJudgeLag[Notes[i].num] > Notes[i].judge_time - NowTime) {
+						NotesJudge[Notes[i].num] = i;
+						NotesJudgeLag[Notes[i].num] = Notes[i].judge_time - NowTime;
+					}
+				}
+			}
+			if (!isAuto) {
+				for (int i = 0; i = 4; ++i) {
+					if (fabs(NotesJudgeLag[i]) < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
+						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
 						Score += 1000;
 					}
-					else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[i].num) {
-						Notes[i].flag = false;
+					else if (fabs(NotesJudgeLag[i]) < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
+						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
 						Score += 400;
 					}
-					else if (fabs(Notes[i].judge_time - NowTime) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[i].num) {
-						Notes[i].flag = false;
+					else if (fabs(NotesJudgeLag[i]) < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
+						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
 						Score += 240;
 					}
-					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(40 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+				}
+			}
+
+			//ノーツ描画
+			for (int i = 0; i < NOTES_MAX; ++i) {
+
+				if (Notes[i].flag) {
+
+					//位置計算
+					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed;
+					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(39 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
 
@@ -145,7 +164,7 @@ int main() {
 			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d", Score);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
-			//下画面に描画（必要に応じて描画）
+			//下画面に移動
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
 			C3D_FrameDrawOn(bot);
 			C2D_SceneTarget(bot);
@@ -187,8 +206,11 @@ int main() {
 			}
 			else judgeid = -1;
 
+			//デバッグ用テキスト
 			snprintf(get_buffer(), BUFFER_SIZE, "%d", MinNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);
+
+			//曲再生
 			if (timecnt == 60) {
 				isPlayMain = true;
 				play_main_music(&isPlayMain);
