@@ -13,7 +13,7 @@
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
-NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,
+NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,
 touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false;
@@ -45,22 +45,7 @@ int main() {
 	C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
 	load_sound();
-
-	tkjload();
-	MeasureCount = Startcnt;
-	while (MeasureCount < tkj_cnt) {
-		NotesCount = 0;
-		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
-		for (int i = 0; i < NotesCount; ++i) {
-			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
-				Notes[MaxNotesCnt].flag = true;
-				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
-				++MaxNotesCnt;
-			}
-		}
-		++MeasureCount;
-	}
+	Reset();
 
 	while (aptMainLoop()) {
 
@@ -86,7 +71,7 @@ int main() {
 
 		switch (scene) {
 
-		case 0:	//テスト用画面
+			case 0:	//演奏画面
 
 			//差を使って時間を測る
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
@@ -138,18 +123,21 @@ int main() {
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
 						Score += 1000;
+						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
 						Score += 400;
+						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
 						Score += 240;
+						Combo = 0;
 					}
 				}
 			}
@@ -167,7 +155,7 @@ int main() {
 
 			//スコア表示
 			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,16,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d", Score);
+			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d COMBO:%.6d", Score, Combo);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
 			//下画面に移動
@@ -312,24 +300,9 @@ int ctoi(char c) {
 }
 
 void Reset() {
-	scene = 0;
-	timecnt = 0;
-	judgetmpcnt = 0;
-	NotesSpeed = 200;
-	touchid = -1;
-	judgeid = -1;
-	tkj_cnt = 0;
-	NotesCount = 0;
-	MaxNotesCnt = 0;
-	Startcnt = 0;
-	MeasureCount = 0;
-	Score = 0;
-	BPM = 120.0;
-	OFFSET = 0;
-	OffTime = 0;
-	NowTime = 0;
-	isExit = false;
-	isPlayMain = true;
+	scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0;
+	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
+	isExit = false,isPlayMain = true;
 	stop_main_music();
 	tkjload();
 	MeasureCount = Startcnt;
