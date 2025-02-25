@@ -213,8 +213,8 @@ int main() {
 			else judgeid = -1;
 
 			//デバッグ用テキスト
-			snprintf(get_buffer(), BUFFER_SIZE, "%d", MinNotesCnt);
-			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);
+			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
 			//曲再生
 			if (timecnt == 60) {
