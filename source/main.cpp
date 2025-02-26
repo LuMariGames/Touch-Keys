@@ -278,7 +278,7 @@ void tkjload() {
 				++tkj_cnt;
 				continue;
 			}
-			if (strstr(tja_notes[tkj_cnt], "COURSE:") == tja_notes[tkj_cnt]) {
+			if (strstr(tkj_notes[tkj_cnt], "COURSE:") == tkj_notes[tkj_cnt]) {
 				temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
 				strlcpy(temp, tkj_notes[tkj_cnt] + 7, strlen(tkj_notes[tkj_cnt]) - 8);
 				if (strlen(temp) == 1) CurrentCourse = atoi(temp);		//数字表記
@@ -291,7 +291,7 @@ void tkjload() {
 				++tkj_cnt;
 				continue;
 			}
-			if (isCourseMatch == true && strstr(tkj_notes[tkj_cnt], "#START" == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
+			if (isCourseMatch == true && strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			if (isCourseMatch == true && strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) break;
 			++tkj_cnt;
 		}
