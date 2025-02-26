@@ -61,17 +61,13 @@ int main() {
 		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
 		if (key & KEY_L) {	//難易度を下げる。その難易度が無かったら戻す
 			--course;
-			if (tkjload() == false) {
-				++course;
-				Reset();
-			}
+			if (tkjload() == false) ++course;
+			Reset();
 		}
 		if (key & KEY_R) {	//難易度を上げる。その難易度が無かったら戻す
 			++course;
-			if (tkjload() == false) {
-				--course;
-				Reset();
-			}
+			if (tkjload() == false) --course;
+			Reset();
 		}
 		if (key & KEY_DUP && NotesSpeed < 400) NotesSpeed += 10;
 		if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;
