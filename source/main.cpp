@@ -62,14 +62,14 @@ int main() {
 			--course;
 			if (tkjload() == false) {
 				++course;
-				tkjload();
+				Reset();
 			}
 		}
 		if (key & KEY_R) {
 			++course;
 			if (tkjload() == false) {
 				--course;
-				tkjload();
+				Reset();
 			}
 		}
 		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
