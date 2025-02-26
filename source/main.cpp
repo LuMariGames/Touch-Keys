@@ -332,7 +332,7 @@ int ctoi(char c) {
 }
 
 void Reset() {
-	scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0;
+	scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
 	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 	isExit = false,isPlayMain = true;
 	stop_main_music();
