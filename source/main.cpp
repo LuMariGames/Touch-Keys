@@ -60,11 +60,17 @@ int main() {
 		if (key & KEY_X) Reset();		//最初からやり直す
 		if (key & KEY_L) {
 			--course;
-			if (tkjload() == false) ++course;
+			if (tkjload() == false) {
+				++course;
+				tkjload();
+			}
 		}
 		if (key & KEY_R) {
 			++course;
-			if (tkjload() == false) --course;
+			if (tkjload() == false) {
+				--course;
+				tkjload();
+			}
 		}
 		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
 		if (key & KEY_DUP && NotesSpeed < 400) NotesSpeed += 10;
