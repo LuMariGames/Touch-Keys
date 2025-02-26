@@ -12,21 +12,24 @@
 // SDカードからテクスチャを読み込む
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
-int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
+int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
 NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
+SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,SelectedGenreId = 0,
 touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
-bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false;
+bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,isSelectCourse = false,isGameStart = false;
 
 //static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
 NOTES_T Notes[NOTES_MAX];
+LIST_T List[LIST_MAX];
 
 int ctoi(char c);
 char *get_buffer();
 bool tkjload();
-void draw_text(float x, float y, const char *text, float r, float g, float b), Reset();
+void draw_text(float x, float y, const char *text, float r, float g, float b);
+void load_file_list(const char* path),Reset();
 
 int main() {
 	// 初期化
@@ -264,8 +267,8 @@ bool tkjload() {
 	char* temp = NULL;
 	isCourseMatch = false;
 
-	chdir("sdmc:/tkjfiles/");
-	if ((fp = fopen("test.tkj", "r")) != NULL) {
+	chdir(DEFAULT_DIR);
+	if ((fp = fopen("chart.tkj", "r")) != NULL) {
 
 		tkj_cnt = 0;
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX)) {
@@ -328,7 +331,7 @@ int ctoi(char c) {
 	}
 }
 
-void Reset() {
+inline void Reset() {
 	scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
 	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 	isExit = false,isPlayMain = true;
@@ -348,4 +351,112 @@ void Reset() {
 		}
 		++MeasureCount;
 	}
+}
+
+void load_file_main(void *arg) {
+
+	chdir(DEFAULT_DIR);
+	load_file_list(DEFAULT_DIR);
+	SongNumber = SongCount;
+}
+
+inline void load_file_list(const char* path) {
+
+	DIR* dir;
+	struct dirent* dp;
+
+	if ((dir = opendir(path)) != NULL) {
+
+		DIR* db;
+		char filename[512];
+		while ((dp = readdir(dir)) != NULL) {
+
+			chdir(path);
+
+			strlcpy(filename, path, strlen(path));
+			strcat(filename, "/");
+			strcat(filename, dp->d_name);
+
+			db = opendir(filename);
+
+			struct stat st;
+			stat(dp->d_name, &st);
+
+			if ((st.st_mode & S_IFMT) != S_IFDIR) {
+
+				if (db == NULL) {
+
+					if (strstr(dp->d_name, ".tkj") != NULL) {
+
+						strlcpy(List[SongCount].tkj, dp->d_name, strlen(dp->d_name) + 1);
+						getcwd(List[SongCount].path, 256);
+						load_tkj_head_simple(&List[SongCount]);
+						++SongCount;
+					}
+				}
+			}
+			else {
+				load_file_list(dp->d_name);
+				chdir("../");
+			}
+			closedir(db);
+		}
+	}
+	closedir(dir);
+}
+
+void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
+
+
+	snprintf(List->title, sizeof(List->title), "No Title");
+	snprintf(List->wave, sizeof(List->wave), "audio.ogg");
+	for (int i = 0; i < 4; ++i) {
+		List->level[i] = 0;
+		List->course[i] = false;
+	}
+	FILE *fp;
+	char buf[128],*temp = NULL;
+	int course = COURSE_CRAZY,cnt = 0;
+
+	chdir(List->path);
+	if ((fp = fopen(List->tkj, "r")) != NULL) {
+
+		while (fgets(buf, 128, fp) != NULL) {
+
+			temp = (char *)malloc((strlen(buf) + 1));
+
+			if (strstr(buf, "TITLE:") == buf) {
+				if (buf[6] != '\n' && buf[6] != '\r') {
+					strlcpy(List->title, buf + 6, strlen(buf) - 7);
+				}
+				continue;
+			}
+			if (strstr(buf, "COURSE:") == buf) {
+				if (buf[7] != '\n' && buf[7] != '\r') {
+					strlcpy(temp, buf + 7, strlen(buf) - 8);
+					if (strlen(temp) == 1) course = atoi(temp);			//数字表記
+					else if (strcmp(temp, "Easy") == 0 || strcmp(temp, "easy") == 0)   course = COURSE_EASY;	//文字表記
+					else if (strcmp(temp, "Normal") == 0 || strcmp(temp, "normal") == 0) course = COURSE_NORMAL;
+					else if (strcmp(temp, "Hard") == 0 || strcmp(temp, "hard") == 0)   course = COURSE_HARD;
+					else if (strcmp(temp, "Crazy") == 0 || strcmp(temp, "crazy") == 0)    course = COURSE_CRAZY;
+
+					List->course[course] = true;
+					List->course_exist[course] = true;
+				}
+
+				continue;
+			}
+			if (strstr(buf, "LEVEL:") == buf) {
+				if (buf[6] != '\n' && buf[6] != '\r') {
+					strlcpy(temp, buf + 6, strlen(buf) - 7);
+					List->level[course] = atoi(temp);
+					List->course[course] = true;
+				}
+				continue;
+			}
+			++cnt;
+		}
+	}
+	free(temp);
+	fclose(fp);
 }
