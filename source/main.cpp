@@ -25,7 +25,8 @@ NOTES_T Notes[NOTES_MAX];
 
 int ctoi(char c);
 char *get_buffer();
-void draw_text(float x, float y, const char *text, float r, float g, float b), tkjload(), Reset();
+bool tkjload();
+void draw_text(float x, float y, const char *text, float r, float g, float b), Reset();
 
 int main() {
 	// 初期化
@@ -57,6 +58,14 @@ int main() {
 		//オプション関係
 		if (key & KEY_START) isExit = true;	//ソフトを閉じる
 		if (key & KEY_X) Reset();		//最初からやり直す
+		if (key & KEY_L) {
+			--course;
+			if (tkjload() == false) ++course;
+		}
+		if (key & KEY_R) {
+			++course;
+			if (tkjload() == false) --course;
+		}
 		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
 		if (key & KEY_DUP && NotesSpeed < 400) NotesSpeed += 10;
 		if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;
@@ -247,7 +256,7 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
 }
 
-void tkjload() {
+bool tkjload() {
 
 	FILE *fp;
 	char* temp = NULL;
@@ -297,6 +306,7 @@ void tkjload() {
 		}
 		fclose(fp);
 	}
+	return isCourseMatch;
 }
 
 int ctoi(char c) {
