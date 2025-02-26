@@ -13,10 +13,10 @@
 char buffer[BUFFER_SIZE];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,
-NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,
+NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
 touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
-bool isExit = false,isPlayMain = false,isAuto = false;
+bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false;
 
 //static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
@@ -278,8 +278,21 @@ void tkjload() {
 				++tkj_cnt;
 				continue;
 			}
-			if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
-			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) break;
+			if (strstr(tja_notes[tja_cnt], "COURSE:") == tja_notes[tja_cnt]) {
+				temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+				strlcpy(temp, tkj_notes[tkj_cnt] + 7, strlen(tkj_notes[tkj_cnt]) - 8);
+				if (strlen(temp) == 1) CurrentCourse = atoi(temp);		//数字表記
+				else if (strcmp(temp, "Easy") ==   0 || strcmp(temp, "easy") == 0)   CurrentCourse = COURSE_EASY;	//文字表記
+				else if (strcmp(temp, "Normal") == 0 || strcmp(temp, "normal") == 0) CurrentCourse = COURSE_NORMAL;
+				else if (strcmp(temp, "Hard") ==   0 || strcmp(temp, "hard") == 0)   CurrentCourse = COURSE_HARD;
+				else if (strcmp(temp, "Crazy") ==  0 || strcmp(temp, "crazy") == 0)  CurrentCourse = COURSE_CRAZY;
+				free(temp);
+				if (course == CurrentCourse) isCourseMatch = true;
+				++tkj_cnt;
+				continue;
+			}
+			if (strstr(tkj_notes[tkj_cnt], "#START" == tkj_notes[tkj_cnt] && isCourseMatch) Startcnt = tkj_cnt + 1;
+			if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt] && isCourseMatch) break;
 			++tkj_cnt;
 		}
 		fclose(fp);
