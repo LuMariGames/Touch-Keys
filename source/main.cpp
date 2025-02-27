@@ -271,7 +271,7 @@ int main() {
 			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
-			if ((checknotes() && ndspChnIsPlaying(CHANNEL) == false) || (key & KEY_START && ndspChnIsPlaying(CHANNEL) == false) {
+			if ((key & KEY_START || checknotes()) && ndspChnIsPlaying(CHANNEL) == false) {
 				scene = 1;		//選曲画面に戻る
 				isGameStart = false;
 				stop_main_music();
