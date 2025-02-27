@@ -2,10 +2,10 @@
 #include <climits>
 
 typedef struct {
-	int num = -1, knd, long_id;
-	double judge_time = INT_MAX, bpm, scroll;
+	int num = -1,knd,long_id;
+	double judge_time = INT_MAX;
 	bool flag = false;
-	float y;
+	float y,bpm,scroll = 1.0f;
 
 } NOTES_T;
 
