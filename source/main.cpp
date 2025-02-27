@@ -31,7 +31,7 @@ int ctoi(char c);
 char *get_buffer();
 bool tkjload();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
-void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
+void load_file_list(const char* path),Reset(),load_tkj_head_simple();
 void draw_select_text(float x, float y, const char *text),select_ini(),load_file_main(),disp_file_list();
 
 int main() {
@@ -432,7 +432,7 @@ inline void load_file_list(const char* path) {
 
 						strlcpy(List[SongCount].tkj, dp->d_name, strlen(dp->d_name) + 1);
 						getcwd(List[SongCount].path, 256);
-						load_tkj_head_simple(&List[SongCount]);
+						load_tkj_head_simple();
 						++SongCount;
 					}
 				}
@@ -447,20 +447,20 @@ inline void load_file_list(const char* path) {
 	closedir(dir);
 }
 
-inline void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
+inline void load_tkj_head_simple() {		//選曲用のヘッダ取得
 
-	snprintf(List->title, sizeof(List->title), "No Title");
-	snprintf(List->wave, sizeof(List->wave), "audio.ogg");
+	snprintf(List[SongCount].title, sizeof(List[SongCount].title), "No Title");
+	snprintf(List[SongCount].wave, sizeof(List[SongCount].wave), "audio.ogg");
 	for (int i = 0; i < 4; ++i) {
-		List->level[i] = 0;
-		List->course[i] = false;
+		List[SongCount].level[i] = 0;
+		List[SongCount].course[i] = false;
 	}
 	FILE *fp;
 	char buf[128],*temp = NULL;
 	int course = COURSE_CRAZY,cnt = 0;
 
-	chdir(List->path);
-	if ((fp = fopen(List->tkj, "r")) != NULL) {
+	chdir(List[SongCount].path);
+	if ((fp = fopen(List[SongCount].tkj, "r")) != NULL) {
 
 		while (fgets(buf, 128, fp) != NULL) {
 
