@@ -397,7 +397,7 @@ inline void Reset() {
 	}
 }
 
-inline void load_file_main(void *arg) {
+void load_file_main(void *arg) {
 
 	chdir(DEFAULT_DIR);
 	load_file_list(DEFAULT_DIR);
