@@ -29,7 +29,7 @@ int ctoi(char c);
 char *get_buffer();
 bool tkjload();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
-void load_file_list(const char* path),Reset();
+void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
 
 int main() {
 	// 初期化
