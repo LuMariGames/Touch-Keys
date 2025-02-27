@@ -607,7 +607,7 @@ inline void select_ini() {
 
 inline bool checknotes() {
 	for (int i = 0; i < MaxNotesCnt; ++i) {
-		if (!Notes[i].flag) return false;
+		if (Notes[i].flag) return false;
 	}
 	return true;
 }
