@@ -17,5 +17,5 @@ typedef struct {
 } LIST_T;
 
 char *get_buffer();
-void draw_text(float x, float y, const char *text, float r, float g, float b),get_SelectedId(LIST_T *TMP,int *arg);
+void draw_text(float x, float y, const char *text, float r, float g, float b);
 #define BUFFER_SIZE 144
