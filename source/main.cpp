@@ -32,7 +32,7 @@ char *get_buffer();
 bool tkjload();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
 void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
-void draw_select_text(float x, float y, const char *text),select_ini();
+void draw_select_text(float x, float y, const char *text),select_ini(),load_file_main(),disp_file_list();
 
 int main() {
 	// 初期化
@@ -400,7 +400,7 @@ inline void Reset() {
 	}
 }
 
-void load_file_main(void *arg) {
+inline void load_file_main(void *arg) {
 
 	chdir(DEFAULT_DIR);
 	load_file_list(DEFAULT_DIR);
@@ -452,7 +452,7 @@ inline void load_file_list(const char* path) {
 	closedir(dir);
 }
 
-void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
+inline void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 
 
 	snprintf(List->title, sizeof(List->title), "No Title");
@@ -508,7 +508,7 @@ void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 	fclose(fp);
 }
 
-void disp_file_list() {
+inline void disp_file_list() {
 
 	int n = 0;
 	course_count = 0;
