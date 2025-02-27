@@ -225,9 +225,9 @@ inline int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo, 
 	return 0;
 }
 
-void play_main_music(bool *p_isPlayMain) {
+void play_main_music(bool *p_isPlayMain,LIST_T Song) {
 
-	chdir(DEFAULT_DIR);
+	chdir(List[SelectedId].path);
 	changeFile("audio.ogg", &playbackInfo, p_isPlayMain);
 }
 
