@@ -170,8 +170,8 @@ int main() {
 					if (isAuto && Notes[i].judge_time < NowTime) {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
-						judgeid = 0;
-						Score += 100;
+						judgeid = 3;
+						++Combo;
 						play_sound(0);
 					}
 					if (NotesJudgeLag[Notes[i].num] > fabs(Notes[i].judge_time - NowTime)) {
@@ -228,13 +228,7 @@ int main() {
 			C2D_SceneTarget(bot);
 
 			//タップエフェクト
-			if (timecnt < judgetmpcnt) {
-				C2D_DrawRectangle(0,0,0,80,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-				C2D_DrawRectangle(79.75,0,0,80,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-				C2D_DrawRectangle(159.5,0,0,80,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-				C2D_DrawRectangle(239.25,0,0,80,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-				C2D_DrawRectangle(319,0,0,80,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			}
+			if (timecnt < judgetmpcnt) C2D_DrawRectangle(0 + (79.75 * touchid),0,0,79.75,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//レーン描画
 			C2D_DrawRectSolid(0,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
@@ -261,17 +255,23 @@ int main() {
 
 			//判定文字
 			if (timecnt < judgetmpcnt) {
-				if (judgeid == 0) {
+				switch (judgeid) {
+				case 0:
 					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
 					draw_text(BOTTOM_WIDTH / 2, 160, get_buffer(), 1,1,0);
-				}
-				else if (judgeid == 1) {
+					break;
+				case 1:
 					snprintf(get_buffer(), BUFFER_SIZE, "GOOD");
 					draw_text(BOTTOM_WIDTH / 2, 160, get_buffer(), 1,0,0);
-				}
-				else if (judgeid == 2) {
+					break;
+				case 2:
 					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
 					draw_text(BOTTOM_WIDTH / 2, 160, get_buffer(), 0,0,1);
+					break;
+				case 3:
+					snprintf(get_buffer(), BUFFER_SIZE, "AUTO");
+					draw_text(BOTTOM_WIDTH / 2, 160, get_buffer(), 1,1,0);
+					break;
 				}
 			}
 			else judgeid = -1;
