@@ -460,3 +460,121 @@ void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 	free(temp);
 	fclose(fp);
 }
+
+void disp_file_list() {
+
+	int n = 0;
+	course_count = 0;
+
+	if (cursor > 0) cursor = -1*(SongNumber - 1);
+	if (cursor < -1 * (SongNumber - 1)) cursor = 0;
+
+	for (int i = 0; i < SongNumber; i++) {
+
+		if ((n + cursor) * 20 + 60 >= 0 && (n + cursor) * 20 + 60 <= 220) {
+
+			draw_select_text(30, (n + cursor) * 20 + 60, List[i].title);
+
+			if (i != (cursor*-1)) {
+				snprintf(buf_select, sizeof(buf_select), "★x%d", List[i].level[COURSE_CRAZY]);
+				draw_select_text(360, (n + cursor) * 20 + 60, buf_select);
+			}
+		}
+
+		n++;
+
+		if (i == (cursor*-1)) {
+
+			SelectedId = i;
+
+			if (List[i].course[COURSE_CRAZY] == true) {
+
+				if ((n + cursor - 1) == course_cursor) course = COURSE_CRAZY;
+				draw_select_text(80, (n + cursor) * 20 + 60, "CRAZY");
+				snprintf(buf_select, sizeof(buf_select), "★x%d", List[i].level[COURSE_CRAZY]);
+				draw_select_text(160, (n + cursor) * 20 + 60, buf_select);
+				n++;
+				course_count++;
+			}
+
+			if (List[i].course[COURSE_HARD] == true) {
+
+				if ((n + cursor - 1) == course_cursor) course = COURSE_HARD;
+				draw_select_text(80, (n + cursor) * 20 + 60, "HARD");
+				snprintf(buf_select, sizeof(buf_select), "★x%d", List[i].level[COURSE_HARD]);
+				draw_select_text(160, (n + cursor) * 20 + 60, buf_select);
+				n++;
+				course_count++;
+			}
+
+			if (List[i].course[COURSE_NORMAL] == true) {
+
+				if ((n + cursor - 1) == course_cursor) course = COURSE_NORMAL;
+				draw_select_text(80, (n + cursor) * 20 + 60, "NORMAL");
+				snprintf(buf_select, sizeof(buf_select), "★x%d", List[i].level[COURSE_NORMAL]);
+				draw_select_text(160, (n + cursor) * 20 + 60, buf_select);
+				n++;
+				course_count++;
+			}
+
+			if (List[i].course[COURSE_EASY] == true) {
+
+				if ((n + cursor - 1) == course_cursor) course = COURSE_EASY;
+				draw_select_text(80, (n + cursor) * 20 + 60, "EASY");
+				snprintf(buf_select, sizeof(buf_select), "★x%d", List[i].level[COURSE_EASY]);
+				draw_select_text(160, (n + cursor) * 20 + 60, buf_select);
+				n++;
+				course_count++;
+			}
+
+			if (isSelectCourse == true) {
+
+				draw_select_text(60, (course_cursor+1) * 20 + 60, ">>");
+				//snprintf(buf_select, sizeof(buf_select), "%d",course_cursor);
+				//draw_select_text(60, (course_cursor + 1) * 20 + 60, buf_select);
+			}
+		}
+	}
+	draw_select_text(10, 60, ">>");
+	//snprintf(buf_select, sizeof(buf_select), "%d",course);
+	//draw_select_text(0, 60, buf_select);
+}
+
+C2D_TextBuf g_SelectText = C2D_TextBufNew(4096);
+C2D_Text SelectText;
+
+void draw_select_text(float x, float y, const char *text) {
+
+	C2D_TextBufClear(g_SelectText);
+	C2D_TextParse(&SelectText, g_SelectText, text);
+	C2D_TextOptimize(&SelectText);
+	C2D_DrawText(&SelectText, C2D_WithColor, x, y, 1.0f, 0.5f, 0.5f, C2D_Color32f(1.0f, 1.0f, 1.0f, 1.0f));
+}
+
+void get_SelectedId(LIST_T *TMP,int *arg) {
+
+	for (int i = 0; i < 4; i++) {
+		TMP->course[i] = List[SelectedId].course[i];
+		TMP->course_exist[i] = List[SelectedId].course_exist[i];
+		TMP->level[i] = List[SelectedId].level[i];
+	}
+	strlcpy(TMP->tkj, List[SelectedId].tkj, strlen(List[SelectedId].tkj) + 1);
+	strlcpy(TMP->path, List[SelectedId].path, strlen(List[SelectedId].path) + 1);
+	strlcpy(TMP->title, List[SelectedId].title, strlen(List[SelectedId].title) + 1);
+	strlcpy(TMP->wave, List[SelectedId].wave, strlen(List[SelectedId].wave) + 1);
+	*arg = course;
+}
+
+bool get_isGameStart() {
+	return isGameStart;
+}
+
+void select_ini() {
+	//cursor = 0;
+	course_cursor = 0;
+	course_count = 0;
+	SelectedId = 0;
+	course = COURSE_CRAZY;
+	isSelectCourse = false;
+	isGameStart = false;
+}
