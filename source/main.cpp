@@ -116,8 +116,7 @@ int main() {
 			isPause = false;			//ポーズは不要なのでオフにする
 			if (key & KEY_START) isExit = true;	//ソフトを閉じる
 			if (isGameStart) {
-				scene = 3;			//演奏画面に移る
-				Reset();			//譜面読み込みます
+				Reset();			//演奏画面に移ります
 			}
 			break;
 
@@ -269,7 +268,7 @@ int main() {
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
 			if (ndspChnIsPlaying(CHANNEL) == false) {
-				scene = 1;
+				scene = 1;		//選曲画面に戻る
 				isGameStart = false;
 			}
 			break;
@@ -378,7 +377,7 @@ inline int ctoi(char c) {
 }
 
 inline void Reset() {
-	scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
+	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
 	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 	isExit = false,isPlayMain = true;
 	stop_main_music();
