@@ -15,7 +15,7 @@ char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
 NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
-SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,SelectedGenreId = 0,
+SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,
 touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
@@ -107,7 +107,6 @@ int main() {
 				course_cursor = 0;
 			}
 			disp_file_list();			//リスト表示
-			get_SelectedId(&List, &course);	//選んでるのを取得
 
 			//下画面に移動
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
@@ -311,8 +310,8 @@ inline bool tkjload() {
 	char* temp = NULL;
 	isCourseMatch = false;
 
-	chdir(List->path);
-	if ((fp = fopen(List->tkj, "r")) != NULL) {
+	chdir(List[SelectedId].path);
+	if ((fp = fopen(List[SelectedId].tkj, "r")) != NULL) {
 
 		tkj_cnt = 0;
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX)) {
