@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#define VERSION "0.1.0"
+#define VERSION "0.2.0"
 #define DEFAULT_DIR "sdmc:/tkjfiles/"
 
 #define DEFAULT_JUDGE_RANGE_PERFECT	0.035
