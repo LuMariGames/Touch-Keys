@@ -29,7 +29,7 @@ LIST_T List[LIST_MAX];
 
 int ctoi(char c);
 char *get_buffer();
-bool tkjload();
+bool tkjload(),checknotes();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
 void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
 void draw_select_text(float x, float y, const char *text),select_ini(),load_file_main(),disp_file_list();
@@ -267,7 +267,7 @@ int main() {
 			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
-			if (isPlayMain && ndspChnIsPlaying(CHANNEL) == false) {
+			if (checknotes() && ndspChnIsPlaying(CHANNEL) == false) {
 				scene = 1;		//選曲画面に戻る
 				isGameStart = false;
 			}
@@ -603,4 +603,11 @@ inline void select_ini() {
 	course = COURSE_CRAZY;
 	isSelectCourse = false;
 	isGameStart = false;
+}
+
+inline bool checknotes() {
+	for (int i = 0; i < MaxNotesCnt; ++i) {
+		if (!Notes[i].flag) return false;
+	}
+	return true;
 }
