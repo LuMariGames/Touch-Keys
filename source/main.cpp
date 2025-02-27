@@ -107,7 +107,7 @@ int main() {
 				course_cursor = 0;
 			}
 			disp_file_list();			//リスト表示
-			get_SelectedId(List, &course);	//選んでるのを取得
+			get_SelectedId(&List[SelectedId], &course);	//選んでるのを取得
 
 			//下画面に移動
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
@@ -404,6 +404,20 @@ inline void load_file_main(void *arg) {
 	SongNumber = SongCount;
 }
 
+void get_SelectedId(LIST_T *TMP,int *arg) {
+
+	for (int i = 0; i < 4; i++) {
+		TMP->course[i] = List[SelectedId].course[i];
+		TMP->course_exist[i] = List[SelectedId].course_exist[i];
+		TMP->level[i] = List[SelectedId].level[i];
+	}
+	strlcpy(TMP->tkj, List[SelectedId].tkj, strlen(List[SelectedId].tkj) + 1);
+	strlcpy(TMP->path, List[SelectedId].path, strlen(List[SelectedId].path) + 1);
+	strlcpy(TMP->title, List[SelectedId].title, strlen(List[SelectedId].title) + 1);
+	strlcpy(TMP->wave, List[SelectedId].wave, strlen(List[SelectedId].wave) + 1);
+	*arg = course;
+}
+
 inline void load_file_list(const char* path) {
 
 	DIR* dir;
@@ -593,20 +607,6 @@ void draw_select_text(float x, float y, const char *text) {
 	C2D_TextParse(&SelectText, g_SelectText, text);
 	C2D_TextOptimize(&SelectText);
 	C2D_DrawText(&SelectText, C2D_WithColor, x, y, 1.0f, 0.5f, 0.5f, C2D_Color32f(1.0f, 1.0f, 1.0f, 1.0f));
-}
-
-void get_SelectedId(LIST_T *TMP,int *arg) {
-
-	for (int i = 0; i < 4; i++) {
-		TMP->course[i] = List[SelectedId].course[i];
-		TMP->course_exist[i] = List[SelectedId].course_exist[i];
-		TMP->level[i] = List[SelectedId].level[i];
-	}
-	strlcpy(TMP->tkj, List[SelectedId].tkj, strlen(List[SelectedId].tkj) + 1);
-	strlcpy(TMP->path, List[SelectedId].path, strlen(List[SelectedId].path) + 1);
-	strlcpy(TMP->title, List[SelectedId].title, strlen(List[SelectedId].title) + 1);
-	strlcpy(TMP->wave, List[SelectedId].wave, strlen(List[SelectedId].wave) + 1);
-	*arg = course;
 }
 
 void select_ini() {
