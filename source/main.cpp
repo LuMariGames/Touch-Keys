@@ -267,7 +267,7 @@ int main() {
 			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
-			if (ndspChnIsPlaying(CHANNEL) == false) {
+			if (isPlayMain && ndspChnIsPlaying(CHANNEL) == false) {
 				scene = 1;		//選曲画面に戻る
 				isGameStart = false;
 			}
@@ -379,7 +379,7 @@ inline int ctoi(char c) {
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
 	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
-	isExit = false,isPlayMain = true;
+	isExit = false,isPlayMain = false;
 	stop_main_music();
 	tkjload();
 	MeasureCount = Startcnt;
