@@ -18,7 +18,8 @@ NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,SelectedGenreId = 0,
 touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
-bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,isSelectCourse = false,isGameStart = false;
+bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
+isSelectCourse = false,isGameStart = false,isPause = false;
 
 //static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
@@ -51,7 +52,6 @@ int main() {
 	C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
 	load_sound();
-	Reset();
 
 	while (aptMainLoop()) {
 
@@ -59,23 +59,6 @@ int main() {
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown();
 		if (isExit == true) break;
-
-		//オプション関係
-		if (key & KEY_START) isExit = true;	//ソフトを閉じる
-		if (key & KEY_X) Reset();		//最初からやり直す
-		if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
-		if (key & KEY_L) {	//難易度を下げる。その難易度が無かったら戻す
-			--course;
-			if (tkjload() == false) ++course;
-			Reset();
-		}
-		if (key & KEY_R) {	//難易度を上げる。その難易度が無かったら戻す
-			++course;
-			if (tkjload() == false) --course;
-			Reset();
-		}
-		if (key & KEY_DUP && NotesSpeed < 400) NotesSpeed += 10;
-		if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;
 
 		//描画開始
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -87,19 +70,82 @@ int main() {
 
 		switch (scene) {
 
-			case 0:	//演奏画面
+		case 0:	//ロード画面
+
+			snprintf(get_buffer(), BUFFER_SIZE, "Touch Keys v%s", VERSION);
+			draw_select_text(120, 70, get_buffer());
+			draw_select_text(120, 100, "Now Loading...");
+			C3D_FrameEnd(0);
+			load_file_main();
+			scene = 1;	//選曲画面に移る
+			select_ini();
+			break;
+
+		case 1:	//選曲画面
+
+			//十字キーか左スティックで移動
+			if (key & KEY_UP) {
+				if (isSelectCourse == false) ++cursor;
+				else if (course_cursor > 0) --course_cursor;
+			}
+			if (key & KEY_DOWN) {
+				if (isSelectCourse == false) --cursor;
+				else if (course_cursor < (course_count - 1)) ++course_cursor;
+			}
+			if (key & KEY_RIGHT) {
+				if (isSelectCourse == false) cursor -= 5;
+			}
+			if (key & KEY_LEFT) {
+				if (isSelectCourse == false) cursor += 5;
+			}
+			if (key & KEY_A && course_count != 0) {
+				if (isSelectCourse == true) isGameStart = true;
+				else isSelectCourse = true;
+			}
+			if (key & KEY_B) {
+				isSelectCourse = false;
+				course_cursor = 0;
+			}
+			disp_file_list();			//リスト表示
+			get_SelectedId(&SelectedSong, &course);	//選んでるのを取得
+
+			//下画面に移動
+			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
+			C3D_FrameDrawOn(bot);
+			C2D_SceneTarget(bot);
+
+			isPause = false;			//ポーズは不要なのでオフにする
+			if (key & KEY_START) isExit = true;	//ソフトを閉じる
+			if (isGameStart) {
+				scene = 3;			//演奏画面に移る
+				Reset();			//譜面読み込みます
+			}
+			break;
+
+		case 3:	//演奏画面
+
+			//演奏オプション
+			if (key & KEY_X) Reset();		//最初からやり直す
+			if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
+			if (key & KEY_DUP && NotesSpeed < 600) NotesSpeed += 10;	//最大値(600)まで速度を上げれる
+			if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;	//最低値(100)まで速度を下げれる
 
 			//差を使って時間を測る
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
 			++timecnt;
 			NowTime = osGetTime() * 0.001 - OffTime;
 
-			touchid = -1;
+			//曲再生
+			if (timecnt == 60) {
+				isPlayMain = true;
+				play_main_music(&isPlayMain);
+			}
 
+			//タッチ関係
+			touchid = -1;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
 
-			//タッチ関係
 			if (touch_x != 0 && touch_y != 0) touchid = (int)tp.px / 80;
 			if (PreTouch_x != 0 && PreTouch_y != 0) touchid = -1;
 			if (touchid != -1) play_sound(0);
@@ -170,7 +216,7 @@ int main() {
 			}
 
 			//スコア表示
-			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,16,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,32,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d COMBO:%.6d", Score, Combo);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
@@ -206,15 +252,15 @@ int main() {
 			if (timecnt < judgetmpcnt) {
 				if (judgeid == 0) {
 					snprintf(get_buffer(), BUFFER_SIZE, "PERFECT");
-					draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,1,0);
+					draw_text(BOTTOM_WIDTH / 2, 160, get_buffer(), 1,1,0);
 				}
 				else if (judgeid == 1) {
 					snprintf(get_buffer(), BUFFER_SIZE, "GOOD");
-					draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 1,0,0);
+					draw_text(BOTTOM_WIDTH / 2, 160, get_buffer(), 1,0,0);
 				}
 				else if (judgeid == 2) {
 					snprintf(get_buffer(), BUFFER_SIZE, "MISS");
-					draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,0,1);
+					draw_text(BOTTOM_WIDTH / 2, 160, get_buffer(), 0,0,1);
 				}
 			}
 			else judgeid = -1;
@@ -223,10 +269,9 @@ int main() {
 			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
-			//曲再生
-			if (timecnt == 60) {
-				isPlayMain = true;
-				play_main_music(&isPlayMain);
+			if (get_notes_finish() == true && ndspChnIsPlaying(CHANNEL) == false) {
+				scene_state = SCENE_RESULT;
+				cnt = -1;
 			}
 			break;
 		}
@@ -269,8 +314,8 @@ bool tkjload() {
 	char* temp = NULL;
 	isCourseMatch = false;
 
-	chdir(DEFAULT_DIR);
-	if ((fp = fopen("chart.tkj", "r")) != NULL) {
+	chdir(List->path);
+	if ((fp = fopen(List->tkj, "r")) != NULL) {
 
 		tkj_cnt = 0;
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX)) {
