@@ -33,7 +33,7 @@ bool isPlaying(void);
 void playFile(void* infoIn);
 
 int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo,bool *p_isPlayMain);
-void play_main_music(bool *p_isPlayMain,LIST_T Song);
+void play_main_music(bool *p_isPlayMain, LIST_T Song);
 void pasue_main_music();
 void stop_main_music();
 void init_main_music();
