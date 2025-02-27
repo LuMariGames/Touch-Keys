@@ -463,7 +463,7 @@ inline void load_file_list(const char* path) {
 	closedir(dir);
 }
 
-inline void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
+void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 
 
 	snprintf(List->title, sizeof(List->title), "No Title");
