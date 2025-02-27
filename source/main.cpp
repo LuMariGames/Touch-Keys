@@ -144,13 +144,13 @@ int main() {
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
 
-			if (touch_x != 0 && touch_y != 0) touchid = (int)tp.px / 80;
+			if (touch_x != 0 && touch_y != 0 && !isAuto) touchid = (int)tp.px / 80;
 			if (PreTouchId != touchid && touchid != -1) {
 				PreTouchId = touchid;
 				Rubbing = true;
 			}
 			if (PreTouch_x != 0 && PreTouch_y != 0 && !Rubbing) touchid = -1;
-			if (touchid != -1 && !isAuto) play_sound(0);
+			if (touchid != -1) play_sound(0);
 
 			//レーン描画
 			C2D_DrawRectSolid(40,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
