@@ -518,7 +518,7 @@ void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 	fclose(fp);
 }
 
-inline void disp_file_list() {
+void disp_file_list() {
 
 	int n = 0;
 	course_count = 0;
