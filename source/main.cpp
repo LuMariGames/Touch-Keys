@@ -107,7 +107,7 @@ int main() {
 				course_cursor = 0;
 			}
 			disp_file_list();			//リスト表示
-			get_SelectedId(&List, &course);	//選んでるのを取得
+			get_SelectedId(List, &course);	//選んでるのを取得
 
 			//下画面に移動
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
