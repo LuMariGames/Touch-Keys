@@ -126,7 +126,7 @@ int main() {
 			if (key & KEY_X) Reset();		//最初からやり直す
 			if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
 			if (key & KEY_DUP && NotesSpeed < 600) NotesSpeed += 10;	//最大値(600)まで速度を上げれる
-			if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;	//最低値(100)まで速度を下げれる
+			if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;	//最低値(100)まで速度を下げれる 
 
 			//差を使って時間を測る
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
@@ -271,9 +271,10 @@ int main() {
 			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
-			if (checknotes() && ndspChnIsPlaying(CHANNEL) == false) {
+			if ((checknotes() && ndspChnIsPlaying(CHANNEL) == false) || (key & KEY_START && key & SELECT)) {
 				scene = 1;		//選曲画面に戻る
 				isGameStart = false;
+				stop_main_music();
 			}
 			break;
 		}
