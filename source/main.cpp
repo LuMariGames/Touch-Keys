@@ -418,7 +418,7 @@ void get_SelectedId(LIST_T *TMP,int *arg) {
 	*arg = course;
 }
 
-inline void load_file_list(const char* path) {
+void load_file_list(const char* path) {
 
 	DIR* dir;
 	struct dirent* dp;
@@ -464,7 +464,6 @@ inline void load_file_list(const char* path) {
 }
 
 void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
-
 
 	snprintf(List->title, sizeof(List->title), "No Title");
 	snprintf(List->wave, sizeof(List->wave), "audio.ogg");
