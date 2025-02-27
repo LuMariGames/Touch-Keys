@@ -173,9 +173,6 @@ int main() {
 						judgeid = 3;
 						++Combo;
 						play_sound(0);
-
-						//タップエフェクト
-						C2D_DrawRectangle(0 + (79.75 * Notes[NotesJudge[i]].num),0,0,79.75,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 					}
 					if (NotesJudgeLag[Notes[i].num] > fabs(Notes[i].judge_time - NowTime)) {
 						NotesJudge[Notes[i].num] = i;
@@ -207,9 +204,6 @@ int main() {
 						Combo = 0;
 					}
 				}
-
-				//タップエフェクト
-				C2D_DrawRectangle(0 + (79.75 * touchid),0,0,79.75,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			}
 
 			//ノーツ描画
@@ -232,6 +226,9 @@ int main() {
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
 			C3D_FrameDrawOn(bot);
 			C2D_SceneTarget(bot);
+
+			//タップエフェクト
+			C2D_DrawRectangle(0 + (79.75 * touchid),0,0,79.75,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//レーン描画
 			C2D_DrawRectSolid(0,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
