@@ -16,10 +16,10 @@ char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
 NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
-touch_x,touch_y,PreTouch_x,PreTouch_y;	//タッチ用
+touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId;	//タッチ用
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
-isSelectCourse = false,isGameStart = false,isPause = false;
+isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
 //static C2D_SpriteSheet spriteSheet;
 C2D_TextBuf g_dynamicBuf;
@@ -140,16 +140,20 @@ int main() {
 			}
 
 			//タッチ関係
-			touchid = -1;
+			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
 
 			if (touch_x != 0 && touch_y != 0) touchid = (int)tp.px / 80;
-			if (PreTouch_x != 0 && PreTouch_y != 0) touchid = -1;
+			if (PreTouchId != touchid && touchid != -1) {
+				PreTouchId = touchid;
+				Rubbing = true;
+			}
+			if (PreTouch_x != 0 && PreTouch_y != 0 && !Rubbing) touchid = -1;
 			if (touchid != -1) play_sound(0);
 
 			//レーン描画
-			C2D_DrawRectSolid(39,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(40,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(119.75,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(199.5,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(279.25,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
