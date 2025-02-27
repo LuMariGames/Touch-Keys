@@ -269,10 +269,7 @@ int main() {
 			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
-			if (get_notes_finish() == true && ndspChnIsPlaying(CHANNEL) == false) {
-				scene = 1;
-				cnt = -1;
-			}
+			if (ndspChnIsPlaying(CHANNEL) == false) scene = 1;
 			break;
 
 		case 4:	//リザルト画面(仮)
