@@ -15,7 +15,7 @@ char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
 NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
-SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,
+SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,SelectedGenreId = 0,
 touch_x, touch_y, PreTouch_x, PreTouch_y;
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
@@ -31,7 +31,7 @@ int ctoi(char c);
 char *get_buffer();
 bool tkjload();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
-void load_file_list(const char* path),Reset(),load_tkj_head_simple();
+void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
 void draw_select_text(float x, float y, const char *text),select_ini(),load_file_main(),disp_file_list();
 
 int main() {
@@ -107,6 +107,7 @@ int main() {
 				course_cursor = 0;
 			}
 			disp_file_list();			//リスト表示
+			get_SelectedId(&List, &course);	//選んでるのを取得
 
 			//下画面に移動
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
@@ -288,11 +289,11 @@ int main() {
 	return 0;
 }
 
-inline char *get_buffer() {
+char *get_buffer() {
 	return buffer;
 }
 
-void draw_text(float x, float y, const char *text, float r, float g, float b) {
+inline void draw_text(float x, float y, const char *text, float r, float g, float b) {
 
 	//使用例
 	//snprintf(get_buffer(), BUFFER_SIZE, "%d", 10);
@@ -310,8 +311,8 @@ inline bool tkjload() {
 	char* temp = NULL;
 	isCourseMatch = false;
 
-	chdir(List[SelectedId].path);
-	if ((fp = fopen(List[SelectedId].tkj, "r")) != NULL) {
+	chdir(List->path);
+	if ((fp = fopen(List->tkj, "r")) != NULL) {
 
 		tkj_cnt = 0;
 		while ((fgets(tkj_notes[tkj_cnt], NOTES_MEASURE_MAX, fp) != NULL || tkj_cnt < MEASURE_MAX)) {
@@ -361,14 +362,15 @@ inline bool tkjload() {
 inline int ctoi(char c) {
 
 	switch (c) {
-	case '1': return 0;
-	case '2': return 1;
-	case '3': return 2;
-	case '4': return 3;
-	case '5': return 4;
-	case '6': return 5;
-	case '7': return 6;
-	case '8': return 7;
+	case '0': return 0;
+	case '1': return 1;
+	case '2': return 2;
+	case '3': return 3;
+	case '4': return 4;
+	case '5': return 5;
+	case '6': return 6;
+	case '7': return 7;
+	case '8': return 8;
 	default: return -1;
 	}
 }
@@ -384,9 +386,9 @@ inline void Reset() {
 		NotesCount = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
-			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
+			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[MaxNotesCnt].flag = true;
-				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]);
+				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
 				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 				++MaxNotesCnt;
 			}
@@ -395,7 +397,7 @@ inline void Reset() {
 	}
 }
 
-inline void load_file_main(void *arg) {
+inline void load_file_main() {
 
 	chdir(DEFAULT_DIR);
 	load_file_list(DEFAULT_DIR);
@@ -432,7 +434,7 @@ inline void load_file_list(const char* path) {
 
 						strlcpy(List[SongCount].tkj, dp->d_name, strlen(dp->d_name) + 1);
 						getcwd(List[SongCount].path, 256);
-						load_tkj_head_simple();
+						load_tkj_head_simple(&List[SongCount]);
 						++SongCount;
 					}
 				}
@@ -447,20 +449,20 @@ inline void load_file_list(const char* path) {
 	closedir(dir);
 }
 
-inline void load_tkj_head_simple() {		//選曲用のヘッダ取得
+inline void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 
-	snprintf(List[SongCount].title, sizeof(List[SongCount].title), "No Title");
-	snprintf(List[SongCount].wave, sizeof(List[SongCount].wave), "audio.ogg");
+	snprintf(List->title, sizeof(List->title), "No Title");
+	snprintf(List->wave, sizeof(List->wave), "audio.ogg");
 	for (int i = 0; i < 4; ++i) {
-		List[SongCount].level[i] = 0;
-		List[SongCount].course[i] = false;
+		List->level[i] = 0;
+		List->course[i] = false;
 	}
 	FILE *fp;
 	char buf[128],*temp = NULL;
 	int course = COURSE_CRAZY,cnt = 0;
 
-	chdir(List[SongCount].path);
-	if ((fp = fopen(List[SongCount].tkj, "r")) != NULL) {
+	chdir(List->path);
+	if ((fp = fopen(List->tkj, "r")) != NULL) {
 
 		while (fgets(buf, 128, fp) != NULL) {
 
@@ -581,16 +583,6 @@ inline void disp_file_list() {
 	//draw_select_text(0, 60, buf_select);
 }
 
-inline void select_ini() {
-	//cursor = 0;
-	course_cursor = 0;
-	course_count = 0;
-	SelectedId = 0;
-	course = COURSE_CRAZY;
-	isSelectCourse = false;
-	isGameStart = false;
-}
-
 C2D_TextBuf g_SelectText = C2D_TextBufNew(4096);
 C2D_Text SelectText;
 
@@ -600,4 +592,28 @@ void draw_select_text(float x, float y, const char *text) {
 	C2D_TextParse(&SelectText, g_SelectText, text);
 	C2D_TextOptimize(&SelectText);
 	C2D_DrawText(&SelectText, C2D_WithColor, x, y, 1.0f, 0.5f, 0.5f, C2D_Color32f(1.0f, 1.0f, 1.0f, 1.0f));
+}
+
+void get_SelectedId(LIST_T *TMP,int *arg) {
+
+	for (int i = 0; i < 4; i++) {
+		TMP->course[i] = List[SelectedId].course[i];
+		TMP->course_exist[i] = List[SelectedId].course_exist[i];
+		TMP->level[i] = List[SelectedId].level[i];
+	}
+	strlcpy(TMP->tkj, List[SelectedId].tkj, strlen(List[SelectedId].tkj) + 1);
+	strlcpy(TMP->path, List[SelectedId].path, strlen(List[SelectedId].path) + 1);
+	strlcpy(TMP->title, List[SelectedId].title, strlen(List[SelectedId].title) + 1);
+	strlcpy(TMP->wave, List[SelectedId].wave, strlen(List[SelectedId].wave) + 1);
+	*arg = course;
+}
+
+inline void select_ini() {
+	//cursor = 0;
+	course_cursor = 0;
+	course_count = 0;
+	SelectedId = 0;
+	course = COURSE_CRAZY;
+	isSelectCourse = false;
+	isGameStart = false;
 }
