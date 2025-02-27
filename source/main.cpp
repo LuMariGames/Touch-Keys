@@ -137,7 +137,7 @@ int main() {
 			//曲再生
 			if (timecnt == 60) {
 				isPlayMain = true;
-				play_main_music(&isPlayMain);
+				play_main_music(&isPlayMain, List);
 			}
 
 			//タッチ関係
