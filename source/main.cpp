@@ -11,6 +11,7 @@
 
 // SDカードからテクスチャを読み込む
 char buffer[BUFFER_SIZE];
+char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
 NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
@@ -30,6 +31,7 @@ char *get_buffer();
 bool tkjload();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
 void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
+void draw_select_text(float x, float y, const char *text),select_ini();
 
 int main() {
 	// 初期化
@@ -563,10 +565,6 @@ void get_SelectedId(LIST_T *TMP,int *arg) {
 	strlcpy(TMP->title, List[SelectedId].title, strlen(List[SelectedId].title) + 1);
 	strlcpy(TMP->wave, List[SelectedId].wave, strlen(List[SelectedId].wave) + 1);
 	*arg = course;
-}
-
-bool get_isGameStart() {
-	return isGameStart;
 }
 
 void select_ini() {
