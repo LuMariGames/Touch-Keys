@@ -29,7 +29,7 @@ LIST_T List[LIST_MAX];
 
 int ctoi(char c);
 char *get_buffer();
-bool tkjload(LIST_T *List);
+bool tkjload();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
 void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
 void draw_select_text(float x, float y, const char *text),select_ini(),load_file_main(),disp_file_list();
@@ -288,7 +288,7 @@ int main() {
 	return 0;
 }
 
-char *get_buffer() {
+inline char *get_buffer() {
 	return buffer;
 }
 
@@ -304,7 +304,7 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
 }
 
-bool tkjload(LIST_T *List) {
+inline bool tkjload() {
 
 	FILE *fp;
 	char* temp = NULL;
@@ -358,18 +358,17 @@ bool tkjload(LIST_T *List) {
 	return isCourseMatch;
 }
 
-int ctoi(char c) {
+inline int ctoi(char c) {
 
 	switch (c) {
-	case '0': return 0;
-	case '1': return 1;
-	case '2': return 2;
-	case '3': return 3;
-	case '4': return 4;
-	case '5': return 5;
-	case '6': return 6;
-	case '7': return 7;
-	case '8': return 8;
+	case '1': return 0;
+	case '2': return 1;
+	case '3': return 2;
+	case '4': return 3;
+	case '5': return 4;
+	case '6': return 5;
+	case '7': return 6;
+	case '8': return 7;
 	default: return -1;
 	}
 }
@@ -379,15 +378,15 @@ inline void Reset() {
 	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 	isExit = false,isPlayMain = true;
 	stop_main_music();
-	tkjload(&List);
+	tkjload();
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
 		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
 		for (int i = 0; i < NotesCount; ++i) {
-			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
+			if (ctoi(tkj_notes[MeasureCount][i]) != -1) {
 				Notes[MaxNotesCnt].flag = true;
-				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
+				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]);
 				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 				++MaxNotesCnt;
 			}
@@ -396,14 +395,14 @@ inline void Reset() {
 	}
 }
 
-void load_file_main(void *arg) {
+inline void load_file_main(void *arg) {
 
 	chdir(DEFAULT_DIR);
 	load_file_list(DEFAULT_DIR);
 	SongNumber = SongCount;
 }
 
-void load_file_list(const char* path) {
+inline void load_file_list(const char* path) {
 
 	DIR* dir;
 	struct dirent* dp;
@@ -448,7 +447,7 @@ void load_file_list(const char* path) {
 	closedir(dir);
 }
 
-void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
+inline void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 
 	snprintf(List->title, sizeof(List->title), "No Title");
 	snprintf(List->wave, sizeof(List->wave), "audio.ogg");
@@ -503,7 +502,7 @@ void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 	fclose(fp);
 }
 
-void disp_file_list() {
+inline void disp_file_list() {
 
 	int n = 0;
 	course_count = 0;
@@ -582,6 +581,16 @@ void disp_file_list() {
 	//draw_select_text(0, 60, buf_select);
 }
 
+inline void select_ini() {
+	//cursor = 0;
+	course_cursor = 0;
+	course_count = 0;
+	SelectedId = 0;
+	course = COURSE_CRAZY;
+	isSelectCourse = false;
+	isGameStart = false;
+}
+
 C2D_TextBuf g_SelectText = C2D_TextBufNew(4096);
 C2D_Text SelectText;
 
@@ -591,14 +600,4 @@ void draw_select_text(float x, float y, const char *text) {
 	C2D_TextParse(&SelectText, g_SelectText, text);
 	C2D_TextOptimize(&SelectText);
 	C2D_DrawText(&SelectText, C2D_WithColor, x, y, 1.0f, 0.5f, 0.5f, C2D_Color32f(1.0f, 1.0f, 1.0f, 1.0f));
-}
-
-void select_ini() {
-	//cursor = 0;
-	course_cursor = 0;
-	course_count = 0;
-	SelectedId = 0;
-	course = COURSE_CRAZY;
-	isSelectCourse = false;
-	isGameStart = false;
 }
