@@ -29,7 +29,7 @@ LIST_T List[LIST_MAX];
 
 int ctoi(char c);
 char *get_buffer();
-bool tkjload();
+bool tkjload(LIST_T *List);
 void draw_text(float x, float y, const char *text, float r, float g, float b);
 void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
 void draw_select_text(float x, float y, const char *text),select_ini(),load_file_main(),disp_file_list();
@@ -107,7 +107,7 @@ int main() {
 				course_cursor = 0;
 			}
 			disp_file_list();			//リスト表示
-			get_SelectedId(&List[SelectedId], &course);	//選んでるのを取得
+			get_SelectedId(&List, &course);	//選んでるのを取得
 
 			//下画面に移動
 			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
@@ -305,7 +305,7 @@ void draw_text(float x, float y, const char *text, float r, float g, float b) {
 	C2D_DrawText(&dynText, C2D_WithColor | C2D_AlignCenter, x, y, 0.5f, 0.5f, 0.5f, C2D_Color32f(r, g, b, 1.0f));
 }
 
-bool tkjload() {
+bool tkjload(LIST_T *List) {
 
 	FILE *fp;
 	char* temp = NULL;
@@ -380,7 +380,7 @@ inline void Reset() {
 	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 	isExit = false,isPlayMain = true;
 	stop_main_music();
-	tkjload();
+	tkjload(&List);
 	MeasureCount = Startcnt;
 	while (MeasureCount < tkj_cnt) {
 		NotesCount = 0;
