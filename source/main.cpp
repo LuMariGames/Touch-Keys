@@ -15,8 +15,8 @@ char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
 NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
-SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,
-touch_x, touch_y, PreTouch_x, PreTouch_y;
+SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
+touch_x,touch_y,PreTouch_x,PreTouch_y;	//タッチ用
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false;
@@ -268,7 +268,10 @@ int main() {
 			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
-			if (ndspChnIsPlaying(CHANNEL) == false) scene = 1;
+			if (ndspChnIsPlaying(CHANNEL) == false) {
+				scene = 1;
+				isGameStart = false;
+			}
 			break;
 		}
 
