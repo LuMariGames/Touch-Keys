@@ -8,6 +8,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <jansson.h>
+
+json_t *json;
+json_error_t error_json;
 
 // SDカードからテクスチャを読み込む
 char buffer[BUFFER_SIZE];
@@ -624,4 +628,33 @@ inline bool checknotes() {
 		if (Notes[i].flag) return false;
 	}
 	return true;
+}
+
+inline void save_option() {
+
+	json_object_set(json, "NotesSpeed", json_integer(NotesSpeed));
+	json_object_set(json, "isAuto", json_boolean(isAuto));
+	
+	json_dump_file(json, SETTING_FILE, 0);
+}
+
+inline void load_option() {
+	
+	json = json_load_file(SETTING_FILE, 0, &error_json);
+
+	if (json != NULL){
+
+		NotesSpeed = json_integer_value(json_object_get(json, "NotesSpeed"));
+		isAuto = json_boolean_value(json_object_get(json, "isAuto"));
+	}
+	if (json == NULL) {			//開けなかった時
+		json = json_pack("{}");	//ファイル空の時はこれしないとセットできなくなる
+		save_option();			//書き込み
+	}
+}
+
+inline void exit_option() {
+
+	save_option();
+	json_decref(json);
 }
