@@ -42,7 +42,7 @@ GFXBUILD	:=	$(ROMFS)/gfx
 #---------------------------------------------------------------------------------
 APP_VER					:= 16 #1024.16.1?
 APP_TITLE				:= Touch Keys
-APP_DESCRIPTION				:= New Keys Music Game.
+APP_DESCRIPTION				:= Touch Keys - New Keys Music Game.
 APP_AUTHOR 				:= MarioGames
 PRODUCT_CODE				:= CTR-HB-TKEY
 UNIQUE_ID				:= 0x0544B
