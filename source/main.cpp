@@ -35,8 +35,8 @@ LIST_T List[LIST_MAX];
 int ctoi(char c);
 char *get_buffer();
 bool tkjload(),checknotes();
-void draw_text(float x, float y, const char *text, float r, float g, float b);
-void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List);
+void draw_text(float x, float y, const char *text, float r, float g, float b),load_option();
+void load_file_list(const char* path),Reset(),load_tkj_head_simple(LIST_T *List),exit_option();
 void draw_select_text(float x, float y, const char *text),select_ini(),load_file_main(),disp_file_list();
 
 int main() {
