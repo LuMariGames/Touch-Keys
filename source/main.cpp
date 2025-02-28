@@ -56,6 +56,7 @@ int main() {
 	C3D_RenderTarget* top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
 	C3D_RenderTarget* bot = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
 
+	load_option();
 	load_sound();
 
 	while (aptMainLoop()) {
@@ -300,6 +301,7 @@ int main() {
 	//リソースの解放
 	stop_main_music();
 	C2D_TextBufDelete(g_dynamicBuf);
+	exit_option();
 
 	C2D_Fini();
 	C3D_Fini();
