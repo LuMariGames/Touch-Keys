@@ -17,10 +17,11 @@ json_error_t error_json;
 char buffer[BUFFER_SIZE];
 char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
-int scene = 0,timecnt = 0,judgetmpcnt = 0,NotesSpeed = 200,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
-NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,course = COURSE_HARD,CurrentCourse = -1,
+int scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
+NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,course = COURSE_HARD,CurrentCourse = -1,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
-touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId;	//タッチ用
+touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
+Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
 double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
@@ -222,8 +223,8 @@ int main() {
 			}
 
 			//スコア表示
-			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,32,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d COMBO:%.6d", Score, Combo);
+			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d COMBO:%.4d", Score, Combo);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
 			//下画面に移動
