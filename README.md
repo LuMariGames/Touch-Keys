@@ -1,4 +1,5 @@
 # Touch-Keys  
+サンプル譜面は[こちら](https://www.dropbox.com/scl/fo/13gblat0z8apvk5etk0rk/AHm_s_3m0hzi4wpZGrQ3n00?rlkey=lbocn0fwt9pbqhg84rqqycy1n&dl=0)へ  
 ![Logo](https://github.com/user-attachments/assets/1353713c-38cb-4c21-89b8-bab08d8ca351)  
 
 かなり適当に作ったので不具合とかあるかもですが宜しくお願いします…  
