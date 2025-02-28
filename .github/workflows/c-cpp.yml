@@ -20,3 +20,4 @@ jobs:
         name: Build
         path: |
           Touch-Keys.3dsx
+          Touch-Keys.cia
