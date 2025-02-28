@@ -13,3 +13,7 @@
 
 ## スクショ！  
 (準備中だよ！)
+
+## クレジット表記  
+タイトル音：[OtoLogic](https://otologic.jp)  
+演奏効果音：[Sekai Viewer](https://sekai.best/asset_viewer/live/tap_se/custom02_rip/)
