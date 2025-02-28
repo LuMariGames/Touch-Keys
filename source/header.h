@@ -26,6 +26,7 @@
 #define NOTES_MEASURE_MAX 256
 #define MEASURE_MAX 1024
 #define NOTES_MAX 8192
+#define COMMAND_MAX 256
 #define JUDGE_Y 200
 
 #define LIST_MAX 1024
