@@ -13,6 +13,7 @@
 
 #define VERSION "1.0.0"
 #define DEFAULT_DIR "sdmc:/tkjfiles/"
+#define SETTING_FILE "sdmc:/TouchKeys_config.json"
 
 #define DEFAULT_JUDGE_RANGE_PERFECT	0.035
 #define DEFAULT_JUDGE_RANGE_NICE	0.070
