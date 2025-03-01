@@ -192,21 +192,21 @@ int main() {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
-						Score += 1000;
+						Score += 1000000 / MaxNotesCnt;
 						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
-						Score += 400;
+						Score += 400000 / MaxNotesCnt;
 						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
-						Score += 240;
+						Score += 240000 / MaxNotesCnt;
 						Combo = 0;
 					}
 				}
