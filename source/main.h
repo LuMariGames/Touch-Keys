@@ -14,10 +14,10 @@ typedef struct {
 	float y,bpm,scroll = 1.0f;
 } NOTES_T;
 
-typedef struct {
+/*typedef struct {
 	int measure,knd;
 	float num;
-} CMD_T;
+} CMD_T;*/
 
 char *get_buffer();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
