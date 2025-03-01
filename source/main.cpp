@@ -411,7 +411,7 @@ inline void Reset() {
 			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[MaxNotesCnt].flag = true;
 				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[MaxNotesCnt].judge_time = (1.2 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				Notes[MaxNotesCnt].judge_time = (1.250 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 				++MaxNotesCnt;
 			}
 		}
