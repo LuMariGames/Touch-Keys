@@ -192,21 +192,21 @@ int main() {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
-						Score += 1000000 / MaxNotesCnt;
+						Score += 1000000 / MaxNotesCnt + 1;
 						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
-						Score += 400000 / MaxNotesCnt;
+						Score += 400000 / MaxNotesCnt + 1;
 						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
-						Score += 240000 / MaxNotesCnt;
+						Score += 240000 / MaxNotesCnt + 1;
 						Combo = 0;
 					}
 				}
@@ -225,7 +225,7 @@ int main() {
 
 			//スコア表示
 			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.8d COMBO:%.4d", Score, Combo);
+			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.7d COMBO:%.4d", Score, Combo);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
 			//下画面に移動
@@ -319,7 +319,7 @@ inline void draw_text(float x, float y, const char *text, float r, float g, floa
 
 	//使用例
 	//snprintf(get_buffer(), BUFFER_SIZE, "%d", 10);
-	// draw_debug(300, 0, get_buffer());
+	//draw_debug(300, 0, get_buffer());
 
 	C2D_TextBufClear(g_dynamicBuf);
 	C2D_TextParse(&dynText, g_dynamicBuf, text);
@@ -411,7 +411,7 @@ inline void Reset() {
 			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
 				Notes[MaxNotesCnt].flag = true;
 				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[MaxNotesCnt].judge_time = (1.222 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
+				Notes[MaxNotesCnt].judge_time = (1.2 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
 				++MaxNotesCnt;
 			}
 		}
