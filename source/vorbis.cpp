@@ -119,5 +119,6 @@ void put_buffer_size(int tmp) {
 }
 
 double vorbis_ratio() {
-	return ov_time_tell(&vorbisFile) / ov_time_total(&vorbisFile, -1) * TOP_WIDTH;
+	if (ndspChnIsPlaying(CHANNEL) == true) return ov_time_tell(&vorbisFile) / ov_time_total(&vorbisFile, -1) * TOP_WIDTH;
+	else return 0;
 }
