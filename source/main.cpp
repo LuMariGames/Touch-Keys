@@ -22,7 +22,7 @@ NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,course = COURSE_HAR
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
-double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
+double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0,ratio = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
@@ -224,7 +224,8 @@ int main() {
 			}
 
 			//スコア表示
-			C2D_DrawRectSolid(0,0,0,TOP_WIDTH,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectSolid(0,0,0,ratio,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			
 			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.7d COMBO:%.4d", Score, Combo);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
@@ -399,7 +400,8 @@ inline int ctoi(char c) {
 
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
-	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0,BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0;
+	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0;
+	BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0,ratio = 0;
 	isExit = false,isPlayMain = false;
 	stop_main_music();
 	tkjload();
