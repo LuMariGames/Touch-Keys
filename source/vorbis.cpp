@@ -117,3 +117,7 @@ int get_buffer_size() {
 void put_buffer_size(int tmp) {
 	vorbis_buffer_size = (size_t)tmp;
 }
+
+double vorbis_ratio() {
+	return ov_time_tell(&vorbisFile) / ov_time_total(&vorbisFile, -1);
+}
