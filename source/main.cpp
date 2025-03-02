@@ -140,7 +140,7 @@ int main() {
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
-			NowTime += 1.0/59.97;
+			NowTime += 1.0/59.9;
 
 			//曲再生
 			if (timecnt == 60) {
