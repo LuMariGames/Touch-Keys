@@ -145,20 +145,18 @@ int main() {
 				play_main_music(&isPlayMain, List[SelectedId]);
 			}
 
-			//タッチ関係
 			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
-
 			if (touch_x != 0 && touch_y != 0 && !isAuto) touchid = (int)tp.px / 80;
-			if (PreTouchId != touchid && touchid != -1) {
+			if (PreTouchId != touchid && touchid != -1) {	//擦り判定
 				PreTouchId = touchid;
 				Rubbing = true;
 			}
 			if (PreTouch_x != 0 && PreTouch_y != 0 && !Rubbing) touchid = -1;
 			if (touchid != -1) play_sound(0);
 
-			//レーン描画
+			//レーン描画(上画面用)
 			C2D_DrawRectSolid(40,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(119.75,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(199.5,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
@@ -172,7 +170,6 @@ int main() {
 
 				if (Notes[i].flag) {
 
-					//オート時の判定
 					if (isAuto && Notes[i].judge_time < NowTime) {
 						Notes[i].flag = false;
 						judgetmpcnt = timecnt + 30;
@@ -223,9 +220,11 @@ int main() {
 				}
 			}
 
-			//スコア表示
+			//曲の進み具合を太線で表す
+			ratio = vorbis_ratio();
 			C2D_DrawRectSolid(0,0,0,ratio,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-			
+			C2D_DrawRectSolid(ratio,0,0,TOP_WIDTH - ratio,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+
 			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.7d COMBO:%.4d", Score, Combo);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
@@ -237,7 +236,7 @@ int main() {
 			//タップエフェクト
 			C2D_DrawRectangle(0 + (79.75 * touchid),0,0,79.75,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
-			//レーン描画
+			//レーン描画(下画面用)
 			C2D_DrawRectSolid(0,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(79.75,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(159.5,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
