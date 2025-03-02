@@ -139,7 +139,8 @@ int main() {
 			//差を使って時間を測る
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
 			++timecnt;
-			NowTime = osGetTime() * 0.001 - OffTime;
+			//NowTime = osGetTime() * 0.001 - OffTime;
+			NowTime += 1.0/56.0;
 
 			//曲再生
 			if (timecnt == 60) {
