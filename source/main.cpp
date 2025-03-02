@@ -2,6 +2,7 @@
 #include "header.h"
 #include "main.h"
 #include "playback.h"
+#include "vorbis.h"
 
 #include <citro2d.h>
 #include <3ds.h>
