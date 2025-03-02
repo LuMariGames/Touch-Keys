@@ -18,12 +18,13 @@ json_error_t error_json;
 char buffer[BUFFER_SIZE];
 char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
-int scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,SongNumber = 0,
-NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,course = COURSE_HARD,CurrentCourse = -1,
+int scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,
+SongNumber = 0,ratio = 0,NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,
+course = COURSE_HARD,CurrentCourse = -1,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
-double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0,ratio = 0;
+double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0,tmpjudgetime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
@@ -373,8 +374,37 @@ inline bool tkjload() {
 				++tkj_cnt;
 				continue;
 			}
-			if (isCourseMatch == true && strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
-			if (isCourseMatch == true && strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) break;
+			if (isCourseMatch == true) {
+
+				if (strstr(tkj_notes[tkj_cnt], "#END") == tkj_notes[tkj_cnt]) break;
+
+				if (Startcnt != -1 && tkj_notes[tkj_cnt][0] != '#') {
+					NotesCount = 0;
+					while (tkj_notes[tkj_cnt][NotesCount] != ',' && tkj_notes[tkj_cnt][NotesCount] != '\n') ++NotesCount;
+					for (int i = 0; i < NotesCount; ++i) {
+						if (ctoi(tkj_notes[tkj_cnt][i]) != 0) {
+							Notes[MaxNotesCnt].flag = true;
+							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]) - 1;
+							Notes[MaxNotesCnt].BPM = BPM;
+							Notes[MaxNotesCnt].judge_time = (1.250 + OFFSET) + tmpjudgetime + (240.0 / BPM * i / NotesCount);
+							++MaxNotesCnt;
+						}
+					}
+					++MeasureCount;
+					tmpjudgetime += (240.0 / BPM);
+				}
+
+				if (strstr(tkj_notes[tkj_cnt], "#BPMCHANGE:") == tkj_notes[tkj_cnt]) {
+					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+					if (tkj_notes[tkj_cnt][11] != '\n' && tkj_notes[tkj_cnt][11] != '\r') {
+						strlcpy(temp, tkj_notes[tkj_cnt] + 11, strlen(tkj_notes[tkj_cnt]) - 12);
+						BPM = atof(temp);
+					}
+					free(temp);
+				}
+
+				if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
+			}
 			++tkj_cnt;
 		}
 		fclose(fp);
@@ -400,25 +430,11 @@ inline int ctoi(char c) {
 
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
-	MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,Score = 0,Combo = 0;
+	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0;
 	BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0,ratio = 0;
 	isExit = false,isPlayMain = false;
 	stop_main_music();
 	tkjload();
-	MeasureCount = Startcnt;
-	while (MeasureCount < tkj_cnt) {
-		NotesCount = 0;
-		while (tkj_notes[MeasureCount][NotesCount] != ',' && tkj_notes[MeasureCount][NotesCount] != '\n') ++NotesCount;
-		for (int i = 0; i < NotesCount; ++i) {
-			if (ctoi(tkj_notes[MeasureCount][i]) != 0) {
-				Notes[MaxNotesCnt].flag = true;
-				Notes[MaxNotesCnt].num = ctoi(tkj_notes[MeasureCount][i]) - 1;
-				Notes[MaxNotesCnt].judge_time = (1.250 + OFFSET) + (240.0 / BPM * (MeasureCount - Startcnt)) + (240.0 / BPM * i / NotesCount);
-				++MaxNotesCnt;
-			}
-		}
-		++MeasureCount;
-	}
 }
 
 inline void load_file_main() {

@@ -1,4 +1,4 @@
-﻿#include <3ds.h>
+#include <3ds.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -119,7 +119,7 @@ void put_buffer_size(int tmp) {
 	vorbis_buffer_size = (size_t)tmp;
 }
 
-double vorbis_ratio() {
+int vorbis_ratio() {
 	if (ndspChnIsPlaying(CHANNEL) == true) return (double)ov_time_tell(&vorbisFile) / (double)ov_time_total(&vorbisFile, -1) * (double)TOP_WIDTH;
 	else return 0;
 }

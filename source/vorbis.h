@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <tremor/ivorbisfile.h>
 #include <ogg/ogg.h>
@@ -16,4 +16,4 @@ uint64_t fillVorbisBuffer(char* bufferOut);
 int isVorbis(const char* in);
 int get_buffer_size();
 void put_buffer_size(int tmp);
-double vorbis_ratio();
+int vorbis_ratio();
