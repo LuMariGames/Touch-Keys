@@ -30,8 +30,7 @@ BPM変更
 ```
 
 ## スクショ！  
-![Song Play Screen](https://github.com/user-attachments/assets/1d6d9b93-f7c9-4275-ad81-ea65e56591b3)
-![Song Select Screen](https://github.com/user-attachments/assets/fc78a562-2a8b-4fbf-b7a5-b1fd5a3b167b)
+![Song Play Screen](https://github.com/user-attachments/assets/1d6d9b93-f7c9-4275-ad81-ea65e56591b3)![Song Select Screen](https://github.com/user-attachments/assets/fc78a562-2a8b-4fbf-b7a5-b1fd5a3b167b)
 
 ## クレジット表記  
 タイトル音：[OtoLogic](https://otologic.jp)  
