@@ -6,7 +6,7 @@
 #include "audio.h"
 #include "header.h"
 
-#define AUDIO_BUFFER_SIZE 2048
+#define AUDIO_BUFFER_SIZE 1024
 #define STACKSIZE (2 * 1024)
 #define SOUND_NUMBER 1
 
