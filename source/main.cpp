@@ -24,7 +24,7 @@ course = COURSE_HARD,CurrentCourse = -1,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
-double BPM = 120.0,SCROLL = 1.0,OFFSET = 0,OffTime = 0,NowTime = 0,tmpjudgetime = 0;
+double BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,OffTime = 0,NowTime = 0,tmpjudgetime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
@@ -387,12 +387,12 @@ inline bool tkjload() {
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]) - 1;
 							Notes[MaxNotesCnt].bpm = BPM;
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = (1.250 + OFFSET) + tmpjudgetime + (240.0 / BPM * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = 1.250 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
 					++MeasureCount;
-					tmpjudgetime += (240.0 / BPM);
+					tmpjudgetime += (240.0 / BPM) * MEASURE;
 				}
 
 				if (strstr(tkj_notes[tkj_cnt], "#BPMCHANGE:") == tkj_notes[tkj_cnt]) {
@@ -400,6 +400,15 @@ inline bool tkjload() {
 					if (tkj_notes[tkj_cnt][11] != '\n' && tkj_notes[tkj_cnt][11] != '\r') {
 						strlcpy(temp, tkj_notes[tkj_cnt] + 11, strlen(tkj_notes[tkj_cnt]) - 12);
 						BPM = atof(temp);
+					}
+					free(temp);
+				}
+
+				if (strstr(tkj_notes[tkj_cnt], "#MEASURE:") == tkj_notes[tkj_cnt]) {
+					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+					if (tkj_notes[tkj_cnt][9] != '\n' && tkj_notes[tkj_cnt][9] != '\r') {
+						strlcpy(temp, tkj_notes[tkj_cnt] + 9, strlen(tkj_notes[tkj_cnt]) - 10);
+						MEASURE = atof(temp);
 					}
 					free(temp);
 				}
