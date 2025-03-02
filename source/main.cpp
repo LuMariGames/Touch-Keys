@@ -24,7 +24,7 @@ course = COURSE_HARD,CurrentCourse = -1,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
-double BPM = 120.0,OFFSET = 0,OffTime = 0,NowTime = 0,tmpjudgetime = 0;
+double BPM = 120.0,SCROLL = 1.0,OFFSET = 0,OffTime = 0,NowTime = 0,tmpjudgetime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
@@ -217,7 +217,7 @@ int main() {
 				if (Notes[i].flag) {
 
 					//位置計算
-					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed;
+					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
 					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(39 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
@@ -385,7 +385,8 @@ inline bool tkjload() {
 						if (ctoi(tkj_notes[tkj_cnt][i]) != 0) {
 							Notes[MaxNotesCnt].flag = true;
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]) - 1;
-							Notes[MaxNotesCnt].BPM = BPM;
+							Notes[MaxNotesCnt].bpm = BPM;
+							Notes[MaxNotesCnt].scroll = SCROLL;
 							Notes[MaxNotesCnt].judge_time = (1.250 + OFFSET) + tmpjudgetime + (240.0 / BPM * i / NotesCount);
 							++MaxNotesCnt;
 						}
@@ -399,6 +400,15 @@ inline bool tkjload() {
 					if (tkj_notes[tkj_cnt][11] != '\n' && tkj_notes[tkj_cnt][11] != '\r') {
 						strlcpy(temp, tkj_notes[tkj_cnt] + 11, strlen(tkj_notes[tkj_cnt]) - 12);
 						BPM = atof(temp);
+					}
+					free(temp);
+				}
+
+				if (strstr(tkj_notes[tkj_cnt], "#SCROLL:") == tkj_notes[tkj_cnt]) {
+					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+					if (tkj_notes[tkj_cnt][8] != '\n' && tkj_notes[tkj_cnt][8] != '\r') {
+						strlcpy(temp, tkj_notes[tkj_cnt] + 8, strlen(tkj_notes[tkj_cnt]) - 9);
+						SCROLL = atof(temp);
 					}
 					free(temp);
 				}
