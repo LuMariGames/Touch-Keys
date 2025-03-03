@@ -134,7 +134,8 @@ int main() {
 			if (key & KEY_X) Reset();		//最初からやり直す
 			if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
 			if (key & KEY_DUP && NotesSpeed < 600) NotesSpeed += 10;	//最大値(600)まで速度を上げれる
-			if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;	//最低値(100)まで速度を下げれる 
+			if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;	//最低値(100)まで速度を下げれる
+			if (key & KEY_START) isPause = !isPause;
 
 			//差を使って時間を測る
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
