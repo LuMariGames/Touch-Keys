@@ -36,7 +36,7 @@ void playFile(void* infoIn){
 	int16_t*	buffer2 = NULL;
 	int16_t*	buffer3 = NULL;
 	int16_t*	buffer4 = NULL;
-	ndspWaveBuf	waveBuf[3];
+	ndspWaveBuf	waveBuf[4];
 	bool		lastbuf = false, isNdspInit = false;
 	int		ret = -1;
 	const char*	file = info->file;
