@@ -8,7 +8,7 @@
 
 #define AUDIO_BUFFER_SIZE 1024
 #define STACKSIZE (2 * 1024)
-#define SOUND_NUMBER 1
+#define SOUND_NUMBER 2
 
 typedef struct {
 	float rate;
@@ -33,6 +33,7 @@ void load_sound() {
 	ndspSetOutputCount(1);
 	char sound_address[SOUND_NUMBER][32] = {
 		"romfs:/sound/tap.ogg",
+		"romfs:/sound/trace.ogg",
 	};
 
 	for (int i = 0; i < SOUND_NUMBER; ++i) {
@@ -122,8 +123,8 @@ void exit_music() {
 
 	ndspChnWaveBufClear(sound[0].audiochannel);
 	linearFree(sound[0].data);
-	/*ndspChnWaveBufClear(sound[1].audiochannel);
-	linearFree(sound[1].data);*/
+	ndspChnWaveBufClear(sound[1].audiochannel);
+	linearFree(sound[1].data);
 
 	ndspExit();
 }
