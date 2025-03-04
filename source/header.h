@@ -30,7 +30,7 @@
 #define JUDGE_Y 200
 
 #define LIST_MAX 1024
-#define DEFAULT_BUFFER_SIZE 2048
+#define DEFAULT_BUFFER_SIZE 4096
 
 enum COURSE_KND {
 
