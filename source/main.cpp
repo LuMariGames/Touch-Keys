@@ -24,7 +24,8 @@ course = COURSE_HARD,CurrentCourse = -1,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
-double BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,OffTime = 0,NowTime = 0,tmpjudgetime = 0;
+double BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,tmpjudgetime = 0,
+OffTime = 0,SetTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
@@ -140,7 +141,8 @@ int main() {
 			//差を使って時間を測る
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
 			++timecnt;
-			NowTime = osGetTime() * 0.001 - OffTime;
+			if (isPause) SetTime = osGetTime() * 0.001;
+			else if (!isPause) NowTime = osGetTime() * 0.001 - OffTime;
 
 			//曲再生
 			if (timecnt == 60) {
@@ -286,7 +288,7 @@ int main() {
 			else judgeid = -1;
 
 			//デバッグ用テキスト
-			/*snprintf(get_buffer(), BUFFER_SIZE, "%d", MaxNotesCnt);
+			/*snprintf(get_buffer(), BUFFER_SIZE, "%.3f", (double)ndspChnGetSamplePos(CHANNEL));
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
 			if ((key & KEY_START || checknotes()) && ndspChnIsPlaying(CHANNEL) == false) {
