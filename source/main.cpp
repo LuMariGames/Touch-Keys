@@ -136,13 +136,14 @@ int main() {
 			if (key & KEY_A) isAuto = !isAuto;	//オート切り替え
 			if (key & KEY_DUP && NotesSpeed < 600) NotesSpeed += 10;	//最大値(600)まで速度を上げれる
 			if (key & KEY_DDOWN && NotesSpeed > 100) NotesSpeed -= 10;	//最低値(100)まで速度を下げれる
-			if (key & KEY_START) isPause = !isPause;
+			//if (key & KEY_START) isPause = !isPause;
 
 			//差を使って時間を測る
 			if (timecnt == 0) OffTime = osGetTime() * 0.001;
 			++timecnt;
-			if (isPause) SetTime = osGetTime() * 0.001;
-			else if (!isPause) NowTime = osGetTime() * 0.001 - OffTime;
+			//if (isPause) SetTime = osGetTime() * 0.001;
+			//else if (!isPause) 
+			NowTime = osGetTime() * 0.001 - OffTime;
 
 			//曲再生
 			if (timecnt == 60) {
@@ -288,8 +289,8 @@ int main() {
 			else judgeid = -1;
 
 			//デバッグ用テキスト
-			snprintf(get_buffer(), BUFFER_SIZE, "%.3f", (double)ndspChnGetSamplePos(CHANNEL));
-			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);
+			/*snprintf(get_buffer(), BUFFER_SIZE, "%.3f", dummy;
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
 			if ((key & KEY_START || checknotes()) && ndspChnIsPlaying(CHANNEL) == false) {
 				scene = 1;		//選曲画面に戻る
