@@ -35,6 +35,7 @@ void playFile(void* infoIn){
 	int16_t*	buffer1 = NULL;
 	int16_t*	buffer2 = NULL;
 	int16_t*	buffer3 = NULL;
+	int16_t*	buffer4 = NULL;
 	ndspWaveBuf	waveBuf[3];
 	bool		lastbuf = false, isNdspInit = false;
 	int		ret = -1;
@@ -65,6 +66,7 @@ void playFile(void* infoIn){
 	buffer1 = (int16_t*)linearAlloc(decoder.vorbis_buffer_size * sizeof(int16_t));
 	buffer2 = (int16_t*)linearAlloc(decoder.vorbis_buffer_size * sizeof(int16_t));
 	buffer3 = (int16_t*)linearAlloc(decoder.vorbis_buffer_size * sizeof(int16_t));
+	buffer4 = (int16_t*)linearAlloc(decoder.vorbis_buffer_size * sizeof(int16_t));
 
 	ndspChnReset(CHANNEL);
 	ndspChnWaveBufClear(CHANNEL);
@@ -86,6 +88,9 @@ void playFile(void* infoIn){
 	waveBuf[2].nsamples = (*decoder.decode)(&buffer3[0]) / (*decoder.channels)();
 	waveBuf[2].data_vaddr = &buffer3[0];
 	ndspChnWaveBufAdd(CHANNEL, &waveBuf[2]);
+	waveBuf[3].nsamples = (*decoder.decode)(&buffer4[0]) / (*decoder.channels)();
+	waveBuf[3].data_vaddr = &buffer4[0];
+	ndspChnWaveBufAdd(CHANNEL, &waveBuf[3]);
 	
 	while(ndspChnIsPlaying(CHANNEL) == false);
 
@@ -95,7 +100,8 @@ void playFile(void* infoIn){
 
 		if(lastbuf == true && waveBuf[0].status == NDSP_WBUF_DONE &&
 			waveBuf[1].status == NDSP_WBUF_DONE &&
-			waveBuf[2].status == NDSP_WBUF_DONE)
+			waveBuf[2].status == NDSP_WBUF_DONE &&
+			waveBuf[3].status == NDSP_WBUF_DONE)
 			break;
 
 		if(ndspChnIsPaused(CHANNEL) == true || lastbuf == true)
@@ -129,6 +135,15 @@ void playFile(void* infoIn){
 			else if(read < decoder.vorbis_buffer_size) waveBuf[2].nsamples = read / (*decoder.channels)();
 			ndspChnWaveBufAdd(CHANNEL, &waveBuf[2]);
 		}
+		if(waveBuf[3].status == NDSP_WBUF_DONE) {
+			size_t read = (*decoder.decode)(&buffer4[0]);
+			if(read <= 0) {
+				lastbuf = true;
+				continue;
+			}
+			else if(read < decoder.vorbis_buffer_size) waveBuf[3].nsamples = read / (*decoder.channels)();
+			ndspChnWaveBufAdd(CHANNEL, &waveBuf[3]);
+		}
 	}
 
 	(*decoder.exit)();
@@ -143,6 +158,7 @@ out:
 	linearFree(buffer1);
 	linearFree(buffer2);
 	linearFree(buffer3);
+	linearFree(buffer4);
 
 	threadExit(0);
 	return;
