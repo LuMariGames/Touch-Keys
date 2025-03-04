@@ -228,7 +228,7 @@ int main() {
 			C2D_DrawRectSolid(0,0,0,ratio,20,C2D_Color32(0xF4, 0xB7, 0x00, 0xFF));
 			C2D_DrawRectSolid(ratio,0,0,TOP_WIDTH - ratio,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
-			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.7d COMBO:%.4d", Score, Combo);
+			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.7d COMBO:%.4d SPEED:%.1f", Score, Combo, NotesSpeed*0.01);
 			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
 			
 			//下画面に移動
