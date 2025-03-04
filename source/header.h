@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#define VERSION "2.0.0"
+#define VERSION "2.0.1"
 #define DEFAULT_DIR "sdmc:/tkjfiles/"
 #define SETTING_FILE "sdmc:/TouchKeys_config.json"
 
@@ -38,11 +38,4 @@ enum COURSE_KND {
 	COURSE_NORMAL,
 	COURSE_HARD,
 	COURSE_CRAZY,
-};
-
-enum COMMAND_KND {
-
-	COMMAND_BPMCHANGE = 0,
-	COMMAND_SCROLL,
-	COMMAND_DELAY,
 };
