@@ -148,7 +148,7 @@ int main() {
 			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
 			//曲再生
-			if (NowTime >= 1.275 && !isPlayMain) {
+			if (NowTime >= 1.1 && !isPlayMain) {
 				isPlayMain = true;
 				play_main_music(&isPlayMain, List[SelectedId]);
 			}
@@ -393,7 +393,7 @@ inline bool tkjload() {
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]) - 1;
 							Notes[MaxNotesCnt].bpm = BPM;
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = 1.275 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = 1.278 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
