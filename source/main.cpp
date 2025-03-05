@@ -149,8 +149,8 @@ int main() {
 
 			//曲再生
 			if (NowTime >= 1.0 && !isPlayMain) {
-				play_main_music(&isPlayMain, List[SelectedId]);
 				isPlayMain = true;
+				play_main_music(&isPlayMain, List[SelectedId]);
 			}
 
 			touchid = -1, Rubbing = false;
@@ -392,7 +392,7 @@ inline bool tkjload() {
 							Notes[MaxNotesCnt].flag = true;
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]);
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = 1.25 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = 1.265 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
