@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#define VERSION "2.0.1"
+#define VERSION "2.0.2"
 #define DEFAULT_DIR "sdmc:/tkjfiles/"
 #define SETTING_FILE "sdmc:/TouchKeys_config.json"
 
@@ -26,7 +26,6 @@
 #define NOTES_MEASURE_MAX 256
 #define MEASURE_MAX 1024
 #define NOTES_MAX 8192
-#define COMMAND_MAX 256
 #define JUDGE_Y 200
 
 #define LIST_MAX 1024
