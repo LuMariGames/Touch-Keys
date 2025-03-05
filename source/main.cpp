@@ -149,8 +149,8 @@ int main() {
 
 			//曲再生
 			if (NowTime >= 1.0 && !isPlayMain) {
-				isPlayMain = true;
 				play_main_music(&isPlayMain, List[SelectedId]);
+				isPlayMain = true;
 			}
 
 			touchid = -1, Rubbing = false;
