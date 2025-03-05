@@ -148,7 +148,7 @@ int main() {
 			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
 			//曲再生
-			if (timecnt == 60) {
+			if (NowTime >= 1.275) {
 				isPlayMain = true;
 				play_main_music(&isPlayMain, List[SelectedId]);
 			}
@@ -456,7 +456,7 @@ inline int ctoi(char c) {
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
 	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0;
-	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 0;
+	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0.0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 0.0;
 	isExit = false,isPlayMain = false;
 	stop_main_music();
 	tkjload();
