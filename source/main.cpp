@@ -388,10 +388,9 @@ inline bool tkjload() {
 					NotesCount = 0;
 					while (tkj_notes[tkj_cnt][NotesCount] != ',' && tkj_notes[tkj_cnt][NotesCount] != '\n') ++NotesCount;
 					for (int i = 0; i < NotesCount; ++i) {
-						if (ctoi(tkj_notes[tkj_cnt][i]) != 0) {
+						if (ctoi(tkj_notes[tkj_cnt][i]) != -1) {
 							Notes[MaxNotesCnt].flag = true;
-							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]) - 1;
-							Notes[MaxNotesCnt].bpm = BPM;
+							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]);
 							Notes[MaxNotesCnt].scroll = SCROLL;
 							Notes[MaxNotesCnt].judge_time = 1.25 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
@@ -440,15 +439,14 @@ inline bool tkjload() {
 inline int ctoi(char c) {
 
 	switch (c) {
-	case '0': return 0;
-	case '1': return 1;
-	case '2': return 2;
-	case '3': return 3;
-	case '4': return 4;
-	case '5': return 5;
-	case '6': return 6;
-	case '7': return 7;
-	case '8': return 8;
+	case '1': return 0;
+	case '2': return 1;
+	case '3': return 2;
+	case '4': return 3;
+	case '5': return 4;
+	case '6': return 5;
+	case '7': return 6;
+	case '8': return 7;
 	default: return -1;
 	}
 }
