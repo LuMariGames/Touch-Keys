@@ -148,7 +148,7 @@ int main() {
 			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
 			//曲再生
-			if (NowTime >= 1.0 && !isPlayMain) {
+			if (NowTime >= 1.2 && !isPlayMain) {
 				isPlayMain = true;
 				play_main_music(&isPlayMain, List[SelectedId]);
 			}
