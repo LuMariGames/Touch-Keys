@@ -456,9 +456,10 @@ inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
 	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0;
 	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0.0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 0.0;
-	isExit = false,isPlayMain = false;
-	stop_main_music();
+	isExit = false,isPlayMain = true;
+	stopPlayback();
 	tkjload();
+	isPlayMain = false;
 }
 
 inline void load_file_main() {
