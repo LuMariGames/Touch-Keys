@@ -393,7 +393,7 @@ inline bool tkjload() {
 							Notes[MaxNotesCnt].flag = true;
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]);
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = 1.09 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = 1.078 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
