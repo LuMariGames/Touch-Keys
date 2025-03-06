@@ -77,7 +77,7 @@ void playFile(void* infoIn){
 
 	memset(waveBuf, 0, sizeof(waveBuf));
 
-	while (*info->isPlay == false) svcSleepThread(100000);
+	while (*info->isPlay == false) svcSleepThread(20000);
 
 	waveBuf[0].nsamples = (*decoder.decode)(&buffer1[0]) / (*decoder.channels)();
 	waveBuf[0].data_vaddr = &buffer1[0];
