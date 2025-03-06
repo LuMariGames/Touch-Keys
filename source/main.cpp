@@ -142,16 +142,16 @@ int main() {
 			//差を使って時間を測る
 			gettimeofday(&tv, NULL);
 			//if (timecnt == 0) OffTime = osGetTime() * 0.001;
-			if (timecnt == 0) OffTime = tv.tv_sec + tv.tv_usec * 0.000001;
+			if (timecnt == 0) {
+				OffTime = tv.tv_sec + tv.tv_usec * 0.000001;
+				play_main_music(&isPlayMain, List[SelectedId]);
+			}
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
 			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
 			//曲再生
-			if (NowTime >= 1.0 && !isPlayMain) {
-				isPlayMain = true;
-				play_main_music(&isPlayMain, List[SelectedId]);
-			}
+			if (NowTime >= 1.0 && !isPlayMain) isPlayMain = true;
 
 			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
