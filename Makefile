@@ -38,6 +38,7 @@ DATA		:=	data
 INCLUDES	:=	include
 GRAPHICS	:=	gfx
 ROMFS		:=	romfs
+LIBRARY		:=	library
 GFXBUILD	:=	$(ROMFS)/gfx
 #---------------------------------------------------------------------------------
 APP_VER					:= 16 #1024.16.1?
@@ -75,7 +76,7 @@ LIBS	:= -lcitro2d -lcitro3d -lctru -lm -lvorbisidec -logg -ljansson
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS := $(CTRULIB) $(PORTLIBS)
+LIBDIRS := library/citro3d
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
