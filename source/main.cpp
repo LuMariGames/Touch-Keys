@@ -298,7 +298,7 @@ int main() {
 				isPlayMain = true;
 				scene = 1;		//選曲画面に戻る
 				isGameStart = false;
-				stop_main_music();
+				stopPlayback();
 			}
 			break;
 		}
