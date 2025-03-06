@@ -295,6 +295,7 @@ int main() {
 			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
 			if ((key & KEY_START || checknotes()) && ndspChnIsPlaying(CHANNEL) == false) {
+				isPlayMain = true;
 				scene = 1;		//選曲画面に戻る
 				isGameStart = false;
 				stop_main_music();
