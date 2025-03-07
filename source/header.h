@@ -11,12 +11,12 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#define VERSION "2.0.2"
+#define VERSION "2.0.3"
 #define DEFAULT_DIR "sdmc:/tkjfiles/"
 #define SETTING_FILE "sdmc:/TouchKeys_config.json"
 
-#define DEFAULT_JUDGE_RANGE_PERFECT	0.035
-#define DEFAULT_JUDGE_RANGE_NICE	0.070
+#define DEFAULT_JUDGE_RANGE_PERFECT	0.050
+#define DEFAULT_JUDGE_RANGE_NICE	0.075
 #define DEFAULT_JUDGE_RANGE_BAD		0.100
 
 #define TOP_WIDTH 400
