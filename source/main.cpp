@@ -26,7 +26,7 @@ SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//�
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
 double BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,tmpjudgetime = 0,
-OffTime = 0,SetTime = 0,NowTime = 0,ovtime = 0;
+OffTime = 0,SetTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
@@ -150,12 +150,11 @@ int main() {
 			}
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
-			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - (ovtime + OffTime);
+			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
 			//曲再生
 			if (NowTime >= 1.1 && !isPlayMain) {
 				isPlayMain = true;
-				ovtime = vorbis_tme();
 			}
 
 			touchid = -1, Rubbing = false;
@@ -296,8 +295,8 @@ int main() {
 			else judgeid = -1;
 
 			//デバッグ用テキスト
-			snprintf(get_buffer(), BUFFER_SIZE, "%.4f", ovtime);
-			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);
+			/*snprintf(get_buffer(), BUFFER_SIZE, "%.4f", ovtime);
+			draw_text(BOTTOM_WIDTH / 2, 0, get_buffer(), 0,1,0);*/
 
 			if ((key & KEY_START || checknotes()) && ndspChnIsPlaying(CHANNEL) == false) {
 				isPlayMain = true;
@@ -459,7 +458,7 @@ inline int ctoi(char c) {
 
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
-	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0,ovtime = 0;
+	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0;
 	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0.0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 0.0;
 	isExit = false,isPlayMain = true;
 	stopPlayback();
