@@ -26,7 +26,7 @@ SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//�
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
 double BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,tmpjudgetime = 0,
-OffTime = 0,SetTime = 0,NowTime = 0,ovtime　= 0;
+OffTime = 0,SetTime = 0,NowTime = 0,ovtime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
