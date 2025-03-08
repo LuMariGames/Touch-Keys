@@ -150,12 +150,12 @@ int main() {
 			}
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
-			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
+			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - (ovtime + OffTime);
 
 			//曲再生
 			if (NowTime >= 1.0 && !isPlayMain) {
 				isPlayMain = true;
-				ovtime = vorbis_time();
+				ovtime = vorbis_tme();
 			}
 
 			touchid = -1, Rubbing = false;
