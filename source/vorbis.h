@@ -17,3 +17,4 @@ int isVorbis(const char* in);
 int get_buffer_size();
 void put_buffer_size(int tmp);
 int vorbis_ratio();
+double vorbis_time();
