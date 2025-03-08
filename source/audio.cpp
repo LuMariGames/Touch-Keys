@@ -98,12 +98,6 @@ void load_sound() {
 		//linearFree(&sound[i].ovf);
 		ov_clear(&sound[i].ovf);
 		fclose(file);
-		ndspChnReset(sound[i].audiochannel);
-		ndspChnInitParams(sound[i].audiochannel);
-		ndspChnSetMix(sound[i].audiochannel, sound[i].mix);
-		ndspChnSetInterp(sound[i].audiochannel, sound[i].interp);
-		ndspChnSetRate(sound[i].audiochannel, sound[i].rate);
-		ndspChnSetFormat(sound[i].audiochannel, NDSP_CHANNELS(sound[i].channels) | NDSP_ENCODING(sound[i].encoding));
 	}
 }
 
@@ -114,6 +108,12 @@ int play_sound(int id) {
 		return -1;
 	}
 	ndspChnWaveBufClear(sound[id].audiochannel);
+	ndspChnReset(sound[i].audiochannel);
+	ndspChnInitParams(sound[i].audiochannel);
+	ndspChnSetMix(sound[i].audiochannel, sound[i].mix);
+	ndspChnSetInterp(sound[i].audiochannel, sound[i].interp);
+	ndspChnSetRate(sound[i].audiochannel, sound[i].rate);
+	ndspChnSetFormat(sound[i].audiochannel, NDSP_CHANNELS(sound[i].channels) | NDSP_ENCODING(sound[i].encoding));
 	ndspChnWaveBufAdd(sound[id].audiochannel, &waveBuf[id]);
 
 	return 0;
