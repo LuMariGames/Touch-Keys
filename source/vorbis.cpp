@@ -123,8 +123,3 @@ int vorbis_ratio() {
 	if (ndspChnIsPlaying(CHANNEL)) return (double)ov_time_tell(&vorbisFile) / (double)ov_time_total(&vorbisFile, -1) * (double)TOP_WIDTH;
 	else return 0;
 }
-
-double vorbis_tme() {
-	if (ndspChnIsPlaying(CHANNEL)) return ov_time_tell(&vorbisFile) * 0.001;
-	else return 0.0;
-}
