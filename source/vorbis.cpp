@@ -124,7 +124,7 @@ int vorbis_ratio() {
 	else return 0;
 }
 
-double vorbis_time() {
+double vorbis_tme() {
 	if (ndspChnIsPlaying(CHANNEL)) return ov_time_tell(&vorbisFile) * 0.001;
 	else return 0.0;
 }
