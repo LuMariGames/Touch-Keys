@@ -127,8 +127,6 @@ out:
 	delete(info->file);
 	linearFree(buffer1);
 	linearFree(buffer2);
-	linearFree(buffer3);
-	linearFree(buffer4);
 
 	threadExit(0);
 	return;
