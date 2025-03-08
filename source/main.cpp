@@ -65,7 +65,6 @@ int main() {
 
 	while (aptMainLoop()) {
 
-		C3D_FrameSync();
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown();
