@@ -151,22 +151,22 @@ int main() {
 			//NowTime = osGetTime() * 0.001 - OffTime;
 			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
-			//曲再生
-			if (NowTime >= 1.0 && !isPlayMain) {
-				isPlayMain = true;
-				play_main_music(&isPlayMain, List[SelectedId]);
-			}
-
 			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
-			if (touch_x != 0 && touch_y != 0 && !isAuto) touchid = (int)tp.px / 80;
+			if (key & KEY_TOUCH && !isAuto) touchid = (int)tp.px / 80;
 			if (PreTouchId != touchid && touchid != -1) {	//擦り判定
 				PreTouchId = touchid;
 				Rubbing = true;
 			}
 			if (PreTouch_x != 0 && PreTouch_y != 0 && !Rubbing) touchid = -1;
 			if (touchid != -1) play_sound(0);
+
+			//曲再生
+			if (NowTime >= 1.0 && !isPlayMain) {
+				isPlayMain = true;
+				play_main_music(&isPlayMain, List[SelectedId]);
+			}
 
 			//レーン描画(上画面用)
 			C2D_DrawRectSolid(40,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
@@ -176,8 +176,8 @@ int main() {
 			C2D_DrawRectSolid(359,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//ノーツ判定
-			int NotesJudge[4] = { -1,-1,-1,-1 };
-			double NotesJudgeLag[4] = { 1,1,1,1 };
+			int NotesJudge[8] = { -1,-1,-1,-1,-1,-1,-1,-1 };
+			double NotesJudgeLag[8] = { 1,1,1,1,1,1,1,1 };
 			for (int i = 0; i < MaxNotesCnt; ++i) {
 
 				if (Notes[i].flag) {
@@ -196,7 +196,7 @@ int main() {
 				}
 			}
 			if (!isAuto) {
-				for (int i = 0; i < 4; ++i) {
+				for (int i = 0; i < 8; ++i) {
 					if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
@@ -208,14 +208,14 @@ int main() {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
-						Score += 400000 / MaxNotesCnt + 1;
+						Score += 500000 / MaxNotesCnt + 1;
 						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
-						Score += 240000 / MaxNotesCnt + 1;
+						Score += 250000 / MaxNotesCnt + 1;
 						Combo = 0;
 					}
 				}
