@@ -147,6 +147,7 @@ int main() {
 			if (timecnt == 0) {
 				OffTime = tv.tv_sec + tv.tv_nsec * 0.000001;
 				isPlayMain = false;
+				play_main_music(&isPlayMain, List[SelectedId]);
 			}
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
@@ -171,7 +172,6 @@ int main() {
 			//曲再生
 			if (NowTime >= 1.0 && !isPlayMain) {
 				isPlayMain = true;
-				play_main_music(&isPlayMain, List[SelectedId]);
 			}
 
 			//レーン描画(上画面用)
@@ -400,7 +400,7 @@ inline bool tkjload() {
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]);
 							Notes[MaxNotesCnt].keys = keys;
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = 1.256 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = 1.0 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
