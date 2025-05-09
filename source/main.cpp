@@ -160,7 +160,7 @@ int main() {
 			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
-			if (key & KEY_TOUCH && !isAuto) touchid = (int)(tp.px / (319.0 / Notes[checknote].keys));
+			if (touch_x != 0 && touch_y != 0 && !isAuto) touchid = (int)(tp.px / (319.0 / Notes[checknote].keys));
 			if (PreTouchId != touchid && touchid != -1) {	//擦り判定
 				PreTouchId = touchid;
 				Rubbing = true;
