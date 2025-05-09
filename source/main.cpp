@@ -269,7 +269,7 @@ int main() {
 						Combo = 0;
 					}
 					Note_x = 319.0 / Notes[i].keys;
-					C2D_DrawRectSolid(Note_x * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+					C2D_DrawRectSolid(Note_x * Notes[i].num,Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
 
