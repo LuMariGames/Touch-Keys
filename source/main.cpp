@@ -21,12 +21,12 @@ char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,
 SongNumber = 0,ratio = 0,NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,
-course = COURSE_HARD,CurrentCourse = -1,
+course = COURSE_HARD,CurrentCourse = -1,keys = 4,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
-double BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,tmpjudgetime = 0,
-OffTime = 0,SetTime = 0,NowTime = 0;
+double BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0,Note_x = 79.75,
+tmpjudgetime = 0,OffTime = 0,SetTime = 0,NowTime = 0;
 bool isExit = false,isPlayMain = false,isAuto = false,isCourseMatch = false,
 isSelectCourse = false,isGameStart = false,isPause = false,Rubbing = false;
 
@@ -146,15 +146,15 @@ int main() {
 			if (timecnt == 0) {
 				OffTime = tv.tv_sec + tv.tv_usec * 0.000001;
 				isPlayMain = false;
-				play_main_music(&isPlayMain, List[SelectedId]);
 			}
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
 			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
 			//曲再生
-			if (NowTime >= 1.1 && !isPlayMain) {
+			if (NowTime >= 1.0 && !isPlayMain) {
 				isPlayMain = true;
+				play_main_music(&isPlayMain, List[SelectedId]);
 			}
 
 			touchid = -1, Rubbing = false;
@@ -227,8 +227,9 @@ int main() {
 				if (Notes[i].flag) {
 
 					//位置計算
+					Note_x = 319.0 / Notes[i].keys;
 					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
-					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(39 + 79.75 * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(39 + Note_x * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
 
@@ -255,6 +256,9 @@ int main() {
 			C2D_DrawRectSolid(239.25,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(319,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
+			//判定線
+			C2D_DrawRectSolid(0,JUDGE_Y,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xAA, 0x00, 0xFF));
+
 			//ノーツ描画
 			for (int i = 0; i < MaxNotesCnt; ++i) {
 
@@ -264,12 +268,10 @@ int main() {
 						Notes[i].flag = false;
 						Combo = 0;
 					}
-					C2D_DrawRectSolid(79.75 * Notes[i].num,Notes[i].y,0,80,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+					Note_x = 319.0 / Notes[i].keys;
+					C2D_DrawRectSolid(Note_x * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
-
-			//判定線
-			C2D_DrawRectSolid(0,JUDGE_Y,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//判定文字
 			if (timecnt < judgetmpcnt) {
@@ -396,8 +398,9 @@ inline bool tkjload() {
 						if (ctoi(tkj_notes[tkj_cnt][i]) != -1) {
 							Notes[MaxNotesCnt].flag = true;
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]);
+							Notes[MaxNotesCnt].keys = keys;
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = 1.1 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = 1.0 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
@@ -432,6 +435,15 @@ inline bool tkjload() {
 					free(temp);
 				}
 
+				if (strstr(tkj_notes[tkj_cnt], "#KEYCHANGE:") == tkj_notes[tkj_cnt]) {
+					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+					if (tkj_notes[tkj_cnt][11] != '\n' && tkj_notes[tkj_cnt][11] != '\r') {
+						strlcpy(temp, tkj_notes[tkj_cnt] + 11, strlen(tkj_notes[tkj_cnt]) - 12);
+						keys = atoi(temp);
+					}
+					free(temp);
+				}
+
 				if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			}
 			++tkj_cnt;
@@ -458,7 +470,7 @@ inline int ctoi(char c) {
 
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
-	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0;
+	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0,keys = 4,Note_x = 79.75;
 	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0.0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 0.0;
 	isExit = false,isPlayMain = true;
 	stopPlayback();
