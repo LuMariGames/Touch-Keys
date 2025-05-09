@@ -15,7 +15,7 @@
 json_t *json;
 json_error_t error_json;
 
-struct timeval tv;
+struct timespec tv;
 char buffer[BUFFER_SIZE];
 char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
@@ -142,15 +142,15 @@ int main() {
 			//if (key & KEY_START) isPause = !isPause;
 
 			//差を使って時間を測る
-			gettimeofday(&tv, NULL);
+			clock_gettime(CLOCK_MONOTONIC, &tv);
 			//if (timecnt == 0) OffTime = osGetTime() * 0.001;
 			if (timecnt == 0) {
-				OffTime = tv.tv_sec + tv.tv_usec * 0.000001;
+				OffTime = tv.tv_sec + tv.tv_nsec * 0.000001;
 				isPlayMain = false;
 			}
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
-			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
+			NowTime = tv.tv_sec + tv.tv_nsec * 0.000001 - OffTime;
 
 			for (int i = 0; i < MaxNotesCnt; ++i) {
 				if (!Notes[i].flag) checknote = i + 1;
@@ -400,7 +400,7 @@ inline bool tkjload() {
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]);
 							Notes[MaxNotesCnt].keys = keys;
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = 1.0 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = 1.256 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
