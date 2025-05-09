@@ -145,13 +145,13 @@ int main() {
 			clock_gettime(CLOCK_MONOTONIC, &tv);
 			//if (timecnt == 0) OffTime = osGetTime() * 0.001;
 			if (timecnt == 0) {
-				OffTime = tv.tv_sec + tv.tv_nsec * 0.000001;
+				OffTime = tv.tv_sec + tv.tv_nsec * 0.000000001;
 				isPlayMain = false;
 				play_main_music(&isPlayMain, List[SelectedId]);
 			}
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
-			NowTime = tv.tv_sec + tv.tv_nsec * 0.000001 - OffTime;
+			NowTime = tv.tv_sec + tv.tv_nsec * 0.000000001 - OffTime;
 
 			for (int i = 0; i < MaxNotesCnt; ++i) {
 				if (!Notes[i].flag) checknote = i + 1;
