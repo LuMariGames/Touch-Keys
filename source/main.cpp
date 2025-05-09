@@ -69,6 +69,7 @@ int main() {
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown();
+		int checknote = 0;
 		if (isExit == true) break;
 
 		//描画開始
@@ -194,14 +195,16 @@ int main() {
 						NotesJudgeLag[Notes[i].num] = fabs(Notes[i].judge_time - NowTime);
 					}
 				}
+				else checknote = i + 1;
 			}
 			if (!isAuto) {
+				if (key & KEY_TOUCH && !isAuto) touchid = (int)tp.px * (1 / 319.0) * Notes[checknote].keys;
 				for (int i = 0; i < 8; ++i) {
 					if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
-						Score += 1000000 / MaxNotesCnt + 1;
+						Score += 1000000 / MaxNtesCnt + 1;
 						++Combo;
 					}
 					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
