@@ -16,7 +16,7 @@ Option:
   FreeProductCode         : true # Removes limitations on ProductCode
   MediaFootPadding        : false # If true CCI files are created with padding
   EnableCrypt             : false # Enables encryption for NCCH and CIA
-  EnableCompress          : true # Compresses where applicable (currently only exefs:/.code)
+  EnableCompress          : false # Compresses where applicable (currently only exefs:/.code)
   
 AccessControlInfo:
   CoreVersion                   : 2
@@ -72,9 +72,9 @@ AccessControlInfo:
   IdealProcessor                : 0
   AffinityMask                  : 1
   Priority                      : 16
-  MaxCpu                        : 0x7F
+  MaxCpu                        : 0x9E
   HandleTableSize               : 0x200
-  DisableDebug                  : true
+  DisableDebug                  : false
   EnableForceDebug              : false
   CanWriteSharedPage            : true
   CanUsePrivilegedPriority      : false
