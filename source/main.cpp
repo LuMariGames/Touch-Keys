@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <jansson.h>
-#include <sys/time.h>
+#include <time.h>
 
 json_t *json;
 json_error_t error_json;
