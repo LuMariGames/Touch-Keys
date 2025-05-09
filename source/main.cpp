@@ -152,10 +152,15 @@ int main() {
 			//NowTime = osGetTime() * 0.001 - OffTime;
 			NowTime = tv.tv_sec + tv.tv_usec * 0.000001 - OffTime;
 
+			for (int i = 0; i < MaxNotesCnt; ++i) {
+				if (!Notes[i].flag) checknote = i + 1;
+				else break;
+			}
+
 			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
-			if (key & KEY_TOUCH && !isAuto) touchid = (int)tp.px / 80;
+			if (key & KEY_TOUCH && !isAuto) touchid = (int)(tp.px / (319.0 / Notes[checknote].keys));
 			if (PreTouchId != touchid && touchid != -1) {	//擦り判定
 				PreTouchId = touchid;
 				Rubbing = true;
@@ -195,10 +200,8 @@ int main() {
 						NotesJudgeLag[Notes[i].num] = fabs(Notes[i].judge_time - NowTime);
 					}
 				}
-				else checknote = i + 1;
 			}
 			if (!isAuto) {
-				if (key & KEY_TOUCH && !isAuto) touchid = (int)tp.px * (1 / 319.0) * Notes[checknote].keys;
 				for (int i = 0; i < 8; ++i) {
 					if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
 						Notes[NotesJudge[i]].flag = false;
