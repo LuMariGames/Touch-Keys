@@ -8,6 +8,7 @@
 	free((void*) ptr); ptr = NULL
 
 static volatile bool stop = true;
+double settime[2];
 
 bool togglePlayback(void){
 
@@ -77,25 +78,29 @@ void playFile(void* infoIn){
 
 	memset(waveBuf, 0, sizeof(waveBuf));
 
-	while (*info->isPlay == false) svcSleepThread(16667);
+	while (*info->isPlay == false) svcSleepThread(100000);
+	settime[0] = osGetTime() * 0.001 + 0.256;
 
 	waveBuf[0].nsamples = (*decoder.decode)(&buffer1[0]) / (*decoder.channels)();
 	waveBuf[0].data_vaddr = &buffer1[0];
-	ndspChnWaveBufAdd(CHANNEL, &waveBuf[0]);
 	waveBuf[1].nsamples = (*decoder.decode)(&buffer2[0]) / (*decoder.channels)();
 	waveBuf[1].data_vaddr = &buffer2[0];
-	ndspChnWaveBufAdd(CHANNEL, &waveBuf[1]);	
 	waveBuf[2].nsamples = (*decoder.decode)(&buffer3[0]) / (*decoder.channels)();
 	waveBuf[2].data_vaddr = &buffer3[0];
-	ndspChnWaveBufAdd(CHANNEL, &waveBuf[2]);
 	waveBuf[3].nsamples = (*decoder.decode)(&buffer4[0]) / (*decoder.channels)();
 	waveBuf[3].data_vaddr = &buffer4[0];
+
+	settime[1] = osGetTime() * 0.001;
+	svcSleepThread(settime[0] - settime[1] * 1000000000);
+	ndspChnWaveBufAdd(CHANNEL, &waveBuf[0]);
+	ndspChnWaveBufAdd(CHANNEL, &waveBuf[1]);
+	ndspChnWaveBufAdd(CHANNEL, &waveBuf[2]);
 	ndspChnWaveBufAdd(CHANNEL, &waveBuf[3]);
-	
+
 	while(ndspChnIsPlaying(CHANNEL) == false);
 
 	while(stop == false){
-		//音切れチェックの間隔(us, この場合100ms毎に確認する)
+		//音切れチェックの間隔(この場合0.1ms毎に確認する)
 		svcSleepThread(100000);
 
 		if(lastbuf == true && waveBuf[0].status == NDSP_WBUF_DONE &&
@@ -188,7 +193,7 @@ inline int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo, 
 	playbackInfo->isPlay = p_isPlayMain;
 
 	svcGetThreadPriority(&prio, CUR_THREAD_HANDLE);
-	thread = threadCreate(playFile, playbackInfo, 32000, prio - 1, -2, false);
+	thread = threadCreate(playFile, playbackInfo, 65536, prio - 1, -2, false);
 	
 	return 0;
 }
