@@ -8,7 +8,6 @@
 	free((void*) ptr); ptr = NULL
 
 static volatile bool stop = true;
-double settime[2];
 
 bool togglePlayback(void){
 
@@ -79,7 +78,6 @@ void playFile(void* infoIn){
 	memset(waveBuf, 0, sizeof(waveBuf));
 
 	while (*info->isPlay == false) svcSleepThread(100000);
-	settime[0] = osGetTime() * 0.001 + 0.256;
 
 	waveBuf[0].nsamples = (*decoder.decode)(&buffer1[0]) / (*decoder.channels)();
 	waveBuf[0].data_vaddr = &buffer1[0];
@@ -90,8 +88,6 @@ void playFile(void* infoIn){
 	waveBuf[3].nsamples = (*decoder.decode)(&buffer4[0]) / (*decoder.channels)();
 	waveBuf[3].data_vaddr = &buffer4[0];
 
-	settime[1] = osGetTime() * 0.001;
-	svcSleepThread(settime[0] - settime[1] * 1000000000);
 	ndspChnWaveBufAdd(CHANNEL, &waveBuf[0]);
 	ndspChnWaveBufAdd(CHANNEL, &waveBuf[1]);
 	ndspChnWaveBufAdd(CHANNEL, &waveBuf[2]);
@@ -193,7 +189,7 @@ inline int changeFile(const char* ep_file, struct playbackInfo_t* playbackInfo, 
 	playbackInfo->isPlay = p_isPlayMain;
 
 	svcGetThreadPriority(&prio, CUR_THREAD_HANDLE);
-	thread = threadCreate(playFile, playbackInfo, 65536, prio - 1, -2, false);
+	thread = threadCreate(playFile, playbackInfo, 32768, prio - 1, -2, false);
 	
 	return 0;
 }
