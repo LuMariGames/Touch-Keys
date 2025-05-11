@@ -439,6 +439,7 @@ inline bool tkjload() {
 					if (tkj_notes[tkj_cnt][11] != '\n' && tkj_notes[tkj_cnt][11] != '\r') {
 						strlcpy(temp, tkj_notes[tkj_cnt] + 11, strlen(tkj_notes[tkj_cnt]) - 12);
 						keys = atoi(temp);
+						if (keys > 8) keys = 8;
 					}
 					free(temp);
 				}
