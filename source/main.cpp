@@ -435,6 +435,15 @@ inline bool tkjload() {
 					free(temp);
 				}
 
+				if (strstr(tkj_notes[tkj_cnt], "#DELAY:") == tkj_notes[tkj_cnt]) {
+					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+					if (tkj_notes[tkj_cnt][7] != '\n' && tkj_notes[tkj_cnt][7] != '\r') {
+						strlcpy(temp, tkj_notes[tkj_cnt] + 7, strlen(tkj_notes[tkj_cnt]) - 8);
+						tmpjudgetime += atof(temp);
+					}
+					free(temp);
+				}
+
 				if (strstr(tkj_notes[tkj_cnt], "#KEYCHANGE:") == tkj_notes[tkj_cnt]) {
 					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
 					if (tkj_notes[tkj_cnt][11] != '\n' && tkj_notes[tkj_cnt][11] != '\r') {
