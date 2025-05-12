@@ -152,11 +152,6 @@ int main() {
 			//NowTime = osGetTime() * 0.001 - OffTime;
 			NowTime = tv.tv_sec + tv.tv_nsec * 0.000000001 - OffTime;
 
-			for (int i = 0; i < MaxNotesCnt; ++i) {
-				if (!Notes[i].flag) checknote = i + 1;
-				else break;
-			}
-
 			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
@@ -177,6 +172,36 @@ int main() {
 			C2D_DrawRectSolid(40,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 			C2D_DrawRectSolid(359,0,0,1,TOP_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
+			//ノーツ描画
+			for (int i = 0; i < MaxNotesCnt; ++i) {
+
+				if (Notes[i].flag) {
+
+					//位置計算
+					Note_x = 319.0 / Notes[i].keys;
+					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
+					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(39 + Note_x * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+				}
+			}
+
+			//曲の進み具合を太線で表す
+			ratio = vorbis_ratio();
+			C2D_DrawRectSolid(0,0,0,ratio,20,C2D_Color32(0xF4, 0xB7, 0x00, 0xFF));
+			C2D_DrawRectSolid(ratio,0,0,TOP_WIDTH - ratio,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+
+			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.7d COMBO:%.4d SPEED:%.1f", Score, Combo, NotesSpeed*0.01);
+			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
+			
+			//下画面に移動
+			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
+			C3D_FrameDrawOn(bot);
+			C2D_SceneTarget(bot);
+
+			for (int i = 0; i < MaxNotesCnt; ++i) {
+				if (!Notes[i].flag) checknote = i + 1;
+				else break;
+			}
+
 			//ノーツ判定
 			int NotesJudge[8] = { -1,-1,-1,-1,-1,-1,-1,-1 };
 			double NotesJudgeLag[8] = { 1,1,1,1,1,1,1,1 };
@@ -190,6 +215,7 @@ int main() {
 						judgeid = 3;
 						++Combo;
 						play_sound(0);
+						C2D_DrawRectangle(0 + (319.0 / Notes[i].keys * touchid),0,0,319.0 / Notes[i].keys,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 					}
 					if (NotesJudgeLag[Notes[i].num] > fabs(Notes[i].judge_time - NowTime)) {
 						NotesJudge[Notes[i].num] = i;
@@ -222,31 +248,6 @@ int main() {
 					}
 				}
 			}
-
-			//ノーツ描画
-			for (int i = 0; i < MaxNotesCnt; ++i) {
-
-				if (Notes[i].flag) {
-
-					//位置計算
-					Note_x = 319.0 / Notes[i].keys;
-					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
-					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(39 + Note_x * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
-				}
-			}
-
-			//曲の進み具合を太線で表す
-			ratio = vorbis_ratio();
-			C2D_DrawRectSolid(0,0,0,ratio,20,C2D_Color32(0xF4, 0xB7, 0x00, 0xFF));
-			C2D_DrawRectSolid(ratio,0,0,TOP_WIDTH - ratio,20,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
-
-			snprintf(get_buffer(), BUFFER_SIZE, "SCORE:%.7d COMBO:%.4d SPEED:%.1f", Score, Combo, NotesSpeed*0.01);
-			draw_text(TOP_WIDTH / 2, 0, get_buffer(), 0,0,0);
-			
-			//下画面に移動
-			C2D_TargetClear(bot, C2D_Color32(0x42, 0x42, 0x42, 0xFF));
-			C3D_FrameDrawOn(bot);
-			C2D_SceneTarget(bot);
 
 			//タップエフェクト
 			C2D_DrawRectangle(0 + (319.0 / Notes[checknote].keys * touchid),0,0,319.0 / Notes[checknote].keys,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
