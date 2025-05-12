@@ -215,7 +215,7 @@ int main() {
 						judgeid = 3;
 						++Combo;
 						play_sound(0);
-						C2D_DrawRectangle(0 + (319.0 / Notes[i].keys * touchid),0,0,319.0 / Notes[i].keys,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+						C2D_DrawRectangle(0 + (319.0 / Notes[i].keys * Notes[i].num),0,0,319.0 / Notes[i].keys,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 					}
 					if (NotesJudgeLag[Notes[i].num] > fabs(Notes[i].judge_time - NowTime)) {
 						NotesJudge[Notes[i].num] = i;
