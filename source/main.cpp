@@ -268,15 +268,12 @@ int main() {
 			//ノーツ描画
 			for (int i = 0; i < MaxNotesCnt; ++i) {
 
-				if (Notes[i].flag && Notes[i].y > -5.0f && Notes[i].y < BOTTOM_HEIGHT) {
-
-					if (Notes[i].y > BOTTOM_HEIGHT && Notes[i].scroll > 0) {
-						Notes[i].flag = false;
-						Combo = 0;
-					}
-					Note_x = 319.0 / Notes[i].keys;
-					C2D_DrawRectSolid(Note_x * Notes[i].num,Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+				if (Notes[i].y > BOTTOM_HEIGHT && Notes[i].scroll > 0) {
+					Notes[i].flag = false;
+					Combo = 0;
 				}
+				Note_x = 319.0 / Notes[i].keys;
+				if (Notes[i].flag && Notes[i].y > -5.0f && Notes[i].y < BOTTOM_HEIGHT) C2D_DrawRectSolid(Note_x * Notes[i].num,Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 			}
 
 			//判定文字
