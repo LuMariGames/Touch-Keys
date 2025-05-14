@@ -21,7 +21,7 @@ char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,
 SongNumber = 0,ratio = 0,NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,
-course = COURSE_HARD,CurrentCourse = -1,keys = 4,
+course = COURSE_HARD,CurrentCourse = -1,keys = 4,JUDGE_Y = 200,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
@@ -169,6 +169,10 @@ int main() {
 					//位置計算
 					Note_x = 319.0 / Notes[i].keys;
 					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
+					if (Notes[i].y > BOTTOM_HEIGHT * -1 && Notes[i].scroll < 0) {
+						Notes[i].flag = false;
+						Combo = 0;
+					}
 					if (Notes[i].y < 5.0f && Notes[i].y > -240.0f) C2D_DrawRectSolid(39 + Note_x * Notes[i].num,TOP_HEIGHT + Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
@@ -262,9 +266,9 @@ int main() {
 			//ノーツ描画
 			for (int i = 0; i < MaxNotesCnt; ++i) {
 
-				if (Notes[i].flag && Notes[i].y > -5.0f) {
+				if (Notes[i].flag && Notes[i].y > -5.0f && Notes[i].y < BOTTOM_HEIGHT) {
 
-					if (Notes[i].y > BOTTOM_HEIGHT) {
+					if (Notes[i].y > BOTTOM_HEIGHT && Notes[i].scroll > 0) {
 						Notes[i].flag = false;
 						Combo = 0;
 					}
@@ -450,6 +454,18 @@ inline bool tkjload() {
 						strlcpy(temp, tkj_notes[tkj_cnt] + 11, strlen(tkj_notes[tkj_cnt]) - 12);
 						keys = atoi(temp);
 						if (keys > 8) keys = 8;
+						else if (keys < 1) keys = 1;
+					}
+					free(temp);
+				}
+
+				if (strstr(tkj_notes[tkj_cnt], "#JUDGECHANGE:") == tkj_notes[tkj_cnt]) {
+					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
+					if (tkj_notes[tkj_cnt][13] != '\n' && tkj_notes[tkj_cnt][13] != '\r') {
+						strlcpy(temp, tkj_notes[tkj_cnt] + 13, strlen(tkj_notes[tkj_cnt]) - 14);
+						JUDGE_Y = atoi(temp);
+						if (JUDGE_Y > 200) JUDGE_Y = 200;
+						else if (JUDGE_Y < -200) JUDGE_Y = -200;
 					}
 					free(temp);
 				}
