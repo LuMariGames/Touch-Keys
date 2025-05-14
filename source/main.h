@@ -8,11 +8,16 @@ typedef struct {
 } LIST_T;
 
 typedef struct {
-	int num = -1,keys = 4,judge = 200;
+	int num = -1,keys = 4;
 	double judge_time = INT_MAX;
 	bool flag = false;
 	float y,bpm,scroll = 1.0f;
 } NOTES_T;
+
+typedef struct {
+	int judge = 200;
+	double time = INT_MAX;
+} COMMAND_T;
 
 char *get_buffer();
 void draw_text(float x, float y, const char *text, float r, float g, float b);
