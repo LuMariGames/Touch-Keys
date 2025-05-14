@@ -171,7 +171,7 @@ int main() {
 					//位置計算
 					Note_x = 319.0 / Notes[i].keys;
 					Notes[i].y = (Cmd[MeasureCount].judge - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
-					if (Notes[i].y > BOTTOM_HEIGHT * -1 && Notes[i].scroll < 0) {
+					if (Notes[i].y < BOTTOM_HEIGHT * -1 && Notes[i].scroll < 0) {
 						Notes[i].flag = false;
 						Combo = 0;
 					}
@@ -473,7 +473,7 @@ inline bool tkjload() {
 					free(temp);
 				}
 
-				Cmd[MeasureCount].time = tmpjudgetime + OFFSET;
+				Cmd[MeasureCount].time = tmpjudgetime + OFFSET + (240.0 / BPM) * MEASURE;
 				if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			}
 			++tkj_cnt;
