@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#define VERSION "2.1.0"
+#define VERSION "2.1.1"
 #define DEFAULT_DIR "sdmc:/tkjfiles/"
 #define SETTING_FILE "sdmc:/TouchKeys_config.json"
 
