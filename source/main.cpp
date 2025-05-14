@@ -500,7 +500,7 @@ inline int ctoi(char c) {
 
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
-	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0,keys = 4,Note_x = 79.75,JUDGE_Y = 200;
+	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0,keys = 4,Note_x = 79.75;
 	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0.0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 1.0;
 	isExit = false,isPlayMain = true;
 	stopPlayback();
