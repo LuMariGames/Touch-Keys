@@ -8,7 +8,7 @@ typedef struct {
 } LIST_T;
 
 typedef struct {
-	int num = -1, keys = 4;
+	int num = -1,keys = 4,judge = 200;
 	double judge_time = INT_MAX;
 	bool flag = false;
 	float y,bpm,scroll = 1.0f;
