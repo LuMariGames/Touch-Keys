@@ -412,6 +412,7 @@ inline bool tkjload() {
 					}
 					++MeasureCount;
 					tmpjudgetime += (240.0 / BPM) * MEASURE;
+					Cmd[MeasureCount].judge = Cmd[MeasureCount - 1].judge;
 				}
 
 				if (strstr(tkj_notes[tkj_cnt], "#BPMCHANGE:") == tkj_notes[tkj_cnt]) {
@@ -467,7 +468,7 @@ inline bool tkjload() {
 						strlcpy(temp, tkj_notes[tkj_cnt] + 13, strlen(tkj_notes[tkj_cnt]) - 14);
 						Cmd[MeasureCount].judge = atoi(temp);
 						if (Cmd[MeasureCount].judge > 200) Cmd[MeasureCount].judge = 200;
-						else if (Cmd[MeasureCount].judge < -200) Cmd[MeasureCount].judge = -200;
+						else if (Cmd[MeasureCount].judge < 0) Cmd[MeasureCount].judge = 0;
 					}
 					free(temp);
 				}
