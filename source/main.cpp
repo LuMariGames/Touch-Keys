@@ -21,7 +21,7 @@ char buf_select[256];
 char tkj_notes[MEASURE_MAX][NOTES_MEASURE_MAX];	//ノーツ情報
 int scene = 0,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,
 SongNumber = 0,ratio = 0,NotesCount = 0,MaxNotesCnt = 0,Startcnt = 0,MeasureCount = 0,
-course = COURSE_HARD,CurrentCourse = -1,keys = 4,JUDGE_Y = 200,
+course = COURSE_HARD,CurrentCourse = -1,keys = 4,
 SongCount = 0,cursor = 0,course_cursor = 0,course_count = 0,SelectedId = 0,	//選曲画面用
 touch_x,touch_y,PreTouch_x,PreTouch_y,PreTouchId,	//タッチ用
 Combo = 0,Score = 0,NotesSpeed = 200;	//演奏用
@@ -35,6 +35,7 @@ C2D_TextBuf g_dynamicBuf;
 C2D_Text dynText;
 NOTES_T Notes[NOTES_MAX];
 LIST_T List[LIST_MAX];
+COMMAND_T Cmd[MEASURE_MAX];
 
 int ctoi(char c);
 char *get_buffer();
@@ -151,6 +152,7 @@ int main() {
 			++timecnt;
 			//NowTime = osGetTime() * 0.001 - OffTime;
 			NowTime = tv.tv_sec + tv.tv_nsec * 0.000000001 - OffTime;
+			if (NowTime > Cmd[MeasureCount].time) ++MeasureCount;
 
 			//曲再生
 			if (NowTime >= 1.0 && !isPlayMain) {
@@ -168,7 +170,7 @@ int main() {
 
 					//位置計算
 					Note_x = 319.0 / Notes[i].keys;
-					Notes[i].y = (JUDGE_Y - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
+					Notes[i].y = (Cmd[MeasureCount].judge - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
 					if (Notes[i].y > BOTTOM_HEIGHT * -1 && Notes[i].scroll < 0) {
 						Notes[i].flag = false;
 						Combo = 0;
@@ -261,7 +263,7 @@ int main() {
 			C2D_DrawRectSolid(319,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//判定線
-			C2D_DrawRectSolid(0,JUDGE_Y,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xAA, 0x00, 0xFF));
+			C2D_DrawRectSolid(0,Cmd[MeasureCount].judge,0,BOTTOM_WIDTH,1,C2D_Color32(0xFF, 0xAA, 0x00, 0xFF));
 
 			//ノーツ描画
 			for (int i = 0; i < MaxNotesCnt; ++i) {
@@ -404,7 +406,7 @@ inline bool tkjload() {
 							Notes[MaxNotesCnt].num = ctoi(tkj_notes[tkj_cnt][i]);
 							Notes[MaxNotesCnt].keys = keys;
 							Notes[MaxNotesCnt].scroll = SCROLL;
-							Notes[MaxNotesCnt].judge_time = 1.0 + OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
+							Notes[MaxNotesCnt].judge_time = OFFSET + tmpjudgetime + (240.0 / BPM * MEASURE * i / NotesCount);
 							++MaxNotesCnt;
 						}
 					}
@@ -463,19 +465,21 @@ inline bool tkjload() {
 					temp = (char *)malloc((strlen(tkj_notes[tkj_cnt]) + 1));
 					if (tkj_notes[tkj_cnt][13] != '\n' && tkj_notes[tkj_cnt][13] != '\r') {
 						strlcpy(temp, tkj_notes[tkj_cnt] + 13, strlen(tkj_notes[tkj_cnt]) - 14);
-						JUDGE_Y = atoi(temp);
-						if (JUDGE_Y > 200) JUDGE_Y = 200;
-						else if (JUDGE_Y < -200) JUDGE_Y = -200;
+						Cmd[MeasureCount].judge = atoi(temp);
+						if (Cmd[MeasureCount].judge > 200) Cmd[MeasureCount].judge = 200;
+						else if (Cmd[MeasureCount].judge < -200) Cmd[MeasureCount].judge = -200;
 					}
 					free(temp);
 				}
 
+				Cmd[MeasureCount].time = tmpjudgetime + OFFSET;
 				if (strstr(tkj_notes[tkj_cnt], "#START") == tkj_notes[tkj_cnt]) Startcnt = tkj_cnt + 1;
 			}
 			++tkj_cnt;
 		}
 		fclose(fp);
 	}
+	MeasureCount = 0;
 	return isCourseMatch;
 }
 
@@ -496,8 +500,8 @@ inline int ctoi(char c) {
 
 inline void Reset() {
 	scene = 3,timecnt = 0,judgetmpcnt = 0,touchid = -1,judgeid = -1,tkj_cnt = 0,NotesCount = 0,CurrentCourse = -1;
-	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0,keys = 4,Note_x = 79.75;
-	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0.0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 0.0;
+	MaxNotesCnt = 0,Startcnt = -1,MeasureCount = 0,Score = 0,Combo = 0,keys = 4,Note_x = 79.75,JUDGE_Y = 200;
+	BPM = 120.0,SCROLL = 1.0,MEASURE = 1.0,OFFSET = 0.0,OffTime = 0,NowTime = 0,ratio = 0,tmpjudgetime = 1.0;
 	isExit = false,isPlayMain = true;
 	stopPlayback();
 	tkjload();
