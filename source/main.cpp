@@ -170,8 +170,8 @@ int main() {
 
 					//位置計算
 					Note_x = 319.0 / Notes[i].keys;
-					Notes[i].y = (Cmd[MeasureCount].judge - 2) - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
-					if (Notes[i].y < BOTTOM_HEIGHT * -1 && Notes[i].scroll < 0) {
+					Notes[i].y = Cmd[MeasureCount].judge - (Notes[i].judge_time - NowTime) * NotesSpeed * Notes[i].scroll;
+					if (Notes[i].y < TOP_HEIGHT * -1 && Notes[i].scroll < 0) {
 						Notes[i].flag = false;
 						Combo = 0;
 					}
@@ -193,8 +193,10 @@ int main() {
 			C2D_SceneTarget(bot);
 
 			for (int i = 0; i < MaxNotesCnt; ++i) {
-				if (!Notes[i].flag) checknote = i + 1;
-				else break;
+				if (Notes[i].flag) {
+					checknote = i;
+					break;
+				}
 			}
 
 			touchid = -1, Rubbing = false;
@@ -274,7 +276,7 @@ int main() {
 						Combo = 0;
 					}
 					Note_x = 319.0 / Notes[i].keys;
-					if (Notes[i].flag && Notes[i].y > -5.0f && Notes[i].y < BOTTOM_HEIGHT) C2D_DrawRectSolid(Note_x * Notes[i].num,Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
+					if (Notes[i].y > -5.0f && Notes[i].y < BOTTOM_HEIGHT) C2D_DrawRectSolid(Note_x * Notes[i].num,Notes[i].y,0,Note_x,4,C2D_Color32(0x14, 0x91, 0xFF, 0xFF));
 				}
 			}
 
@@ -596,7 +598,6 @@ inline void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 					List->course[course] = true;
 					List->course_exist[course] = true;
 				}
-
 				continue;
 			}
 			if (strstr(buf, "LEVEL:") == buf) {
@@ -604,6 +605,12 @@ inline void load_tkj_head_simple(LIST_T *List) {		//選曲用のヘッダ取得
 					strlcpy(temp, buf + 6, strlen(buf) - 7);
 					List->level[course] = atoi(temp);
 					List->course[course] = true;
+				}
+				continue;
+			}
+			if (strstr(buf, "WAVE:") == buf) {
+				if (buf[5] != '\n' && buf[5] != '\r') {
+					strlcpy(List->wave, buf + 5, strlen(buf) - 6);
 				}
 				continue;
 			}
