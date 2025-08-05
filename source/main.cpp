@@ -226,32 +226,31 @@ int main() {
 			if (touchid != -1) play_sound(0);
 
 			if (!isAuto) {
-					if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge].num) {
-						Notes[NotesJudge].flag = false;
-						judgetmpcnt = timecnt + 30;
-						judgeid = 0;
-						Score += 1000000 / MaxNotesCnt + 1;
-						++Combo;
-					}
-					else if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge].num) {
-						Notes[NotesJudge].flag = false;
-						judgetmpcnt = timecnt + 30;
-						judgeid = 1;
-						Score += 500000 / MaxNotesCnt + 1;
-						++Combo;
-					}
-					else if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge].num) {
-						Notes[NotesJudge].flag = false;
-						judgetmpcnt = timecnt + 30;
-						judgeid = 2;
-						Score += 250000 / MaxNotesCnt + 1;
-						Combo = 0;
-					}
+				if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge].num) {
+					Notes[NotesJudge].flag = false;
+					judgetmpcnt = timecnt + 30;
+					judgeid = 0;
+					Score += 1000000 / MaxNotesCnt + 1;
+					++Combo;
+				}
+				else if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge].num) {
+					Notes[NotesJudge].flag = false;
+					judgetmpcnt = timecnt + 30;
+					judgeid = 1;
+					Score += 500000 / MaxNotesCnt + 1;
+					++Combo;
+				}
+				else if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge].num) {
+					Notes[NotesJudge].flag = false;
+					judgetmpcnt = timecnt + 30;
+					judgeid = 2;
+					Score += 250000 / MaxNotesCnt + 1;
+					Combo = 0;
 				}
 			}
 
 			//タップエフェクト
-			C2D_DrawRectangle(0 + (319.0 / Notes[checknote].keys * touchid),0,0,319.0 / Notes[checknote].keys,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
+			C2D_DrawRectangle(0 + (319.0 / Notes[NotesJudge].keys * touchid),0,0,319.0 / Notes[NotesJudge].keys,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 
 			//レーン描画(下画面用)
 			C2D_DrawRectSolid(0,0,0,1,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
@@ -749,4 +748,5 @@ inline void exit_option() {
 	save_option();
 	json_decref(json);
 }
+
 
