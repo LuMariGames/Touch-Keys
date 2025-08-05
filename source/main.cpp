@@ -69,7 +69,6 @@ int main() {
 		hidScanInput();
 		hidTouchRead(&tp);
 		unsigned int key = hidKeysDown();
-		int checknote = 0;
 		if (isExit == true) break;
 
 		//描画開始
@@ -192,27 +191,13 @@ int main() {
 			C3D_FrameDrawOn(bot);
 			C2D_SceneTarget(bot);
 
-			for (int i = 0; i < MaxNotesCnt; ++i) {
-				if (Notes[i].flag) {
-					checknote = i;
-					break;
-				}
-			}
-
 			touchid = -1, Rubbing = false;
 			PreTouch_x = touch_x, PreTouch_y = touch_y;
 			touch_x = tp.px, touch_y = tp.py;
-			if (touch_x != 0 && touch_y != 0 && !isAuto) touchid = (int)(tp.px / (319.0 / Notes[checknote].keys));
-			if (PreTouchId != touchid && touchid != -1) {	//擦り判定
-				PreTouchId = touchid;
-				Rubbing = true;
-			}
-			if (PreTouch_x != 0 && PreTouch_y != 0 && !Rubbing) touchid = -1;
-			if (touchid != -1) play_sound(0);
 
 			//ノーツ判定
-			int NotesJudge[8] = { -1,-1,-1,-1,-1,-1,-1,-1 };
-			double NotesJudgeLag[8] = { 1,1,1,1,1,1,1,1 };
+			int NotesJudge = -1;
+			double NotesJudgeLag = INT_MAX;
 			for (int i = 0; i < MaxNotesCnt; ++i) {
 
 				if (Notes[i].flag) {
@@ -225,30 +210,38 @@ int main() {
 						play_sound(0);
 						C2D_DrawRectangle(0 + (319.0 / Notes[i].keys * Notes[i].num),0,0,319.0 / Notes[i].keys,BOTTOM_HEIGHT,C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0x00),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF),C2D_Color32(0xFF, 0xFF, 0xFF, 0xFF));
 					}
-					if (NotesJudgeLag[Notes[i].num] > fabs(Notes[i].judge_time - NowTime)) {
-						NotesJudge[Notes[i].num] = i;
-						NotesJudgeLag[Notes[i].num] = fabs(Notes[i].judge_time - NowTime);
+					if (NotesJudgeLag > fabs(Notes[i].judge_time - NowTime)) {
+						NotesJudge = i;
+						NotesJudgeLag = fabs(Notes[i].judge_time - NowTime);
 					}
 				}
 			}
+
+			if (key & KEY_TOUCH && !isAuto) touchid = (int)(tp.px / (319.0 / Notes[NotesJudge].keys));
+			if (PreTouchId != touchid && touchid != -1) {	//擦り判定
+				PreTouchId = touchid;
+				Rubbing = true;
+			}
+			else if (key & KEY_TOUCH && !Rubbing) touchid = -1;
+			if (touchid != -1) play_sound(0);
+
 			if (!isAuto) {
-				for (int i = 0; i < 8; ++i) {
-					if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge[i]].num) {
-						Notes[NotesJudge[i]].flag = false;
+					if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_PERFECT && touchid == Notes[NotesJudge].num) {
+						Notes[NotesJudge].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 0;
 						Score += 1000000 / MaxNotesCnt + 1;
 						++Combo;
 					}
-					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge[i]].num) {
-						Notes[NotesJudge[i]].flag = false;
+					else if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_NICE && touchid == Notes[NotesJudge].num) {
+						Notes[NotesJudge].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 1;
 						Score += 500000 / MaxNotesCnt + 1;
 						++Combo;
 					}
-					else if (NotesJudgeLag[i] < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge[i]].num) {
-						Notes[NotesJudge[i]].flag = false;
+					else if (NotesJudgeLag < DEFAULT_JUDGE_RANGE_BAD && touchid == Notes[NotesJudge].num) {
+						Notes[NotesJudge].flag = false;
 						judgetmpcnt = timecnt + 30;
 						judgeid = 2;
 						Score += 250000 / MaxNotesCnt + 1;
@@ -756,3 +749,4 @@ inline void exit_option() {
 	save_option();
 	json_decref(json);
 }
+
