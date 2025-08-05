@@ -77,8 +77,6 @@ void playFile(void* infoIn){
 
 	memset(waveBuf, 0, sizeof(waveBuf));
 
-	while (*info->isPlay == false) svcSleepThread(100000);
-
 	waveBuf[0].nsamples = (*decoder.decode)(&buffer1[0]) / (*decoder.channels)();
 	waveBuf[0].data_vaddr = &buffer1[0];
 	waveBuf[1].nsamples = (*decoder.decode)(&buffer2[0]) / (*decoder.channels)();
@@ -87,6 +85,7 @@ void playFile(void* infoIn){
 	waveBuf[2].data_vaddr = &buffer3[0];
 	waveBuf[3].nsamples = (*decoder.decode)(&buffer4[0]) / (*decoder.channels)();
 	waveBuf[3].data_vaddr = &buffer4[0];
+	while (*info->isPlay == false) svcSleepThread(100000);
 
 	ndspChnWaveBufAdd(CHANNEL, &waveBuf[0]);
 	ndspChnWaveBufAdd(CHANNEL, &waveBuf[1]);
