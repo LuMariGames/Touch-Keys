@@ -51,7 +51,7 @@ UNIQUE_ID				:= 0x0544B
 BANNER_AUDIO			:= resource/banner.wav
 BANNER_IMAGE			:= resource/banner.png
 ICON        			:= resource/icon.png
-RSF_PATH			:= resource/app.rsf
+RSF_PATH				:= resource/app.rsf
 
 #---------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------
